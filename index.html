@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <title>Cotizador Delta Cars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #888888;
+            --light-gray: #f4f4f4;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--black);
+            margin: 0;
+            padding: 20px; /* Padding reducido para móviles */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Mejor scroll en móviles pequeños */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--white);
+            padding: 30px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Optimizaciones Mobile First para Inputs */
+        select, input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px !important; /* Evita zoom en iOS */
+            color: var(--black);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            -webkit-appearance: none; /* Estilo nativo limpio */
+        }
+
+        select {
+             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--black);
+        }
+
+        #search-input {
+            background-color: #fafafa;
+            border-color: #eaeaea;
+            inputmode: search; /* Teclado con tecla 'Buscar' */
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            margin-top: 5px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-add:active {
+            transform: scale(0.98);
+        }
+
+        /* Toggles Switch Styles */
+        .extras-section {
+            margin-top: 25px;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 20px;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .toggle-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #e0e0e0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider { background-color: var(--black); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Summary Section */
+        .summary {
+            margin-top: 30px;
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+        }
+        
+        .summary-row.total-row {
+            border-top: 2px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
+            color: var(--black);
+            font-weight: 800;
+            font-size: 1.3rem;
+            align-items: center;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .item-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95rem;
+        }
+
+        .btn-remove {
+            background: none;
+            border: none;
+            color: #ff3b30;
+            padding: 0 0 0 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .btn-copy {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--white);
+            color: var(--black);
+            border: 2px solid var(--black);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-copy:active {
+            background-color: #f0f0f0;
+        }
+
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 40px;
+        }
+
+        .hidden { display: none; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1 class="logo">Delta Cars</h1>
+        <div class="subtitle">Cotizador Oficial</div>
+    </header>
+
+    <div>
+        <label for="category">Categoría</label>
+        <select id="category" onchange="updateItems()">
+            <option value="">Selecciona una opción</option>
+            <option value="pintura">Pintura (Piezas)</option>
+            <option value="latoneria">Latonería y Reparación</option>
+            <option value="otros">Rines y Otros</option>
+        </select>
+    </div>
+
+    <div id="item-group">
+        <label for="search-input">Buscar Servicio</label>
+        <input type="text" id="search-input" placeholder="🔍 Ej. Puerta, Capó..." onkeyup="filterItems()" disabled>
+        
+        <select id="item" disabled onchange="checkFinishOption()">
+            <option value="">-- Selecciona categoría primero --</option>
+        </select>
+    </div>
+
+    <div class="hidden animate-in" id="finish-group">
+        <label for="finish">Acabado</label>
+        <select id="finish">
+            <option value="bicapa">Bicapa (Estándar)</option>
+            <option value="tricapa">Tricapa (Perlado)</option>
+        </select>
+    </div>
+
+    <button class="btn-add" onclick="addItem()">+ Agregar Item</button>
+
+    <div class="extras-section">
+        <div class="toggle-row">
+            <span class="toggle-label">Incluir Lavado (+$10,000)</span>
+            <label class="switch">
+                <input type="checkbox" id="check-lavado" onchange="renderCart()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-row">
+            <span class="toggle-label">Aplicar IVA (19%)</span>
+            <label class="switch">
+                <input type="checkbox" id="check-iva" onchange="renderCart()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-row">
+            <span class="toggle-label">Pago con Wompi (+5%)</span>
+            <label class="switch">
+                <input type="checkbox" id="check-wompi" onchange="renderCart()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="summary hidden animate-in" id="summary-section">
+        <ul class="item-list" id="cart-list"></ul>
+        
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="display-subtotal">$0</span>
+        </div>
+        
+        <div class="summary-row hidden" id="row-lavado">
+            <span>Lavado General</span>
+            <span>$10,000</span>
+        </div>
+        
+        <div class="summary-row hidden" id="row-iva">
+            <span>IVA (19%)</span>
+            <span id="display-iva">$0</span>
+        </div>
+
+        <div class="summary-row hidden" id="row-wompi">
+            <span>Comisión Wompi (5%)</span>
+            <span id="display-wompi">$0</span>
+        </div>
+
+        <div class="summary-row total-row">
+            <span>TOTAL FINAL</span>
+            <span id="display-total">$0</span>
+        </div>
+
+        <button class="btn-copy" onclick="copyToClipboard()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copiar Cotización
+        </button>
+    </div>
+</div>
+
+<div id="toast">¡Copiado al portapapeles!</div>
+
+<script>
+    // --- BASE DE DATOS DE PRECIOS DELTA CARS ---
+    const pricesDB = {
+        pintura: [
+            { id: 'tapa_gasolina', name: 'Tapa de Gasolina', base: 90000, hasTricapa: false },
+            { id: 'plasticos', name: 'Plásticos', base: 200000, hasTricapa: false },
+            { id: 'estribo', name: 'Estribo', base: 150000, tricapa: 175000, hasTricapa: true },
+            { id: 'paral', name: 'Paral', base: 75000, tricapa: 87500, hasTricapa: true },
+            { id: 'batiente', name: 'Batiente', base: 75000, tricapa: 87500, hasTricapa: true },
+            { id: 'costado', name: 'Costado', base: 250000, tricapa: 350000, hasTricapa: true },
+            { id: 'guardafango', name: 'Guardafango', base: 250000, tricapa: 350000, hasTricapa: true },
+            { id: 'bumper', name: 'Bumper', base: 350000, tricapa: 450000, hasTricapa: true },
+            { id: 'puerta', name: 'Puerta (Sola)', base: 250000, tricapa: 350000, hasTricapa: true },
+            { id: 'puerta_comp', name: 'Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true },
+            { id: 'espejo', name: 'Espejo', base: 75000, tricapa: 87500, hasTricapa: true },
+            { id: 'manija', name: 'Manija', base: 75000, tricapa: 87500, hasTricapa: true },
+            { id: 'puntera', name: 'Puntera', base: 100000, tricapa: 120000, hasTricapa: true },
+            { id: 'capo', name: 'Capó', base: 450000, tricapa: 525000, hasTricapa: true },
+            { id: 'techo', name: 'Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true },
+            { id: 'techo_cam', name: 'Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true },
+            { id: 'baul', name: 'Baúl', base: 250000, hasTricapa: false }
+        ],
+        latoneria: [
+            { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000 },
+            { id: 'lat_leve', name: 'Latonería Leve', base: 400000 },
+            { id: 'lat_media', name: 'Latonería Media', base: 700000 },
+            { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000 },
+            { id: 'monte', name: 'Monte y Desmonte', base: 160000 },
+            { id: 'pdr_pq', name: 'Sacabollos (PDR) Pequeño', base: 150000 },
+            { id: 'pdr_med', name: 'Sacabollos (PDR) Medio', base: 400000 }
+        ],
+        otros: [
+            { id: 'rin_bicapa', name: 'Pintura Rin (Bicapa)', base: 150000 },
+            { id: 'rin_diam', name: 'Pintura Rin (Diamantado)', base: 250000 },
+            { id: 'partes_negras', name: 'Pintura Partes Negras', base: 150000 },
+            { id: 'brillada', name: 'Brillada de Pieza', base: 50000 }
+        ]
+    };
+
+    let cart = [];
+    let currentItem = null;
+    let currentCategoryList = []; 
+
+    function formatMoney(amount) {
+        return '$' + Math.round(amount).toLocaleString('es-CO');
+    }
+
+    function updateItems() {
+        const category = document.getElementById('category').value;
+        const itemSelect = document.getElementById('item');
+        const searchInput = document.getElementById('search-input');
+        
+        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+        searchInput.value = ''; 
+        document.getElementById('finish-group').classList.add('hidden');
+        currentItem = null;
+
+        if (category && pricesDB[category]) {
+            currentCategoryList = pricesDB[category];
+            renderOptions(currentCategoryList);
+            itemSelect.disabled = false;
+            searchInput.disabled = false;
+        } else {
+            itemSelect.disabled = true;
+            searchInput.disabled = true;
+            currentCategoryList = [];
+        }
+    }
+
+    function renderOptions(list) {
+        const itemSelect = document.getElementById('item');
+        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>'; 
+        
+        list.forEach((item) => {
+            const option = document.createElement('option');
+            option.value = JSON.stringify(item); 
+            option.text = item.name + ` (Desde ${formatMoney(item.base)})`;
+            itemSelect.add(option);
+        });
+    }
+
+    function filterItems() {
+        const searchText = document.getElementById('search-input').value.toLowerCase();
+        const filteredList = currentCategoryList.filter(item => 
+            item.name.toLowerCase().includes(searchText)
+        );
+        renderOptions(filteredList);
+    }
+
+    function checkFinishOption() {
+        const selectedValue = document.getElementById('item').value;
+        if (selectedValue !== "") {
+            const item = JSON.parse(selectedValue);
+            currentItem = item;
+            const finishGroup = document.getElementById('finish-group');
+            if (item.hasTricapa) {
+                finishGroup.classList.remove('hidden');
+            } else {
+                finishGroup.classList.add('hidden');
+            }
+        }
+    }
+
+    function addItem() {
+        if (!currentItem) {
+            alert("Por favor selecciona un servicio.");
+            return;
+        }
+
+        let finalPrice = currentItem.base;
+        let finishName = "Estándar";
+
+        const finishSelect = document.getElementById('finish');
+        const finishGroup = document.getElementById('finish-group');
+        
+        if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
+            finalPrice = currentItem.tricapa;
+            finishName = "Tricapa";
+        } else if (!finishGroup.classList.contains('hidden')) {
+            finishName = "Bicapa";
+        }
+
+        cart.push({
+            name: currentItem.name,
+            finish: finishName,
+            price: finalPrice
+        });
+
+        document.getElementById('search-input').value = '';
+        renderOptions(currentCategoryList);
+        document.getElementById('item').value = "";
+        currentItem = null;
+        document.getElementById('finish-group').classList.add('hidden');
+
+        renderCart();
+    }
+
+    function remove(index) {
+        cart.splice(index, 1);
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cart-list');
+        const summary = document.getElementById('summary-section');
+        
+        const isLavado = document.getElementById('check-lavado').checked;
+        const isIVA = document.getElementById('check-iva').checked;
+        const isWompi = document.getElementById('check-wompi').checked;
+        
+        const rowLavado = document.getElementById('row-lavado');
+        const rowIVA = document.getElementById('row-iva');
+        const rowWompi = document.getElementById('row-wompi');
+
+        list.innerHTML = '';
+        let subtotal = 0;
+
+        cart.forEach((item, index) => {
+            subtotal += item.price;
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-meta">${item.finish}</div>
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <span style="font-weight:bold;">${formatMoney(item.price)}</span>
+                    <button class="btn-remove" onclick="remove(${index})">&times;</button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+
+        // 1. Calcular Base (Items + Lavado)
+        let lavadoCost = isLavado ? 10000 : 0;
+        let totalBase = subtotal + lavadoCost;
+
+        // 2. Calcular IVA (Sobre la base)
+        let ivaCost = isIVA ? totalBase * 0.19 : 0;
+        
+        // 3. Subtotal Intermedio para Wompi
+        let totalPreWompi = totalBase + ivaCost;
+
+        // 4. Calcular Wompi (5% del total a pagar hasta ahora)
+        let wompiCost = isWompi ? totalPreWompi * 0.05 : 0;
+
+        // 5. Total Final
+        let totalFinal = totalPreWompi + wompiCost;
+
+        // --- RENDERIZADO EN PANTALLA ---
+        document.getElementById('display-subtotal').innerText = formatMoney(subtotal);
+        
+        // Lavado
+        if (isLavado) rowLavado.classList.remove('hidden');
+        else rowLavado.classList.add('hidden');
+
+        // IVA
+        if (isIVA) {
+            rowIVA.classList.remove('hidden');
+            document.getElementById('display-iva').innerText = formatMoney(ivaCost);
+        } else {
+            rowIVA.classList.add('hidden');
+        }
+
+        // Wompi
+        if (isWompi) {
+            rowWompi.classList.remove('hidden');
+            document.getElementById('display-wompi').innerText = formatMoney(wompiCost);
+        } else {
+            rowWompi.classList.add('hidden');
+        }
+
+        document.getElementById('display-total').innerText = formatMoney(totalFinal);
+
+        if (cart.length > 0 || isLavado) {
+            summary.classList.remove('hidden');
+        } else {
+            summary.classList.add('hidden');
+        }
+    }
+
+    function copyToClipboard() {
+        if (cart.length === 0 && !document.getElementById('check-lavado').checked) {
+            alert("Agrega al menos un servicio.");
+            return;
+        }
+
+        const isLavado = document.getElementById('check-lavado').checked;
+        const isIVA = document.getElementById('check-iva').checked;
+        const isWompi = document.getElementById('check-wompi').checked;
+
+        let subtotal = 0;
+        let message = "*Cotización Delta Cars*\n\n";
+
+        cart.forEach(item => {
+            message += `▪ ${item.name} (${item.finish}): ${formatMoney(item.price)}\n`;
+            subtotal += item.price;
+        });
+
+        if (isLavado) {
+            message += `▪ Lavado General: $10.000\n`;
+            subtotal += 10000; // Ojo: en la variable 'subtotal' acumulo todo lo base
+        } else {
+             // Si quieres mostrar solo items en subtotal visual, ajusta lógica
+             // Para consistencia visual:
+        }
+
+        let totalAccumulated = subtotal;
+
+        message += `\n*Base:* ${formatMoney(totalAccumulated)}`;
+
+        if (isIVA) {
+            let iva = totalAccumulated * 0.19;
+            message += `\n*IVA (19%):* ${formatMoney(iva)}`;
+            totalAccumulated += iva;
+        }
+
+        if (isWompi) {
+            let wompi = totalAccumulated * 0.05;
+            message += `\n*Recargo Wompi (5%):* ${formatMoney(wompi)}`;
+            totalAccumulated += wompi;
+        }
+
+        message += `\n\n*TOTAL FINAL: ${formatMoney(totalAccumulated)}*`;
+        message += "\n\n_Precios sujetos a evaluación final en taller._";
+
+        navigator.clipboard.writeText(message).then(function() {
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }, function(err) {
+            alert('Error al copiar.');
+        });
+    }
+</script>
+
+</body>
+</html>
