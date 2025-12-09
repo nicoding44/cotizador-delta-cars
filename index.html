@@ -67,7 +67,7 @@
             letter-spacing: 0.5px;
         }
 
-        select, input[type="text"] {
+        select, input[type="text"], input[type="number"] {
             width: 100%;
             padding: 14px;
             margin-bottom: 15px;
@@ -89,7 +89,7 @@
             background-size: 1em;
         }
 
-        select:focus, input[type="text"]:focus {
+        select:focus, input:focus {
             border-color: var(--black);
         }
 
@@ -97,6 +97,18 @@
             background-color: #fafafa;
             border-color: #eaeaea;
             inputmode: search;
+        }
+
+        /* Layout para Cantidad y Botón */
+        .add-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .qty-group {
+            width: 80px;
+            flex-shrink: 0;
         }
 
         .btn-add {
@@ -111,6 +123,7 @@
             cursor: pointer;
             transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
+            margin-bottom: 15px; /* Alineación con el input */
         }
 
         .btn-add:active {
@@ -138,10 +151,12 @@
 
         .select-inline {
             width: auto;
+            min-width: 100px;
             margin-bottom: 0;
             padding: 8px 30px 8px 12px;
             font-size: 0.9rem !important;
             border-color: #ddd;
+            text-align: right;
         }
         
         .switch {
@@ -213,6 +228,22 @@
             padding: 12px 0;
             border-bottom: 1px solid #e0e0e0;
             font-size: 0.95rem;
+        }
+        
+        .item-info {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .qty-badge {
+            background: var(--black);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            height: fit-content;
+            margin-top: 2px;
         }
 
         .btn-remove {
@@ -317,8 +348,14 @@
             <option value="tricapa">Tricapa (Perlado)</option>
         </select>
     </div>
-
-    <button class="btn-add" onclick="addItem()">+ Agregar Item</button>
+    
+    <div class="add-row">
+        <div class="qty-group">
+            <label for="quantity">Cant.</label>
+            <input type="number" id="quantity" value="1" min="1">
+        </div>
+        <button class="btn-add" onclick="addItem()">+ Agregar Item</button>
+    </div>
 
     <div class="extras-section">
         <div class="toggle-row">
@@ -329,6 +366,12 @@
                 <option value="0.10">10%</option>
                 <option value="0.20">20%</option>
             </select>
+        </div>
+
+        <div class="toggle-row">
+            <span class="toggle-label">Tiempo Estimado</span>
+            <select id="time-select" class="select-inline">
+                </select>
         </div>
 
         <div class="toggle-row">
@@ -397,7 +440,19 @@
 <div id="toast">¡Mensaje copiado! Listo para WhatsApp</div>
 
 <script>
-    // --- BASE DE DATOS ACTUALIZADA ---
+    // --- INICIALIZACIÓN: LLENAR SELECTOR DE DÍAS ---
+    window.onload = function() {
+        const timeSelect = document.getElementById('time-select');
+        for (let i = 1; i <= 30; i++) {
+            let option = document.createElement('option');
+            option.value = i;
+            option.text = i + (i === 1 ? ' día' : ' días');
+            if (i === 3) option.selected = true; 
+            timeSelect.add(option);
+        }
+    };
+
+    // --- BASE DE DATOS ---
     const pricesDB = {
         pintura: [
             { id: 'tapa_gasolina', name: 'Tapa de Gasolina', base: 90000, hasTricapa: false },
@@ -420,7 +475,7 @@
         ],
         latoneria: [
             { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000 },
-            { id: 'lat_leve', name: 'Latonería Leve', base: 350000 }, // PRECIO ACTUALIZADO A 350K
+            { id: 'lat_leve', name: 'Latonería Leve', base: 350000 },
             { id: 'lat_media', name: 'Latonería Media', base: 700000 },
             { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000 },
             { id: 'monte', name: 'Monte y Desmonte', base: 160000 },
@@ -506,33 +561,43 @@
         }
 
         const category = document.getElementById('category').value;
+        const qtyInput = document.getElementById('quantity');
+        let qty = parseInt(qtyInput.value);
+        if (qty < 1) qty = 1;
+
         if (category === 'latoneria') hasLatoneria = true;
 
-        let finalPrice = currentItem.base;
+        let unitPrice = currentItem.base;
         let finishName = "Estándar";
 
         const finishSelect = document.getElementById('finish');
         const finishGroup = document.getElementById('finish-group');
         
         if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
-            finalPrice = currentItem.tricapa;
+            unitPrice = currentItem.tricapa;
             finishName = "Tricapa";
         } else if (!finishGroup.classList.contains('hidden')) {
             finishName = "Bicapa";
         }
 
+        let totalPrice = unitPrice * qty;
+
         cart.push({
             name: currentItem.name,
             finish: finishName,
-            price: finalPrice,
+            price: totalPrice,
+            unitPrice: unitPrice,
+            qty: qty,
             category: category
         });
 
+        // Reset
         document.getElementById('search-input').value = '';
         renderOptions(currentCategoryList);
         document.getElementById('item').value = "";
         currentItem = null;
         document.getElementById('finish-group').classList.add('hidden');
+        qtyInput.value = 1; // Reset cantidad
 
         renderCart();
     }
@@ -564,9 +629,12 @@
             subtotalItems += item.price;
             const li = document.createElement('li');
             li.innerHTML = `
-                <div>
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-meta">${item.finish}</div>
+                <div class="item-info">
+                    <div class="qty-badge">${item.qty}x</div>
+                    <div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-meta">${item.finish} (${formatMoney(item.unitPrice)} c/u)</div>
+                    </div>
                 </div>
                 <div style="display:flex; align-items:center;">
                     <span style="font-weight:bold;">${formatMoney(item.price)}</span>
@@ -633,6 +701,7 @@
 
         const isIVA = document.getElementById('check-iva').checked;
         const discountRate = parseFloat(document.getElementById('discount-select').value);
+        const days = document.getElementById('time-select').value;
         const totalFinalStr = document.getElementById('display-total').innerText;
 
         // 1. INTRO
@@ -658,7 +727,10 @@
             } else {
                  description = "requiere restauración/pintura";
             }
-            message += `• ${item.name}: ${description}.\n`;
+            
+            // Cantidad en el diagnóstico
+            let qtyText = item.qty > 1 ? `${item.qty}x ` : "";
+            message += `• ${qtyText}${item.name}: ${description}.\n`;
         });
         
         if (document.getElementById('check-lavado').checked) {
@@ -670,7 +742,9 @@
         message += `\n${tituloPrecio}\n\n`;
 
         cart.forEach(item => {
-            message += `• ${item.name}: ${formatMoney(item.price)}\n`;
+            // Cantidad en el precio
+            let qtyText = item.qty > 1 ? `${item.qty}x ` : "";
+            message += `• ${qtyText}${item.name}: ${formatMoney(item.price)}\n`;
         });
 
         if (document.getElementById('check-lavado').checked) {
@@ -694,7 +768,7 @@
         }
 
         // 5. CIERRE
-        message += `\n⏱️ Tiempo estimado:\n3 a 4 días hábiles\n\n`;
+        message += `\n⏱️ Tiempo estimado:\n${days} días hábiles\n\n`;
         message += `✨ Incluye:\n\n• Garantía de 1 año\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
         message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
 
