@@ -10,7 +10,7 @@
         :root {
             --black: #000000;
             --dark-gray: #1a1a1a;
-            --mid-gray: #888888;
+            --mid-gray: #666666;
             --light-gray: #f4f4f4;
             --white: #ffffff;
             --border-radius: 12px;
@@ -22,11 +22,11 @@
             background-color: var(--light-gray);
             color: var(--black);
             margin: 0;
-            padding: 20px; /* Padding reducido para móviles */
+            padding: 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Mejor scroll en móviles pequeños */
+            align-items: flex-start;
         }
 
         .container {
@@ -56,7 +56,6 @@
             font-size: 0.9rem;
             color: var(--mid-gray);
             margin-top: 5px;
-            font-weight: 400;
         }
 
         label {
@@ -68,20 +67,19 @@
             letter-spacing: 0.5px;
         }
 
-        /* Optimizaciones Mobile First para Inputs */
         select, input[type="text"] {
             width: 100%;
             padding: 14px;
             margin-bottom: 15px;
             border: 2px solid var(--light-gray);
             border-radius: 8px;
-            font-size: 16px !important; /* Evita zoom en iOS */
+            font-size: 16px !important;
             color: var(--black);
             background: var(--white);
             outline: none;
             transition: border-color 0.3s;
             box-sizing: border-box;
-            -webkit-appearance: none; /* Estilo nativo limpio */
+            -webkit-appearance: none;
         }
 
         select {
@@ -98,7 +96,7 @@
         #search-input {
             background-color: #fafafa;
             border-color: #eaeaea;
-            inputmode: search; /* Teclado con tecla 'Buscar' */
+            inputmode: search;
         }
 
         .btn-add {
@@ -111,8 +109,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.3s;
-            margin-top: 5px;
+            transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -120,7 +117,7 @@
             transform: scale(0.98);
         }
 
-        /* Toggles Switch Styles */
+        /* Extras & Toggles */
         .extras-section {
             margin-top: 25px;
             border-top: 1px solid var(--light-gray);
@@ -137,6 +134,14 @@
         .toggle-label {
             font-size: 0.95rem;
             font-weight: 500;
+        }
+
+        .select-inline {
+            width: auto;
+            margin-bottom: 0;
+            padding: 8px 30px 8px 12px;
+            font-size: 0.9rem !important;
+            border-color: #ddd;
         }
         
         .switch {
@@ -170,7 +175,7 @@
         input:checked + .slider { background-color: var(--black); }
         input:checked + .slider:before { transform: translateX(24px); }
 
-        /* Summary Section */
+        /* Summary */
         .summary {
             margin-top: 30px;
             background: var(--light-gray);
@@ -317,6 +322,16 @@
 
     <div class="extras-section">
         <div class="toggle-row">
+            <span class="toggle-label">Descuento Especial</span>
+            <select id="discount-select" class="select-inline" onchange="renderCart()">
+                <option value="0">Ninguno</option>
+                <option value="0.05">5%</option>
+                <option value="0.10">10%</option>
+                <option value="0.20">20%</option>
+            </select>
+        </div>
+
+        <div class="toggle-row">
             <span class="toggle-label">Incluir Lavado (+$10,000)</span>
             <label class="switch">
                 <input type="checkbox" id="check-lavado" onchange="renderCart()">
@@ -351,6 +366,11 @@
             <span>Lavado General</span>
             <span>$10,000</span>
         </div>
+
+        <div class="summary-row hidden" id="row-discount" style="color: #25D366; font-weight: bold;">
+            <span>Descuento aplicado</span>
+            <span id="display-discount">-$0</span>
+        </div>
         
         <div class="summary-row hidden" id="row-iva">
             <span>IVA (19%)</span>
@@ -369,15 +389,15 @@
 
         <button class="btn-copy" onclick="copyToClipboard()">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            Copiar Cotización
+            Copiar Mensaje
         </button>
     </div>
 </div>
 
-<div id="toast">¡Copiado al portapapeles!</div>
+<div id="toast">¡Mensaje copiado! Listo para WhatsApp</div>
 
 <script>
-    // --- BASE DE DATOS DE PRECIOS DELTA CARS ---
+    // --- BASE DE DATOS ACTUALIZADA ---
     const pricesDB = {
         pintura: [
             { id: 'tapa_gasolina', name: 'Tapa de Gasolina', base: 90000, hasTricapa: false },
@@ -400,7 +420,7 @@
         ],
         latoneria: [
             { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000 },
-            { id: 'lat_leve', name: 'Latonería Leve', base: 400000 },
+            { id: 'lat_leve', name: 'Latonería Leve', base: 350000 }, // PRECIO ACTUALIZADO A 350K
             { id: 'lat_media', name: 'Latonería Media', base: 700000 },
             { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000 },
             { id: 'monte', name: 'Monte y Desmonte', base: 160000 },
@@ -418,6 +438,7 @@
     let cart = [];
     let currentItem = null;
     let currentCategoryList = []; 
+    let hasLatoneria = false; 
 
     function formatMoney(amount) {
         return '$' + Math.round(amount).toLocaleString('es-CO');
@@ -448,7 +469,6 @@
     function renderOptions(list) {
         const itemSelect = document.getElementById('item');
         itemSelect.innerHTML = '<option value="">-- Selecciona --</option>'; 
-        
         list.forEach((item) => {
             const option = document.createElement('option');
             option.value = JSON.stringify(item); 
@@ -485,6 +505,9 @@
             return;
         }
 
+        const category = document.getElementById('category').value;
+        if (category === 'latoneria') hasLatoneria = true;
+
         let finalPrice = currentItem.base;
         let finishName = "Estándar";
 
@@ -501,7 +524,8 @@
         cart.push({
             name: currentItem.name,
             finish: finishName,
-            price: finalPrice
+            price: finalPrice,
+            category: category
         });
 
         document.getElementById('search-input').value = '';
@@ -515,6 +539,7 @@
 
     function remove(index) {
         cart.splice(index, 1);
+        hasLatoneria = cart.some(item => item.category === 'latoneria');
         renderCart();
     }
 
@@ -525,16 +550,18 @@
         const isLavado = document.getElementById('check-lavado').checked;
         const isIVA = document.getElementById('check-iva').checked;
         const isWompi = document.getElementById('check-wompi').checked;
+        const discountRate = parseFloat(document.getElementById('discount-select').value);
         
         const rowLavado = document.getElementById('row-lavado');
+        const rowDiscount = document.getElementById('row-discount');
         const rowIVA = document.getElementById('row-iva');
         const rowWompi = document.getElementById('row-wompi');
 
         list.innerHTML = '';
-        let subtotal = 0;
+        let subtotalItems = 0;
 
         cart.forEach((item, index) => {
-            subtotal += item.price;
+            subtotalItems += item.price;
             const li = document.createElement('li');
             li.innerHTML = `
                 <div>
@@ -549,30 +576,32 @@
             list.appendChild(li);
         });
 
-        // 1. Calcular Base (Items + Lavado)
+        // --- CÁLCULOS ---
         let lavadoCost = isLavado ? 10000 : 0;
-        let totalBase = subtotal + lavadoCost;
+        let baseAmount = subtotalItems + lavadoCost;
 
-        // 2. Calcular IVA (Sobre la base)
-        let ivaCost = isIVA ? totalBase * 0.19 : 0;
+        let discountAmount = baseAmount * discountRate;
+        let amountAfterDiscount = baseAmount - discountAmount;
+
+        let ivaCost = isIVA ? amountAfterDiscount * 0.19 : 0;
+        let amountAfterIVA = amountAfterDiscount + ivaCost;
+
+        let wompiCost = isWompi ? amountAfterIVA * 0.05 : 0;
+        let totalFinal = amountAfterIVA + wompiCost;
+
+        // --- RENDER ---
+        document.getElementById('display-subtotal').innerText = formatMoney(subtotalItems);
         
-        // 3. Subtotal Intermedio para Wompi
-        let totalPreWompi = totalBase + ivaCost;
-
-        // 4. Calcular Wompi (5% del total a pagar hasta ahora)
-        let wompiCost = isWompi ? totalPreWompi * 0.05 : 0;
-
-        // 5. Total Final
-        let totalFinal = totalPreWompi + wompiCost;
-
-        // --- RENDERIZADO EN PANTALLA ---
-        document.getElementById('display-subtotal').innerText = formatMoney(subtotal);
-        
-        // Lavado
         if (isLavado) rowLavado.classList.remove('hidden');
         else rowLavado.classList.add('hidden');
 
-        // IVA
+        if (discountRate > 0) {
+            rowDiscount.classList.remove('hidden');
+            document.getElementById('display-discount').innerText = "-" + formatMoney(discountAmount);
+        } else {
+            rowDiscount.classList.add('hidden');
+        }
+
         if (isIVA) {
             rowIVA.classList.remove('hidden');
             document.getElementById('display-iva').innerText = formatMoney(ivaCost);
@@ -580,7 +609,6 @@
             rowIVA.classList.add('hidden');
         }
 
-        // Wompi
         if (isWompi) {
             rowWompi.classList.remove('hidden');
             document.getElementById('display-wompi').innerText = formatMoney(wompiCost);
@@ -603,44 +631,72 @@
             return;
         }
 
-        const isLavado = document.getElementById('check-lavado').checked;
         const isIVA = document.getElementById('check-iva').checked;
-        const isWompi = document.getElementById('check-wompi').checked;
+        const discountRate = parseFloat(document.getElementById('discount-select').value);
+        const totalFinalStr = document.getElementById('display-total').innerText;
 
-        let subtotal = 0;
-        let message = "*Cotización Delta Cars*\n\n";
+        // 1. INTRO
+        let introText = "";
+        if (hasLatoneria) {
+            introText = "Gracias por enviarnos la foto. Analizando el daño, vemos que se requiere un trabajo técnico de latonería para recuperar la línea original y posteriormente pintura.";
+        } else {
+            introText = "Gracias por enviarnos la foto. En este caso las piezas no presentan golpes ni deformaciones, así que el trabajo es únicamente de pintura.";
+        }
+
+        let message = `${introText}\n\n`;
+        
+        // 2. DIAGNÓSTICO
+        message += `🔧 Diagnóstico técnico:\n\n`;
+        cart.forEach(item => {
+            let description = "";
+            if (item.category === 'latoneria') {
+                description = "requiere intervención técnica y restauración";
+            } else if (item.finish === 'Tricapa') {
+                 description = "requiere pintura completa tricapa (perlada)";
+            } else if (item.finish === 'Bicapa') {
+                 description = "requiere pintura completa bicapa";
+            } else {
+                 description = "requiere restauración/pintura";
+            }
+            message += `• ${item.name}: ${description}.\n`;
+        });
+        
+        if (document.getElementById('check-lavado').checked) {
+             message += `• Servicio adicional: Lavado General.\n`;
+        }
+
+        // 3. VALOR
+        let tituloPrecio = isIVA ? "💰 Valor estimado (CON IVA):" : "💰 Valor estimado (SIN IVA):";
+        message += `\n${tituloPrecio}\n\n`;
 
         cart.forEach(item => {
-            message += `▪ ${item.name} (${item.finish}): ${formatMoney(item.price)}\n`;
-            subtotal += item.price;
+            message += `• ${item.name}: ${formatMoney(item.price)}\n`;
         });
 
-        if (isLavado) {
-            message += `▪ Lavado General: $10.000\n`;
-            subtotal += 10000; // Ojo: en la variable 'subtotal' acumulo todo lo base
-        } else {
-             // Si quieres mostrar solo items en subtotal visual, ajusta lógica
-             // Para consistencia visual:
+        if (document.getElementById('check-lavado').checked) {
+            message += `• Lavado General: $10.000\n`;
+        }
+        
+        if (discountRate > 0) {
+            let discountTxt = (discountRate * 100) + "%";
+            message += `• Descuento aplicado (${discountTxt}): ${document.getElementById('display-discount').innerText}\n`;
         }
 
-        let totalAccumulated = subtotal;
-
-        message += `\n*Base:* ${formatMoney(totalAccumulated)}`;
-
-        if (isIVA) {
-            let iva = totalAccumulated * 0.19;
-            message += `\n*IVA (19%):* ${formatMoney(iva)}`;
-            totalAccumulated += iva;
+        if (document.getElementById('check-wompi').checked) {
+             message += `• Recargo pago Wompi: ${document.getElementById('display-wompi').innerText}\n`;
         }
 
-        if (isWompi) {
-            let wompi = totalAccumulated * 0.05;
-            message += `\n*Recargo Wompi (5%):* ${formatMoney(wompi)}`;
-            totalAccumulated += wompi;
+        message += `\n➡️ Total: ${totalFinalStr}\n`;
+
+        // 4. DISCLAIMER
+        if (!isIVA) {
+            message += `⚠️ Los valores no incluyen IVA. Este se adiciona al momento de facturar.\n`;
         }
 
-        message += `\n\n*TOTAL FINAL: ${formatMoney(totalAccumulated)}*`;
-        message += "\n\n_Precios sujetos a evaluación final en taller._";
+        // 5. CIERRE
+        message += `\n⏱️ Tiempo estimado:\n3 a 4 días hábiles\n\n`;
+        message += `✨ Incluye:\n\n• Garantía de 1 año\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
+        message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
 
         navigator.clipboard.writeText(message).then(function() {
             var x = document.getElementById("toast");
