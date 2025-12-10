@@ -15,6 +15,7 @@
             --white: #ffffff;
             --border-radius: 12px;
             --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --footer-height: 140px; /* Espacio para el footer fijo */
         }
 
         body {
@@ -22,30 +23,31 @@
             background-color: var(--light-gray);
             color: var(--black);
             margin: 0;
-            padding: 20px;
+            padding: 20px 20px var(--footer-height) 20px; /* Padding inferior extra para no tapar contenido */
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            box-sizing: border-box;
         }
 
         .container {
             width: 100%;
             max-width: 500px;
             background: var(--white);
-            padding: 30px 25px;
+            padding: 25px 20px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            margin-top: 10px;
+            margin-bottom: 20px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .logo {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -1px;
             text-transform: uppercase;
@@ -53,24 +55,24 @@
         }
 
         .subtitle {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--mid-gray);
-            margin-top: 5px;
+            margin-top: 2px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         select, input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
             border: 2px solid var(--light-gray);
             border-radius: 8px;
             font-size: 16px !important;
@@ -82,21 +84,8 @@
             -webkit-appearance: none;
         }
 
-        select {
-             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-        }
-
         select:focus, input:focus {
             border-color: var(--black);
-        }
-
-        #search-input {
-            background-color: #fafafa;
-            border-color: #eaeaea;
-            inputmode: search;
         }
 
         /* Layout para Cantidad y Botón */
@@ -104,16 +93,17 @@
             display: flex;
             gap: 10px;
             align-items: flex-end;
+            margin-bottom: 15px;
         }
 
         .qty-group {
-            width: 80px;
+            width: 70px;
             flex-shrink: 0;
         }
 
         .btn-add {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background-color: var(--black);
             color: var(--white);
             border: none;
@@ -123,38 +113,38 @@
             cursor: pointer;
             transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
-            margin-bottom: 15px;
+            margin-bottom: 12px; /* Alineación con el input */
         }
 
         .btn-add:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
 
         /* Extras & Toggles */
         .extras-section {
-            margin-top: 25px;
+            margin-top: 20px;
             border-top: 1px solid var(--light-gray);
-            padding-top: 20px;
+            padding-top: 15px;
         }
 
         .toggle-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .toggle-label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
         }
 
         .select-inline {
             width: auto;
-            min-width: 100px;
+            min-width: 90px;
             margin-bottom: 0;
-            padding: 8px 30px 8px 12px;
-            font-size: 0.9rem !important;
+            padding: 6px 25px 6px 10px;
+            font-size: 0.85rem !important;
             border-color: #ddd;
             text-align: right;
         }
@@ -162,8 +152,8 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 26px;
+            width: 46px;
+            height: 24px;
             -webkit-tap-highlight-color: transparent;
         }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -178,8 +168,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 18px;
+            width: 18px;
             left: 3px;
             bottom: 3px;
             background-color: white;
@@ -188,46 +178,21 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         input:checked + .slider { background-color: var(--black); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
-        /* Summary */
-        .summary {
-            margin-top: 30px;
-            background: var(--light-gray);
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--mid-gray);
-        }
-        
-        .summary-row.total-row {
-            border-top: 2px solid #ddd;
-            padding-top: 15px;
-            margin-top: 15px;
-            color: var(--black);
-            font-weight: 800;
-            font-size: 1.3rem;
-            align-items: center;
-        }
-
+        /* Lista de Items */
         .item-list {
             list-style: none;
             padding: 0;
-            margin: 0 0 20px 0;
+            margin: 20px 0 0 0;
         }
 
         .item-list li {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #e0e0e0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         
         .item-info {
@@ -255,16 +220,64 @@
             font-weight: bold;
         }
 
+        /* --- STICKY FOOTER (BARRA FIJA) --- */
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .sticky-footer.hidden {
+            transform: translateY(110%); /* Se oculta si no hay items */
+        }
+
+        .footer-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--mid-gray);
+            margin-bottom: 5px;
+        }
+        
+        .footer-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-total-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .footer-total-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--black);
+        }
+
         .btn-copy {
             width: 100%;
             padding: 16px;
-            background-color: var(--white);
-            color: var(--black);
-            border: 2px solid var(--black);
-            border-radius: 8px;
+            background-color: var(--black); /* Botón negro sólido para contraste */
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
-            margin-top: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -275,7 +288,8 @@
         }
 
         .btn-copy:active {
-            background-color: #f0f0f0;
+            transform: scale(0.98);
+            background-color: #333;
         }
 
         #toast {
@@ -287,9 +301,9 @@
             border-radius: 50px;
             padding: 12px 20px;
             position: fixed;
-            z-index: 100;
+            z-index: 2000; /* Encima del footer */
             left: 50%;
-            bottom: 30px;
+            bottom: 160px; /* Encima del footer */
             transform: translateX(-50%);
             font-size: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -300,10 +314,10 @@
         #toast.show {
             visibility: visible;
             opacity: 1;
-            bottom: 40px;
+            bottom: 170px;
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -323,7 +337,7 @@
     </header>
 
     <div>
-        <label for="category">Categoría</label>
+        <label for="category">1. Categoría</label>
         <select id="category" onchange="updateItems()">
             <option value="">Selecciona una opción</option>
             <option value="pintura">Pintura (Piezas)</option>
@@ -333,7 +347,7 @@
     </div>
 
     <div id="item-group">
-        <label for="search-input">Buscar Servicio</label>
+        <label for="search-input">2. Buscar Servicio</label>
         <input type="text" id="search-input" placeholder="🔍 Ej. Puerta, Capó..." onkeyup="filterItems()" disabled>
         
         <select id="item" disabled onchange="checkFinishOption()">
@@ -342,7 +356,7 @@
     </div>
 
     <div class="hidden animate-in" id="finish-group">
-        <label for="finish">Acabado</label>
+        <label for="finish">3. Acabado</label>
         <select id="finish">
             <option value="bicapa">Bicapa (Estándar)</option>
             <option value="tricapa">Tricapa (Perlado)</option>
@@ -397,44 +411,26 @@
         </div>
     </div>
 
-    <div class="summary hidden animate-in" id="summary-section">
-        <ul class="item-list" id="cart-list"></ul>
-        
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <span id="display-subtotal">$0</span>
-        </div>
-        
-        <div class="summary-row hidden" id="row-lavado">
-            <span>Lavado General</span>
-            <span>$10,000</span>
-        </div>
+    <ul class="item-list" id="cart-list"></ul>
+    
+    <div style="height: 20px;"></div>
+</div>
 
-        <div class="summary-row hidden" id="row-discount" style="color: #25D366; font-weight: bold;">
-            <span>Descuento aplicado</span>
-            <span id="display-discount">-$0</span>
-        </div>
-        
-        <div class="summary-row hidden" id="row-iva">
-            <span>IVA (19%)</span>
-            <span id="display-iva">$0</span>
-        </div>
-
-        <div class="summary-row hidden" id="row-wompi">
-            <span>Comisión Wompi (5%)</span>
-            <span id="display-wompi">$0</span>
-        </div>
-
-        <div class="summary-row total-row">
-            <span>TOTAL FINAL</span>
-            <span id="display-total">$0</span>
-        </div>
-
-        <button class="btn-copy" onclick="copyToClipboard()">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            Copiar Mensaje
-        </button>
+<div class="sticky-footer hidden" id="sticky-footer">
+    <div class="footer-details">
+        <span id="footer-extras-text">Base + Extras</span>
+        <span id="footer-discount-text" style="color: #25D366; display: none;">Desc. aplicado</span>
     </div>
+    
+    <div class="footer-total-row">
+        <span class="footer-total-label">TOTAL:</span>
+        <span class="footer-total-amount" id="display-total">$0</span>
+    </div>
+
+    <button class="btn-copy" onclick="copyToClipboard()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Copiar Mensaje
+    </button>
 </div>
 
 <div id="toast">¡Mensaje copiado! Listo para WhatsApp</div>
@@ -450,6 +446,8 @@
             if (i === 3) option.selected = true; 
             timeSelect.add(option);
         }
+        // Renderizar inicial para mostrar el total del lavado si está activo
+        renderCart();
     };
 
     // --- BASE DE DATOS ---
@@ -591,7 +589,7 @@
             category: category
         });
 
-        // Reset
+        // Reset inputs visuales
         document.getElementById('search-input').value = '';
         renderOptions(currentCategoryList);
         document.getElementById('item').value = "";
@@ -610,18 +608,13 @@
 
     function renderCart() {
         const list = document.getElementById('cart-list');
-        const summary = document.getElementById('summary-section');
+        const stickyFooter = document.getElementById('sticky-footer');
         
         const isLavado = document.getElementById('check-lavado').checked;
         const isIVA = document.getElementById('check-iva').checked;
         const isWompi = document.getElementById('check-wompi').checked;
         const discountRate = parseFloat(document.getElementById('discount-select').value);
         
-        const rowLavado = document.getElementById('row-lavado');
-        const rowDiscount = document.getElementById('row-discount');
-        const rowIVA = document.getElementById('row-iva');
-        const rowWompi = document.getElementById('row-wompi');
-
         list.innerHTML = '';
         let subtotalItems = 0;
 
@@ -633,7 +626,7 @@
                     <div class="qty-badge">${item.qty}x</div>
                     <div>
                         <div class="item-name">${item.name}</div>
-                        <div class="item-meta">${item.finish} (${formatMoney(item.unitPrice)} c/u)</div>
+                        <div class="item-meta">${item.finish} (${formatMoney(item.unitPrice)})</div>
                     </div>
                 </div>
                 <div style="display:flex; align-items:center;">
@@ -657,39 +650,29 @@
         let wompiCost = isWompi ? amountAfterIVA * 0.05 : 0;
         let totalFinal = amountAfterIVA + wompiCost;
 
-        // --- RENDER ---
-        document.getElementById('display-subtotal').innerText = formatMoney(subtotalItems);
-        
-        if (isLavado) rowLavado.classList.remove('hidden');
-        else rowLavado.classList.add('hidden');
-
-        if (discountRate > 0) {
-            rowDiscount.classList.remove('hidden');
-            document.getElementById('display-discount').innerText = "-" + formatMoney(discountAmount);
-        } else {
-            rowDiscount.classList.add('hidden');
-        }
-
-        if (isIVA) {
-            rowIVA.classList.remove('hidden');
-            document.getElementById('display-iva').innerText = formatMoney(ivaCost);
-        } else {
-            rowIVA.classList.add('hidden');
-        }
-
-        if (isWompi) {
-            rowWompi.classList.remove('hidden');
-            document.getElementById('display-wompi').innerText = formatMoney(wompiCost);
-        } else {
-            rowWompi.classList.add('hidden');
-        }
-
+        // --- RENDER EN EL FOOTER ---
         document.getElementById('display-total').innerText = formatMoney(totalFinal);
-
-        if (cart.length > 0 || isLavado) {
-            summary.classList.remove('hidden');
+        
+        // Detalles pequeños en el footer
+        let footerDetails = "";
+        if (isLavado) footerDetails += "• Lavado incl. ";
+        if (isIVA) footerDetails += "• IVA ";
+        if (isWompi) footerDetails += "• Wompi ";
+        
+        document.getElementById('footer-extras-text').innerText = footerDetails || "Sin extras";
+        
+        if (discountRate > 0) {
+            document.getElementById('footer-discount-text').style.display = 'inline';
+            document.getElementById('footer-discount-text').innerText = `• Dto. ${discountRate*100}%`;
         } else {
-            summary.classList.add('hidden');
+            document.getElementById('footer-discount-text').style.display = 'none';
+        }
+
+        // Mostrar Footer si hay algo en el carrito o Lavado seleccionado
+        if (cart.length > 0 || isLavado) {
+            stickyFooter.classList.remove('hidden');
+        } else {
+            stickyFooter.classList.add('hidden');
         }
     }
 
@@ -728,7 +711,6 @@
                  description = "requiere restauración/pintura";
             }
             
-            // Cantidad en el diagnóstico
             let qtyText = item.qty > 1 ? `${item.qty}x ` : "";
             message += `• ${qtyText}${item.name}: ${description}.\n`;
         });
@@ -742,7 +724,6 @@
         message += `\n${tituloPrecio}\n\n`;
 
         cart.forEach(item => {
-            // Cantidad en el precio
             let qtyText = item.qty > 1 ? `${item.qty}x ` : "";
             message += `• ${qtyText}${item.name}: ${formatMoney(item.price)}\n`;
         });
@@ -752,12 +733,16 @@
         }
         
         if (discountRate > 0) {
+            let baseAmount = cart.reduce((acc, item) => acc + item.price, 0) + (document.getElementById('check-lavado').checked ? 10000 : 0);
+            let discountVal = baseAmount * discountRate;
             let discountTxt = (discountRate * 100) + "%";
-            message += `• Descuento aplicado (${discountTxt}): ${document.getElementById('display-discount').innerText}\n`;
+            message += `• Descuento aplicado (${discountTxt}): -${formatMoney(discountVal)}\n`;
         }
 
         if (document.getElementById('check-wompi').checked) {
-             message += `• Recargo pago Wompi: ${document.getElementById('display-wompi').innerText}\n`;
+             // Recalcular Wompi para mostrarlo exacto en texto
+             // Nota: Solo es visual para el mensaje, el total ya está calculado arriba
+             message += `• Recargo pago Wompi (+5%)\n`;
         }
 
         message += `\n➡️ Total: ${totalFinalStr}\n`;
