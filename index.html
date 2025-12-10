@@ -123,7 +123,7 @@
             cursor: pointer;
             transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
-            margin-bottom: 15px; /* Alineación con el input */
+            margin-bottom: 15px;
         }
 
         .btn-add:active {
@@ -377,7 +377,7 @@
         <div class="toggle-row">
             <span class="toggle-label">Incluir Lavado (+$10,000)</span>
             <label class="switch">
-                <input type="checkbox" id="check-lavado" onchange="renderCart()">
+                <input type="checkbox" id="check-lavado" onchange="renderCart()" checked>
                 <span class="slider"></span>
             </label>
         </div>
@@ -440,7 +440,7 @@
 <div id="toast">¡Mensaje copiado! Listo para WhatsApp</div>
 
 <script>
-    // --- INICIALIZACIÓN: LLENAR SELECTOR DE DÍAS ---
+    // --- INICIALIZACIÓN ---
     window.onload = function() {
         const timeSelect = document.getElementById('time-select');
         for (let i = 1; i <= 30; i++) {
@@ -597,7 +597,7 @@
         document.getElementById('item').value = "";
         currentItem = null;
         document.getElementById('finish-group').classList.add('hidden');
-        qtyInput.value = 1; // Reset cantidad
+        qtyInput.value = 1; 
 
         renderCart();
     }
@@ -767,9 +767,9 @@
             message += `⚠️ Los valores no incluyen IVA. Este se adiciona al momento de facturar.\n`;
         }
 
-        // 5. CIERRE
+        // 5. CIERRE CON GARANTÍA DE 6 MESES
         message += `\n⏱️ Tiempo estimado:\n${days} días hábiles\n\n`;
-        message += `✨ Incluye:\n\n• Garantía de 1 año\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
+        message += `✨ Incluye:\n\n• Garantía de 6 meses\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
         message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
 
         navigator.clipboard.writeText(message).then(function() {
