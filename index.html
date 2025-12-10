@@ -13,9 +13,10 @@
             --mid-gray: #666666;
             --light-gray: #f4f4f4;
             --white: #ffffff;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-            --footer-height: 140px; /* Espacio para el footer fijo */
+            --accent-gray: #e6e6e6;
+            --border-radius: 14px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.06);
+            --footer-height: 140px;
         }
 
         body {
@@ -23,7 +24,7 @@
             background-color: var(--light-gray);
             color: var(--black);
             margin: 0;
-            padding: 20px 20px var(--footer-height) 20px; /* Padding inferior extra para no tapar contenido */
+            padding: 20px 20px var(--footer-height) 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -41,40 +42,99 @@
             margin-bottom: 20px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
+        /* HEADER MEJORADO */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
         }
 
-        .logo {
-            font-size: 1.8rem;
+        .logo-group h1 {
+            font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -1px;
             text-transform: uppercase;
             margin: 0;
+            line-height: 1;
         }
 
-        .subtitle {
-            font-size: 0.85rem;
+        .logo-group .subtitle {
+            font-size: 0.8rem;
             color: var(--mid-gray);
-            margin-top: 2px;
+            margin-top: 4px;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid #ffcccc;
+            color: #ff3b30;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-reset:active {
+            background: #ffe5e5;
         }
 
         label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
+            font-weight: 700;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            color: var(--mid-gray);
         }
 
+        /* CHIPS DE CATEGORÍA (NUEVO) */
+        .category-chips {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px; /* Espacio para scrollbar si aparece */
+            margin-bottom: 20px;
+            /* Ocultar scrollbar visualmente pero permitir scroll */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .category-chips::-webkit-scrollbar { display: none; }
+
+        .chip {
+            padding: 10px 16px;
+            background-color: var(--light-gray);
+            color: var(--mid-gray);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .chip.active {
+            background-color: var(--black);
+            color: var(--white);
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* INPUTS */
         select, input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-bottom: 12px;
             border: 2px solid var(--light-gray);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px !important;
             color: var(--black);
             background: var(--white);
@@ -82,60 +142,68 @@
             transition: border-color 0.3s;
             box-sizing: border-box;
             -webkit-appearance: none;
+            font-family: 'Inter', sans-serif;
         }
 
         select:focus, input:focus {
             border-color: var(--black);
         }
+        
+        select {
+             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
 
-        /* Layout para Cantidad y Botón */
+        /* Layout Cantidad + Botón */
         .add-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-end;
             margin-bottom: 15px;
         }
 
         .qty-group {
-            width: 70px;
+            width: 80px;
             flex-shrink: 0;
         }
 
         .btn-add {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background-color: var(--black);
             color: var(--white);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
-            margin-bottom: 12px; /* Alineación con el input */
+            margin-bottom: 12px;
         }
 
         .btn-add:active {
             transform: scale(0.96);
         }
 
-        /* Extras & Toggles */
+        /* Extras Section */
         .extras-section {
-            margin-top: 20px;
-            border-top: 1px solid var(--light-gray);
-            padding-top: 15px;
+            margin-top: 25px;
+            border-top: 1px dashed #ddd; /* Línea punteada más sutil */
+            padding-top: 20px;
         }
 
         .toggle-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .toggle-label {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
         }
 
@@ -143,12 +211,14 @@
             width: auto;
             min-width: 90px;
             margin-bottom: 0;
-            padding: 6px 25px 6px 10px;
-            font-size: 0.85rem !important;
-            border-color: #ddd;
+            padding: 8px 30px 8px 12px;
+            font-size: 0.9rem !important;
+            border-color: #eee;
+            background-color: #fafafa;
             text-align: right;
         }
         
+        /* Switch mejorado visualmente */
         .switch {
             position: relative;
             display: inline-block;
@@ -162,7 +232,7 @@
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: #e0e0e0;
-            transition: .4s;
+            transition: .3s;
             border-radius: 34px;
         }
         .slider:before {
@@ -173,9 +243,9 @@
             left: 3px;
             bottom: 3px;
             background-color: white;
-            transition: .4s;
+            transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         input:checked + .slider { background-color: var(--black); }
         input:checked + .slider:before { transform: translateX(22px); }
@@ -190,25 +260,27 @@
         .item-list li {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 0.9rem;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease;
         }
         
         .item-info {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            align-items: center;
         }
         
         .qty-badge {
-            background: var(--black);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
+            background: var(--light-gray);
+            color: var(--black);
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 6px;
             font-size: 0.8rem;
-            font-weight: bold;
+            font-weight: 700;
             height: fit-content;
-            margin-top: 2px;
         }
 
         .btn-remove {
@@ -216,40 +288,43 @@
             border: none;
             color: #ff3b30;
             padding: 0 0 0 15px;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            line-height: 1;
             font-weight: bold;
+            cursor: pointer;
         }
 
-        /* --- STICKY FOOTER (BARRA FIJA) --- */
+        /* --- STICKY FOOTER --- */
         .sticky-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: var(--white);
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95); /* Semi transparente */
+            backdrop-filter: blur(10px); /* Efecto vidrio (Apple style) */
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
             padding: 20px;
             box-sizing: border-box;
             z-index: 1000;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            transition: transform 0.3s ease;
+            gap: 12px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .sticky-footer.hidden {
-            transform: translateY(110%); /* Se oculta si no hay items */
+            transform: translateY(120%); 
         }
 
         .footer-details {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--mid-gray);
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         
         .footer-total-row {
@@ -259,12 +334,13 @@
         }
         
         .footer-total-label {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .footer-total-amount {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--black);
         }
@@ -272,10 +348,10 @@
         .btn-copy {
             width: 100%;
             padding: 16px;
-            background-color: var(--black); /* Botón negro sólido para contraste */
+            background-color: var(--black);
             color: var(--white);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -283,10 +359,10 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: all 0.3s;
+            transition: background 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
-
+        
         .btn-copy:active {
             transform: scale(0.98);
             background-color: #333;
@@ -295,20 +371,21 @@
         #toast {
             visibility: hidden;
             min-width: 200px;
-            background-color: #222;
+            background-color: #111;
             color: #fff;
             text-align: center;
             border-radius: 50px;
-            padding: 12px 20px;
+            padding: 14px 20px;
             position: fixed;
-            z-index: 2000; /* Encima del footer */
+            z-index: 2000;
             left: 50%;
-            bottom: 160px; /* Encima del footer */
+            bottom: 160px;
             transform: translateX(-50%);
             font-size: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             opacity: 0;
             transition: opacity 0.3s, bottom 0.3s;
+            font-weight: 600;
         }
 
         #toast.show {
@@ -320,38 +397,42 @@
         .hidden { display: none !important; }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-in {
-            animation: fadeIn 0.4s ease-out;
+            animation: fadeIn 0.3s ease-out;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1 class="logo">Delta Cars</h1>
-        <div class="subtitle">Cotizador Oficial</div>
-    </header>
-
-    <div>
-        <label for="category">1. Categoría</label>
-        <select id="category" onchange="updateItems()">
-            <option value="">Selecciona una opción</option>
-            <option value="pintura">Pintura (Piezas)</option>
-            <option value="latoneria">Latonería y Reparación</option>
-            <option value="otros">Rines y Otros</option>
-        </select>
+    <div class="header-row">
+        <div class="logo-group">
+            <h1 class="logo">Delta Cars</h1>
+            <div class="subtitle">Cotizador Pro</div>
+        </div>
+        <button class="btn-reset" onclick="resetQuote()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"></path></svg>
+            Nueva
+        </button>
     </div>
 
+    <label>1. Categoría</label>
+    <div class="category-chips" id="category-chips">
+        <button class="chip" onclick="selectCategory('pintura', this)">Pintura</button>
+        <button class="chip" onclick="selectCategory('latoneria', this)">Latonería</button>
+        <button class="chip" onclick="selectCategory('otros', this)">Rines y Otros</button>
+    </div>
+    <input type="hidden" id="category" value="">
+
     <div id="item-group">
-        <label for="search-input">2. Buscar Servicio</label>
-        <input type="text" id="search-input" placeholder="🔍 Ej. Puerta, Capó..." onkeyup="filterItems()" disabled>
+        <label for="search-input">2. Servicio / Pieza</label>
+        <input type="text" id="search-input" placeholder="🔍 Buscar (ej. Puerta, Capó...)" onkeyup="filterItems()" disabled>
         
         <select id="item" disabled onchange="checkFinishOption()">
-            <option value="">-- Selecciona categoría primero --</option>
+            <option value="">Selecciona una categoría arriba 👆</option>
         </select>
     </div>
 
@@ -373,9 +454,9 @@
 
     <div class="extras-section">
         <div class="toggle-row">
-            <span class="toggle-label">Descuento Especial</span>
+            <span class="toggle-label">Descuento</span>
             <select id="discount-select" class="select-inline" onchange="renderCart()">
-                <option value="0">Ninguno</option>
+                <option value="0">0%</option>
                 <option value="0.05">5%</option>
                 <option value="0.10">10%</option>
                 <option value="0.20">20%</option>
@@ -383,13 +464,13 @@
         </div>
 
         <div class="toggle-row">
-            <span class="toggle-label">Tiempo Estimado</span>
+            <span class="toggle-label">Tiempo Entrega</span>
             <select id="time-select" class="select-inline">
                 </select>
         </div>
 
         <div class="toggle-row">
-            <span class="toggle-label">Incluir Lavado (+$10,000)</span>
+            <span class="toggle-label">Incluir Lavado (+$10k)</span>
             <label class="switch">
                 <input type="checkbox" id="check-lavado" onchange="renderCart()" checked>
                 <span class="slider"></span>
@@ -403,7 +484,7 @@
             </label>
         </div>
         <div class="toggle-row">
-            <span class="toggle-label">Pago con Wompi (+5%)</span>
+            <span class="toggle-label">Pago Wompi (+5%)</span>
             <label class="switch">
                 <input type="checkbox" id="check-wompi" onchange="renderCart()">
                 <span class="slider"></span>
@@ -411,7 +492,8 @@
         </div>
     </div>
 
-    <ul class="item-list" id="cart-list"></ul>
+    <ul class="item-list" id="cart-list">
+        </ul>
     
     <div style="height: 20px;"></div>
 </div>
@@ -433,10 +515,10 @@
     </button>
 </div>
 
-<div id="toast">¡Mensaje copiado! Listo para WhatsApp</div>
+<div id="toast">¡Copiado! Listo para pegar</div>
 
 <script>
-    // --- INICIALIZACIÓN ---
+    // --- INIT ---
     window.onload = function() {
         const timeSelect = document.getElementById('time-select');
         for (let i = 1; i <= 30; i++) {
@@ -446,9 +528,44 @@
             if (i === 3) option.selected = true; 
             timeSelect.add(option);
         }
-        // Renderizar inicial para mostrar el total del lavado si está activo
         renderCart();
     };
+
+    // --- LOGICA DE CHIPS ---
+    function selectCategory(catName, btnElement) {
+        // 1. Actualizar input oculto
+        document.getElementById('category').value = catName;
+        
+        // 2. Manejar clases visuales (active)
+        const buttons = document.querySelectorAll('.chip');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        // 3. Ejecutar lógica de actualización
+        updateItems();
+    }
+
+    // --- RESETEO TOTAL ---
+    function resetQuote() {
+        if(confirm("¿Borrar cotización actual?")) {
+            cart = [];
+            document.getElementById('discount-select').value = "0";
+            document.getElementById('check-lavado').checked = true;
+            document.getElementById('check-iva').checked = false;
+            document.getElementById('check-wompi').checked = false;
+            
+            // Limpiar inputs visuales
+            document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+            document.getElementById('category').value = "";
+            document.getElementById('item').innerHTML = '<option value="">Selecciona una categoría arriba 👆</option>';
+            document.getElementById('item').disabled = true;
+            document.getElementById('search-input').disabled = true;
+            document.getElementById('search-input').value = "";
+            document.getElementById('finish-group').classList.add('hidden');
+            
+            renderCart();
+        }
+    }
 
     // --- BASE DE DATOS ---
     const pricesDB = {
@@ -498,7 +615,7 @@
     }
 
     function updateItems() {
-        const category = document.getElementById('category').value;
+        const category = document.getElementById('category').value; // Viene del chip seleccionado
         const itemSelect = document.getElementById('item');
         const searchInput = document.getElementById('search-input');
         
@@ -554,7 +671,7 @@
 
     function addItem() {
         if (!currentItem) {
-            alert("Por favor selecciona un servicio.");
+            alert("Primero selecciona una categoría y un servicio.");
             return;
         }
 
@@ -589,7 +706,7 @@
             category: category
         });
 
-        // Reset inputs visuales
+        // Reset inputs
         document.getElementById('search-input').value = '';
         renderOptions(currentCategoryList);
         document.getElementById('item').value = "";
@@ -623,21 +740,21 @@
             const li = document.createElement('li');
             li.innerHTML = `
                 <div class="item-info">
-                    <div class="qty-badge">${item.qty}x</div>
+                    <div class="qty-badge">${item.qty}</div>
                     <div>
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-meta">${item.finish} (${formatMoney(item.unitPrice)})</div>
+                        <div style="font-weight:600;">${item.name}</div>
+                        <div style="font-size:0.85rem; color:#666;">${item.finish} (${formatMoney(item.unitPrice)})</div>
                     </div>
                 </div>
                 <div style="display:flex; align-items:center;">
-                    <span style="font-weight:bold;">${formatMoney(item.price)}</span>
+                    <span style="font-weight:bold; margin-right:10px;">${formatMoney(item.price)}</span>
                     <button class="btn-remove" onclick="remove(${index})">&times;</button>
                 </div>
             `;
             list.appendChild(li);
         });
 
-        // --- CÁLCULOS ---
+        // Calculos
         let lavadoCost = isLavado ? 10000 : 0;
         let baseAmount = subtotalItems + lavadoCost;
 
@@ -650,12 +767,11 @@
         let wompiCost = isWompi ? amountAfterIVA * 0.05 : 0;
         let totalFinal = amountAfterIVA + wompiCost;
 
-        // --- RENDER EN EL FOOTER ---
+        // Footer Update
         document.getElementById('display-total').innerText = formatMoney(totalFinal);
         
-        // Detalles pequeños en el footer
         let footerDetails = "";
-        if (isLavado) footerDetails += "• Lavado incl. ";
+        if (isLavado) footerDetails += "• Lavado ";
         if (isIVA) footerDetails += "• IVA ";
         if (isWompi) footerDetails += "• Wompi ";
         
@@ -663,12 +779,11 @@
         
         if (discountRate > 0) {
             document.getElementById('footer-discount-text').style.display = 'inline';
-            document.getElementById('footer-discount-text').innerText = `• Dto. ${discountRate*100}%`;
+            document.getElementById('footer-discount-text').innerText = `• -${discountRate*100}%`;
         } else {
             document.getElementById('footer-discount-text').style.display = 'none';
         }
 
-        // Mostrar Footer si hay algo en el carrito o Lavado seleccionado
         if (cart.length > 0 || isLavado) {
             stickyFooter.classList.remove('hidden');
         } else {
@@ -697,7 +812,7 @@
 
         let message = `${introText}\n\n`;
         
-        // 2. DIAGNÓSTICO
+        // 2. DIAGNOSTICO
         message += `🔧 Diagnóstico técnico:\n\n`;
         cart.forEach(item => {
             let description = "";
@@ -740,8 +855,6 @@
         }
 
         if (document.getElementById('check-wompi').checked) {
-             // Recalcular Wompi para mostrarlo exacto en texto
-             // Nota: Solo es visual para el mensaje, el total ya está calculado arriba
              message += `• Recargo pago Wompi (+5%)\n`;
         }
 
@@ -752,7 +865,7 @@
             message += `⚠️ Los valores no incluyen IVA. Este se adiciona al momento de facturar.\n`;
         }
 
-        // 5. CIERRE CON GARANTÍA DE 6 MESES
+        // 5. GARANTIA 6 MESES
         message += `\n⏱️ Tiempo estimado:\n${days} días hábiles\n\n`;
         message += `✨ Incluye:\n\n• Garantía de 6 meses\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
         message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
