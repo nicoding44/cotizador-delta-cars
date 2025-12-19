@@ -30,8 +30,8 @@
             background-color: var(--bg-page);
             color: var(--text-main);
             margin: 0;
-            /* Suficiente padding bottom para que el footer no tape nada */
-            padding: 20px 20px 180px 20px; 
+            /* CORRECCIÓN: Aumentado a 260px para evitar que el footer tape el contenido */
+            padding: 20px 20px 260px 20px; 
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -109,22 +109,20 @@
             text-transform: uppercase;
         }
 
-        /* CATEGORY CHIPS (CORREGIDO) */
+        /* CATEGORY CHIPS */
         .category-scroll {
-            display: flex; /* Flexbox para mejor alineación */
+            display: flex;
             gap: 10px;
             overflow-x: auto;
-            /* Padding right 20px para que el último item no se corte */
             padding: 5px 20px 15px 20px; 
-            /* Margen negativo para pegar al borde de pantalla */
             margin: 0 -20px 10px -20px; 
-            scrollbar-width: none; /* Firefox */
-            -webkit-overflow-scrolling: touch; /* Smooth iOS */
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; 
         }
-        .category-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .category-scroll::-webkit-scrollbar { display: none; } 
 
         .chip {
-            flex: 0 0 auto; /* No encoger */
+            flex: 0 0 auto;
             padding: 12px 20px;
             background: #f1f5f9;
             color: var(--text-muted);
@@ -355,17 +353,17 @@
         }
         .btn-whatsapp:active { transform: scale(0.98); background: #333; }
 
-        /* PROFIT PANEL (CORREGIDO) */
+        /* PROFIT PANEL */
         .profit-toggle {
             text-align: center;
             margin-top: 40px;
-            margin-bottom: 80px; /* Margen para que no quede detrás del footer */
+            margin-bottom: 20px;
             position: relative;
             z-index: 10;
         }
         
         .btn-lock {
-            background: #e2e8f0; /* Fondo sutil para que se vea */
+            background: #e2e8f0;
             border: none;
             padding: 10px 20px;
             border-radius: 30px;
@@ -387,7 +385,7 @@
             color: var(--dark-text);
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
             margin-top: 20px;
-            margin-bottom: 50px; /* Extra espacio abajo del panel */
+            margin-bottom: 20px; 
             animation: expandPanel 0.4s ease;
             overflow: hidden;
             border: 1px solid #334155;
@@ -617,6 +615,8 @@
         </div>
     </div>
 
+    <div style="height: 100px;"></div>
+
 </div>
 
 <div class="sticky-footer hidden" id="sticky-footer">
@@ -656,9 +656,9 @@
         const panel = document.getElementById('profit-panel');
         panel.classList.toggle('hidden');
         if(!panel.classList.contains('hidden')){
-            // Pequeño delay para que la animación fluya
+            // CORRECCION: Scroll al fondo de la PAGINA, no del elemento
             setTimeout(() => {
-                panel.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             }, 100);
         }
     }
