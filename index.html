@@ -30,8 +30,8 @@
             background-color: var(--bg-page);
             color: var(--text-main);
             margin: 0;
-            /* CORRECCIÓN: Aumentado a 400px para dar MUCHO aire al final */
-            padding: 20px 20px 400px 20px; 
+            /* Espacio gigante abajo para poder scrollear todo sin que el footer tape */
+            padding: 20px 20px 350px 20px; 
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -291,20 +291,20 @@
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* FOOTER */
+        /* FOOTER AJUSTADO (MÁS ABAJO) */
         .sticky-footer {
             position: fixed;
-            bottom: 25px;
+            bottom: 10px; /* ANTES ERA 25px */
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 40px);
+            width: calc(100% - 20px); /* Más ancho para aprovechar espacio */
             max-width: 460px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 24px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 15px 20px; /* Padding un poco más compacto */
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             z-index: 100;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -319,7 +319,7 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .total-label {
@@ -615,7 +615,7 @@
         </div>
     </div>
 
-    <div style="height: 200px;"></div>
+    <div style="height: 150px;"></div>
 
 </div>
 
@@ -656,7 +656,7 @@
         const panel = document.getElementById('profit-panel');
         panel.classList.toggle('hidden');
         if(!panel.classList.contains('hidden')){
-            // CORRECCION: Scroll al fondo de la PAGINA, no del elemento
+            // SCROLL AL FINAL DEL BODY CON RETRASO PARA ASEGURAR VISIBILIDAD
             setTimeout(() => {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             }, 100);
