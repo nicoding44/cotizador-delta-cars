@@ -13,12 +13,16 @@
         :root { --primary: #000000; --accent: #2563eb; --bg-page: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b; --border-radius: 20px; --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05); --danger: #ef4444; --success: #10b981; --dark-bg: #0f172a; --dark-surface: #1e293b; --dark-text: #e2e8f0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 20px 20px 350px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; box-sizing: border-box; position: relative; }
         .container { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 10; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 10px 5px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 10px 5px; }
         .brand h1 { font-size: 1.4rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; background: linear-gradient(90deg, #000 0%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .brand span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-reset { background: #fee2e2; color: var(--danger); border: none; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s; display: flex; align-items: center; gap: 6px; }
-        .btn-reset:active { transform: scale(0.95); }
-        .card { background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; margin-bottom: 20px; }
+        
+        /* BOTONES HEADER */
+        .header-actions { display: flex; gap: 8px; }
+        .btn-mini { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px; }
+        .btn-mini:active { transform: scale(0.95); background: #e2e8f0; }
+        
+        .card { background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; margin-bottom: 20px; position: relative; z-index: 1; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
         .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 5px 20px 15px 20px; margin: 0 -20px 10px -20px; scrollbar-width: none; }
         .chip { flex: 0 0 auto; padding: 12px 20px; background: #f1f5f9; color: var(--text-muted); border-radius: 50px; font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s ease; }
@@ -28,7 +32,7 @@
         select:focus, input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,0,0,0.05); }
         .add-row { display: flex; gap: 12px; align-items: stretch; margin-top: 15px; }
         .btn-add { flex: 1; background: var(--primary); color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .cart-list { list-style: none; padding: 0; margin: 0; }
+        .cart-list { list-style: none; padding: 0; margin: 0; position: relative; z-index: 1; }
         .cart-item { background: #fff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); animation: slideIn 0.3s ease; }
         .item-left { display: flex; gap: 12px; align-items: center; }
         .qty-circle { background: var(--bg-page); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; font-size: 0.8rem; color: var(--text-main); border: 1px solid #e2e8f0; }
@@ -46,13 +50,14 @@
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
         .sticky-footer { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: calc(100% - 20px); max-width: 460px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 15px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 100; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .sticky-footer.hidden { transform: translate(-50%, 150%); opacity: 0; }
+        .sticky-footer.hidden { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
         .total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
         .total-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
         .total-amount { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
-        .footer-actions { display: flex; gap: 10px; }
-        .btn-action { flex: 1; padding: 16px; border: none; border-radius: 16px; font-size: 1rem; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
+        .footer-actions { display: flex; gap: 8px; }
+        .btn-action { flex: 1; padding: 14px; border: none; border-radius: 14px; font-size: 0.95rem; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
         .btn-whatsapp { background: var(--primary); color: white; }
+        .btn-save { background: #e0f2fe; color: #0284c7; }
         .btn-pdf { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; }
         .profit-toggle { text-align: center; margin-top: 40px; margin-bottom: 20px; position: relative; z-index: 10; }
         .btn-lock { background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; color: #64748b; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
@@ -67,18 +72,29 @@
         .profit-amount { font-size: 1.8rem; font-weight: 800; color: var(--success); }
         .profit-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-top: 5px; }
         
-        #toast { visibility: hidden; background: #333; color: #fff; padding: 12px 24px; border-radius: 50px; position: fixed; z-index: 2000; left: 50%; bottom: 120px; transform: translateX(-50%); font-weight: 600; opacity: 0; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        #toast { visibility: hidden; background: #333; color: #fff; padding: 12px 24px; border-radius: 50px; position: fixed; z-index: 10000; left: 50%; bottom: 120px; transform: translateX(-50%); font-weight: 600; opacity: 0; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; opacity: 1; bottom: 130px; }
 
-        /* --- PDF INVOICE ESTILOS --- */
-        #pdf-invoice-template { display: none; } /* Plantilla oculta */
+        /* MODAL HISTORIAL */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; justify-content: center; align-items: flex-end; backdrop-filter: blur(5px); transition: opacity 0.3s; opacity: 0; pointer-events: none; }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-content { background: white; width: 100%; max-width: 500px; height: 80vh; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+        .modal-overlay.open .modal-content { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.2rem; font-weight: 800; margin: 0; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; }
+        .history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
+        .history-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .history-info strong { display: block; font-size: 1rem; color: var(--primary); }
+        .history-info span { font-size: 0.8rem; color: #666; }
+        .history-actions { display: flex; gap: 10px; }
+        .btn-load { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .btn-delete-hist { background: #fee2e2; color: var(--danger); border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+        .empty-history { text-align: center; color: #999; margin-top: 50px; font-style: italic; }
 
-        /* Estilos que se inyectarán al PDF */
-        .pdf-wrapper { 
-            width: 750px; background: white; padding: 40px; 
-            font-family: Arial, Helvetica, sans-serif; color: #000; 
-            box-sizing: border-box; border: 1px solid #eee; 
-        }
+        /* --- PDF INVOICE ESTILOS --- */
+        #pdf-invoice-template { display: none; }
+        .pdf-wrapper { width: 750px; background: white; padding: 40px; font-family: Arial, Helvetica, sans-serif; color: #000; box-sizing: border-box; border: 1px solid #eee; }
         .pdf-header-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border-bottom: 2px solid #000; }
         .pdf-header-table td { vertical-align: top; padding-bottom: 20px; }
         .pdf-logo h1 { margin: 0; font-size: 28px; text-transform: uppercase; color: #000; line-height: 1.2; }
@@ -88,7 +104,7 @@
         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; color: #000; margin-top: 20px; }
         .pdf-table th { text-align: left; padding: 10px; border-bottom: 1px solid #000; background: #f0f0f0; font-size: 14px; font-weight: bold; }
         .pdf-table td { padding: 10px; border-bottom: 1px solid #ccc; font-size: 14px; }
-        .pdf-summary { width: 50%; margin-left: auto; color: #000; }
+        .pdf-summary { width: 50%; margin-left: auto; color: #000; } 
         .pdf-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
         .pdf-total { font-size: 18px; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; }
         .pdf-disclaimer { color: #d32f2f; font-weight: bold; font-size: 11px; text-align: right; margin-top: 8px; font-style: italic; }
@@ -107,6 +123,7 @@
                         <h1>DELTA CARS S.A.S</h1>
                         <p style="font-weight: bold; font-size: 14px; margin-top: 4px;">NIT: 901.940.664</p>
                         <p style="margin-top: 4px;">Especialistas en Pintura y Latonería</p>
+                        <p style="margin-top: 8px; font-size: 14px; color: #000;"><strong>Cliente:</strong> <span id="pdf-client-name">--</span></p>
                     </div>
                 </td>
                 <td style="width: 40%; text-align: right;">
@@ -144,7 +161,7 @@
             <div class="pdf-row" id="pdf-row-discount" style="display:none; color: green;"><span>Descuento:</span><span id="pdf-discount">$0</span></div>
             <div class="pdf-row" id="pdf-row-iva" style="display:none;"><span>IVA (19%):</span><span id="pdf-iva">$0</span></div>
             <div class="pdf-row" id="pdf-row-others" style="display:none;">
-                <span style="flex: 1; margin-right: 10px;">Otros costos relacionados con el trabajo:</span>
+                <span style="flex: 1; margin-right: 10px;">Otros costos relacionados:</span>
                 <span id="pdf-others">$0</span>
             </div>
             <div class="pdf-row pdf-total"><span id="pdf-total-label">TOTAL:</span><span id="pdf-total">$0</span></div>
@@ -161,9 +178,14 @@
 <div class="container">
     <div class="header">
         <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Cotizador Pro</span></div>
-        <button class="btn-reset" onclick="resetQuote()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Reset
-        </button>
+        <div class="header-actions">
+            <button class="btn-mini" onclick="toggleHistory()">🕒 Historial</button>
+            <button class="btn-reset" onclick="resetQuote()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+        </div>
+    </div>
+
+    <div class="card" style="padding: 15px; margin-bottom: 10px; background: #fff;">
+        <input type="text" id="client-name" placeholder="🚘 Placa / Nombre Cliente" style="border: 2px solid #e2e8f0; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; box-sizing: border-box;">
     </div>
 
     <div class="card">
@@ -211,15 +233,15 @@
             </select>
         </div>
         <div class="setting-row"><span class="setting-label">Lavado (+$10k)</span><label class="switch"><input type="checkbox" id="check-lavado" onchange="renderCart()" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label">IVA (19%)</span><label class="switch"><input type="checkbox" id="check-iva" onchange="renderCart()"><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label">Wompi (+5%)</span><label class="switch"><input type="checkbox" id="check-wompi" onchange="renderCart()"><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span><label class="switch"><input type="checkbox" id="check-comision" onchange="renderCart()"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">IVA (19%)</span><label class="switch"><input type="checkbox" id="check-iva" onchange="togglePreference('iva')"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">Wompi (+5%)</span><label class="switch"><input type="checkbox" id="check-wompi" onchange="togglePreference('wompi')"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span><label class="switch"><input type="checkbox" id="check-comision" onchange="togglePreference('comision')"><span class="slider"></span></label></div>
     </div>
 
     <div class="profit-toggle"><button class="btn-lock" onclick="toggleProfitPanel()">🔒 <span>Panel Interno</span></button></div>
 
     <div id="profit-panel" class="profit-dashboard hidden">
-        <div class="dashboard-header"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rentabilidad Interna</div>
+        <div class="dashboard-header"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rentabilidad Interna</div>
         <div class="stat-row"><span>Ingreso Cliente</span><span class="stat-val" id="prof-ingreso" style="color:#fff;">$0</span></div>
         <div style="border-top: 1px dashed #334155; margin: 10px 0;"></div>
         <div class="stat-row"><span>Pintor</span><span class="stat-val negative" id="prof-pintor">$0</span></div>
@@ -234,14 +256,72 @@
     <div class="total-row"><span class="total-label">TOTAL ESTIMADO</span><span class="total-amount" id="display-total">$0</span></div>
     <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; display: flex; justify-content: space-between;"><span id="footer-extras-text">Base</span><span id="footer-discount-text" style="color: #10b981; font-weight:700;"></span></div>
     <div class="footer-actions">
+        <button class="btn-action btn-save" onclick="saveQuote()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Guardar</button>
         <button id="btn-pdf-trigger" class="btn-action btn-pdf" onclick="generatePDF()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</button>
-        <button class="btn-action btn-whatsapp" onclick="copyToClipboard()"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.975.551 1.912.846 3.032.846 3.18 0 5.767-2.587 5.768-5.766.001-3.181-2.585-5.768-5.766-5.768zm7.156 12.012c-1.785 2.144-4.542 2.525-6.958 1.977l-4.502 1.18 1.192-4.385c-1.353-2.614-.803-6.041 1.543-8.156 2.373-2.14 6.276-2.029 8.525.433 2.155 2.357 1.956 6.756.2 8.951zm-1.896-1.902c-.354.177-2.094 1.025-2.417 1.143-.324.118-.56.177-.796.531-.235.353-.912 1.147-1.118 1.382-.206.236-.412.266-.766.089-2.074-1.045-3.328-2.615-3.692-3.262-.236-.412-.025-.635.152-.812.16-.16.354-.413.531-.619.176-.206.235-.354.353-.59.118-.235.059-.441-.03-.589-.088-.148-.795-1.917-1.089-2.624-.287-.69-.58-.596-.795-.607l-.678-.011c-.236 0-.618.088-.942.441-.324.354-1.237 1.209-1.237 2.948 0 1.74 1.267 3.421 1.443 3.656.177.236 2.493 3.804 6.039 5.336 2.408 1.04 2.895.833 3.425.784.53-.049 1.71-.698 1.947-1.373.235-.675.235-1.254.165-1.373-.071-.117-.266-.196-.62-.373z"/></path></svg> Copiar</button>
+        <button class="btn-action btn-whatsapp" onclick="copyToClipboard()"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.975.551 1.912.846 3.032.846 3.18 0 5.767-2.587 5.768-5.766-5.768zm7.156 12.012c-1.785 2.144-4.542 2.525-6.958 1.977l-4.502 1.18 1.192-4.385c-1.353-2.614-.803-6.041 1.543-8.156 2.373-2.14 6.276-2.029 8.525.433 2.155 2.357 1.956 6.756.2 8.951zm-1.896-1.902c-.354.177-2.094 1.025-2.417 1.143-.324.118-.56.177-.796.531-.235.353-.912 1.147-1.118 1.382-.206.236-.412.266-.766.089-2.074-1.045-3.328-2.615-3.692-3.262-.236-.412-.025-.635.152-.812.16-.16.354-.413.531-.619.176-.206.235-.354.353-.59.118-.235.059-.441-.03-.589-.088-.148-.795-1.917-1.089-2.624-.287-.69-.58-.596-.795-.607l-.678-.011c-.236 0-.618.088-.942.441-.324.354-1.237 1.209-1.237 2.948 0 1.74 1.267 3.421 1.443 3.656.177.236 2.493 3.804 6.039 5.336 2.408 1.04 2.895.833 3.425.784.53-.049 1.71-.698 1.947-1.373.235-.675.235-1.254.165-1.373-.071-.117-.266-.196-.62-.373z"/></path></svg> Copiar</button>
     </div>
 </div>
 
-<div id="toast">¡Listo! Copiado al portapapeles</div>
+<div class="modal-overlay" id="history-modal" onclick="toggleHistory(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">Historial Cotizaciones</h3>
+            <button class="close-modal" onclick="toggleHistory()">&times;</button>
+        </div>
+        <ul class="history-list" id="history-list">
+            <li class="empty-history">No hay cotizaciones guardadas</li>
+        </ul>
+    </div>
+</div>
+
+<div id="toast">¡Listo! Acción completada</div>
 
 <script>
+    // --- VARIABLES & INIT ---
+    const STORAGE_KEY = 'delta_quotes_v1';
+    const PREF_KEY = 'delta_prefs_v1'; // Nueva key para preferencias
+    let cart = [];
+    let currentItem = null;
+    let currentCategoryList = []; 
+    
+    // Base de datos (Sin cambios)
+    const pricesDB = {
+        pintura: [
+            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
+            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, hasTricapa: false, pv: 0.5 },
+            { id: 'estribo', name: 'Pintura Estribo', base: 150000, tricapa: 175000, hasTricapa: true, pv: 0.5 },
+            { id: 'paral', name: 'Pintura Paral', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'batiente', name: 'Pintura Batiente', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'costado', name: 'Pintura Costado', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'guardafango', name: 'Pintura Guardafango', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'bumper', name: 'Pintura Bumper', base: 350000, tricapa: 450000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta', name: 'Pintura Puerta', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'espejo', name: 'Pintura Espejo', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'manija', name: 'Pintura Manija', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'puntera', name: 'Pintura Puntera', base: 100000, tricapa: 120000, hasTricapa: true, pv: 0.5 },
+            { id: 'capo', name: 'Pintura Capó', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo', name: 'Pintura Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true, pv: 2.0 },
+            { id: 'baul', name: 'Pintura Baúl', base: 250000, hasTricapa: false, pv: 1.0 }
+        ],
+        latoneria: [
+            { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000, pv: 0 },
+            { id: 'lat_leve', name: 'Latonería Leve', base: 350000, pv: 0 },
+            { id: 'lat_media', name: 'Latonería Media', base: 700000, pv: 0 },
+            { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000, pv: 0 },
+            { id: 'monte', name: 'Monte y Desmonte', base: 160000, pv: 0 },
+            { id: 'pdr_pq', name: 'Sacabollos Pq', base: 150000, pv: 0 },
+            { id: 'pdr_med', name: 'Sacabollos Med', base: 400000, pv: 0 }
+        ],
+        otros: [
+            { id: 'rin_bicapa', name: 'Rin (Bicapa)', base: 150000, pv: 0.5 },
+            { id: 'rin_diam', name: 'Rin (Diamantado)', base: 250000, pv: 0.5 },
+            { id: 'partes_negras', name: 'Partes Negras', base: 150000, pv: 0.5 },
+            { id: 'brillada', name: 'Brillada Pieza', base: 50000, pv: 0 }
+        ]
+    };
+
     window.onload = function() {
         const timeSelect = document.getElementById('time-select');
         for (let i = 1; i <= 30; i++) {
@@ -253,14 +333,343 @@
         }
         const today = new Date().toLocaleDateString('es-CO');
         document.getElementById('pdf-date').innerText = today;
+        
+        loadPreferences(); // Cargar preferencias guardadas
         renderCart();
     };
 
+    function formatMoney(amount) {
+        return '$' + Math.round(amount).toLocaleString('es-CO');
+    }
+
+    // --- NUEVO: PREFERENCIAS ---
+    function loadPreferences() {
+        const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || "{}");
+        if(prefs.iva !== undefined) document.getElementById('check-iva').checked = prefs.iva;
+        if(prefs.wompi !== undefined) document.getElementById('check-wompi').checked = prefs.wompi;
+        if(prefs.comision !== undefined) document.getElementById('check-comision').checked = prefs.comision;
+    }
+
+    function togglePreference(key) {
+        const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || "{}");
+        if(key === 'iva') prefs.iva = document.getElementById('check-iva').checked;
+        if(key === 'wompi') prefs.wompi = document.getElementById('check-wompi').checked;
+        if(key === 'comision') prefs.comision = document.getElementById('check-comision').checked;
+        localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+        renderCart();
+    }
+
     function toggleProfitPanel() {
         const panel = document.getElementById('profit-panel');
-        panel.classList.toggle('hidden');
-        if(!panel.classList.contains('hidden')){
-            setTimeout(() => { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+        if (panel.classList.contains('hidden')) {
+            panel.classList.remove('hidden');
+        } else {
+            panel.classList.add('hidden');
+        }
+    }
+
+    // --- HISTORIAL FUNCIONALIDAD ---
+    function toggleHistory(e) {
+        if(e && e.target !== e.currentTarget) return; 
+        const modal = document.getElementById('history-modal');
+        if (modal.classList.contains('open')) {
+            modal.classList.remove('open');
+        } else {
+            loadHistory(); 
+            modal.classList.add('open');
+        }
+    }
+
+    function saveQuote() {
+        if (cart.length === 0) {
+            showToast("⚠️ Agrega items primero");
+            return;
+        }
+        
+        const clientName = document.getElementById('client-name').value.trim() || "Cliente Sin Nombre";
+        const total = document.getElementById('display-total').innerText;
+        const date = new Date().toLocaleString('es-CO');
+
+        const quoteData = {
+            id: Date.now(),
+            date: date,
+            clientName: clientName,
+            totalDisplay: total,
+            cart: cart,
+            settings: {
+                discount: document.getElementById('discount-select').value,
+                days: document.getElementById('time-select').value,
+                lavado: document.getElementById('check-lavado').checked,
+                iva: document.getElementById('check-iva').checked,
+                wompi: document.getElementById('check-wompi').checked,
+                comision: document.getElementById('check-comision').checked
+            }
+        };
+
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        history.unshift(quoteData); 
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        
+        showToast("💾 Cotización guardada");
+    }
+
+    function loadHistory() {
+        const list = document.getElementById('history-list');
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        
+        list.innerHTML = '';
+        
+        if (history.length === 0) {
+            list.innerHTML = '<li class="empty-history">No hay cotizaciones guardadas</li>';
+            return;
+        }
+
+        history.forEach(quote => {
+            const li = document.createElement('li');
+            li.className = 'history-item';
+            li.innerHTML = `
+                <div class="history-info">
+                    <strong>${quote.clientName}</strong>
+                    <span>${quote.date} • ${quote.totalDisplay}</span>
+                </div>
+                <div class="history-actions">
+                    <button class="btn-load" onclick="restoreQuote(${quote.id})">Cargar</button>
+                    <button class="btn-delete-hist" onclick="deleteQuote(${quote.id})">🗑️</button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    function restoreQuote(id) {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        const quote = history.find(q => q.id === id);
+        
+        if (quote) {
+            if(confirm(`¿Cargar cotización de ${quote.clientName}?`)){
+                cart = quote.cart;
+                document.getElementById('client-name').value = quote.clientName;
+                document.getElementById('discount-select').value = quote.settings.discount;
+                document.getElementById('time-select').value = quote.settings.days;
+                document.getElementById('check-lavado').checked = quote.settings.lavado;
+                document.getElementById('check-iva').checked = quote.settings.iva;
+                document.getElementById('check-wompi').checked = quote.settings.wompi;
+                document.getElementById('check-comision').checked = quote.settings.comision;
+                
+                renderCart();
+                toggleHistory(); 
+                showToast("✅ Cotización cargada");
+            }
+        }
+    }
+
+    function deleteQuote(id) {
+        if(confirm("¿Eliminar del historial?")) {
+            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            history = history.filter(q => q.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+            loadHistory(); 
+        }
+    }
+
+    function showToast(msg) {
+        const x = document.getElementById("toast");
+        if(msg) x.innerText = msg;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    // --- LOGICA DE TIENDA (Core) ---
+    function updateItems() {
+        const category = document.getElementById('category').value; 
+        const itemSelect = document.getElementById('item');
+        const searchInput = document.getElementById('search-input');
+        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+        searchInput.value = ''; 
+        document.getElementById('finish-group').classList.add('hidden');
+        currentItem = null;
+        if (category && pricesDB[category]) {
+            currentCategoryList = pricesDB[category];
+            renderOptions(currentCategoryList);
+            itemSelect.disabled = false;
+            searchInput.disabled = false;
+        } else {
+            itemSelect.disabled = true;
+            searchInput.disabled = true;
+            currentCategoryList = [];
+        }
+    }
+
+    function renderOptions(list) {
+        const itemSelect = document.getElementById('item');
+        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>'; 
+        list.forEach((item) => {
+            const option = document.createElement('option');
+            option.value = JSON.stringify(item); 
+            option.text = item.name + ` (Desde ${formatMoney(item.base)})`;
+            itemSelect.add(option);
+        });
+    }
+
+    function filterItems() {
+        const searchText = document.getElementById('search-input').value.toLowerCase();
+        const filteredList = currentCategoryList.filter(item => item.name.toLowerCase().includes(searchText));
+        renderOptions(filteredList);
+    }
+
+    function checkFinishOption() {
+        const selectedValue = document.getElementById('item').value;
+        if (selectedValue !== "") {
+            const item = JSON.parse(selectedValue);
+            currentItem = item;
+            const finishGroup = document.getElementById('finish-group');
+            if (item.hasTricapa) {
+                finishGroup.classList.remove('hidden');
+            } else {
+                finishGroup.classList.add('hidden');
+            }
+            // UX: Enfocar cantidad
+            document.getElementById('quantity').focus();
+        }
+    }
+
+    function addItem() {
+        if (!currentItem) {
+            alert("Primero selecciona una categoría y un servicio.");
+            return;
+        }
+        const category = document.getElementById('category').value;
+        const qtyInput = document.getElementById('quantity');
+        let qty = parseInt(qtyInput.value);
+        if (qty < 1) qty = 1;
+        let unitPrice = currentItem.base;
+        let finishName = "Estándar";
+        const finishSelect = document.getElementById('finish');
+        const finishGroup = document.getElementById('finish-group');
+        if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
+            unitPrice = currentItem.tricapa;
+            finishName = "Tricapa";
+        } else if (!finishGroup.classList.contains('hidden')) {
+            finishName = "Bicapa";
+        }
+        let totalPrice = unitPrice * qty;
+        cart.push({
+            name: currentItem.name,
+            finish: finishName,
+            price: totalPrice,
+            unitPrice: unitPrice,
+            qty: qty,
+            category: category,
+            pv: currentItem.pv || 0
+        });
+        document.getElementById('search-input').value = '';
+        renderOptions(currentCategoryList);
+        document.getElementById('item').value = "";
+        currentItem = null;
+        document.getElementById('finish-group').classList.add('hidden');
+        qtyInput.value = 1; 
+        renderCart();
+    }
+
+    function remove(index) {
+        cart.splice(index, 1);
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cart-list');
+        const stickyFooter = document.getElementById('sticky-footer');
+        const isLavado = document.getElementById('check-lavado').checked;
+        const isIVA = document.getElementById('check-iva').checked;
+        const isWompi = document.getElementById('check-wompi').checked;
+        const isComision = document.getElementById('check-comision').checked;
+        const discountRate = parseFloat(document.getElementById('discount-select').value);
+        
+        list.innerHTML = '';
+        let subtotalItems = 0;
+        let totalLatoneriaItemsPrice = 0; 
+        let costoPintorAcumulado = 0;
+        const TARIFA_BICAPA = 120000; 
+        const TARIFA_TRICAPA = 160000;
+
+        cart.forEach((item, index) => {
+            subtotalItems += item.price;
+            let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
+            costoPintorAcumulado += (item.pv * item.qty) * rate;
+            if (item.category === 'latoneria') {
+                totalLatoneriaItemsPrice += item.price;
+            }
+            const li = document.createElement('li');
+            li.className = 'cart-item';
+            li.innerHTML = `
+                <div class="item-left">
+                    <div class="qty-circle">${item.qty}</div>
+                    <div>
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-meta">${item.finish}</span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <span class="item-price">${formatMoney(item.price)}</span>
+                    <button class="btn-delete" onclick="remove(${index})"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+
+        let lavadoCostPrice = isLavado ? 10000 : 0;
+        let baseAmount = subtotalItems + lavadoCostPrice;
+        let discountAmount = baseAmount * discountRate;
+        let amountAfterDiscount = baseAmount - discountAmount;
+        let ivaCost = isIVA ? amountAfterDiscount * 0.19 : 0;
+        let amountAfterIVA = amountAfterDiscount + ivaCost;
+        let wompiCost = isWompi ? amountAfterIVA * 0.05 : 0;
+        let preTotal = amountAfterIVA + wompiCost;
+        let comisionCost = isComision ? preTotal * 0.02 : 0;
+        let totalFinal = preTotal + comisionCost;
+
+        document.getElementById('display-total').innerText = formatMoney(totalFinal);
+        
+        let footerDetails = "";
+        if (isLavado) footerDetails += "• Lavado ";
+        if (isIVA) footerDetails += "• IVA ";
+        if (isWompi) footerDetails += "• Wompi ";
+        if (isComision) footerDetails += "• Comis. ";
+        document.getElementById('footer-extras-text').innerText = footerDetails || "Sin extras";
+        
+        if (discountRate > 0) {
+            document.getElementById('footer-discount-text').innerText = `-${discountRate*100}% Descuento`;
+        } else {
+            document.getElementById('footer-discount-text').innerText = '';
+        }
+
+        if (cart.length > 0 || isLavado) {
+            stickyFooter.classList.remove('hidden');
+        } else {
+            stickyFooter.classList.add('hidden');
+        }
+
+        // PROFIT LOGIC
+        document.getElementById('prof-ingreso').innerText = formatMoney(totalFinal);
+        let costLavador = isLavado ? 10000 : 0; 
+        let costLatonero = totalLatoneriaItemsPrice * 0.5; 
+        let costFees = wompiCost + comisionCost + ivaCost;
+        document.getElementById('prof-pintor').innerText = `- ${formatMoney(costoPintorAcumulado)}`;
+        document.getElementById('prof-latonero').innerText = `- ${formatMoney(costLatonero)}`;
+        document.getElementById('prof-lavador').innerText = `- ${formatMoney(costLavador)}`;
+        document.getElementById('prof-fees-iva').innerText = `- ${formatMoney(costFees)}`;
+        let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
+        let utilidadDelta = totalFinal - totalCostos;
+        let margenPorcentaje = (totalFinal > 0) ? (utilidadDelta / totalFinal) * 100 : 0;
+        document.getElementById('prof-utilidad').innerText = formatMoney(utilidadDelta);
+        const badge = document.getElementById('prof-badge');
+        badge.innerText = Math.round(margenPorcentaje) + '% Margen';
+        if(margenPorcentaje < 20) {
+            badge.style.background = '#ef4444'; 
+        } else if (margenPorcentaje < 40) {
+            badge.style.background = '#f59e0b';
+        } else {
+            badge.style.background = '#10b981';
         }
     }
 
@@ -303,15 +712,16 @@
         if(isWompi) feesVal += baseForFees * 0.05;
         if(isComision) feesVal += baseForFees * 0.02;
         
-        // TOTAL INCLUYE EXTRAS
         let total = baseForFees + feesVal;
 
         document.getElementById('pdf-subtotal').innerText = formatMoney(subtotal);
         
-        // TIEMPO DE ENTREGA
         const days = document.getElementById('time-select').value;
         const daysText = days + (days === '1' ? ' día hábil' : ' días hábiles');
         document.getElementById('pdf-days').innerText = daysText;
+        
+        const clientName = document.getElementById('client-name').value.trim() || "--";
+        document.getElementById('pdf-client-name').innerText = clientName;
 
         const rowDiscount = document.getElementById('pdf-row-discount');
         rowDiscount.style.display = discountVal > 0 ? 'flex' : 'none';
@@ -334,14 +744,16 @@
             msgNoIva.style.display = 'block';
         }
 
-        // Extras / Otros costos (RENOMBRADO Y VISIBLE SI APLICA)
         const rowOthers = document.getElementById('pdf-row-others');
-        rowOthers.style.display = feesVal > 0 ? 'flex' : 'none';
-        if(feesVal > 0) document.getElementById('pdf-others').innerText = formatMoney(feesVal);
+        if(feesVal > 0) {
+            rowOthers.style.display = 'flex';
+            document.getElementById('pdf-others').innerText = formatMoney(feesVal);
+        } else {
+            rowOthers.style.display = 'none';
+        }
 
         document.getElementById('pdf-total').innerText = formatMoney(total);
 
-        // CLONADO SEGURO
         const template = document.getElementById('pdf-invoice-template');
         const clone = template.cloneNode(true);
         clone.id = "pdf-invoice-render";
@@ -355,7 +767,7 @@
 
         const opt = {
             margin: 10,
-            filename: 'Cotizacion_DeltaCars.pdf',
+            filename: `Cotizacion_${clientName.replace(/\s+/g, '_')}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -384,11 +796,12 @@
     function resetQuote() {
         if(confirm("¿Comenzar nueva cotización?")) {
             cart = [];
+            document.getElementById('client-name').value = ""; 
             document.getElementById('discount-select').value = "0";
             document.getElementById('check-lavado').checked = true;
-            document.getElementById('check-iva').checked = false;
-            document.getElementById('check-wompi').checked = false;
-            document.getElementById('check-comision').checked = false;
+            // Se respetan preferencias guardadas en el reset
+            loadPreferences();
+            
             document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
             document.getElementById('category').value = "";
             document.getElementById('item').innerHTML = '<option value="">Selecciona categoría arriba 👆</option>';
@@ -400,294 +813,28 @@
             renderCart();
         }
     }
-
-    const pricesDB = {
-        pintura: [
-            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
-            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, hasTricapa: false, pv: 0.5 },
-            { id: 'estribo', name: 'Pintura Estribo', base: 150000, tricapa: 175000, hasTricapa: true, pv: 0.5 },
-            { id: 'paral', name: 'Pintura Paral', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'batiente', name: 'Pintura Batiente', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'costado', name: 'Pintura Costado', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'guardafango', name: 'Pintura Guardafango', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'bumper', name: 'Pintura Bumper', base: 350000, tricapa: 450000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta', name: 'Pintura Puerta', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'espejo', name: 'Pintura Espejo', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'manija', name: 'Pintura Manija', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'puntera', name: 'Pintura Puntera', base: 100000, tricapa: 120000, hasTricapa: true, pv: 0.5 },
-            { id: 'capo', name: 'Pintura Capó', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo', name: 'Pintura Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true, pv: 2.0 },
-            { id: 'baul', name: 'Pintura Baúl', base: 250000, hasTricapa: false, pv: 1.0 }
-        ],
-        latoneria: [
-            { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000, pv: 0 },
-            { id: 'lat_leve', name: 'Latonería Leve', base: 350000, pv: 0 },
-            { id: 'lat_media', name: 'Latonería Media', base: 700000, pv: 0 },
-            { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000, pv: 0 },
-            { id: 'monte', name: 'Monte y Desmonte', base: 160000, pv: 0 },
-            { id: 'pdr_pq', name: 'Sacabollos Pq', base: 150000, pv: 0 },
-            { id: 'pdr_med', name: 'Sacabollos Med', base: 400000, pv: 0 }
-        ],
-        otros: [
-            { id: 'rin_bicapa', name: 'Rin (Bicapa)', base: 150000, pv: 0.5 },
-            { id: 'rin_diam', name: 'Rin (Diamantado)', base: 250000, pv: 0.5 },
-            { id: 'partes_negras', name: 'Partes Negras', base: 150000, pv: 0.5 },
-            { id: 'brillada', name: 'Brillada Pieza', base: 50000, pv: 0 }
-        ]
-    };
-
-    let cart = [];
-    let currentItem = null;
-    let currentCategoryList = []; 
-    let hasLatoneria = false; 
-
-    function formatMoney(amount) {
-        return '$' + Math.round(amount).toLocaleString('es-CO');
-    }
-
-    function updateItems() {
-        const category = document.getElementById('category').value; 
-        const itemSelect = document.getElementById('item');
-        const searchInput = document.getElementById('search-input');
-        
-        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>';
-        searchInput.value = ''; 
-        document.getElementById('finish-group').classList.add('hidden');
-        currentItem = null;
-
-        if (category && pricesDB[category]) {
-            currentCategoryList = pricesDB[category];
-            renderOptions(currentCategoryList);
-            itemSelect.disabled = false;
-            searchInput.disabled = false;
-        } else {
-            itemSelect.disabled = true;
-            searchInput.disabled = true;
-            currentCategoryList = [];
-        }
-    }
-
-    function renderOptions(list) {
-        const itemSelect = document.getElementById('item');
-        itemSelect.innerHTML = '<option value="">-- Selecciona --</option>'; 
-        list.forEach((item) => {
-            const option = document.createElement('option');
-            option.value = JSON.stringify(item); 
-            option.text = item.name + ` (Desde ${formatMoney(item.base)})`;
-            itemSelect.add(option);
-        });
-    }
-
-    function filterItems() {
-        const searchText = document.getElementById('search-input').value.toLowerCase();
-        const filteredList = currentCategoryList.filter(item => 
-            item.name.toLowerCase().includes(searchText)
-        );
-        renderOptions(filteredList);
-    }
-
-    function checkFinishOption() {
-        const selectedValue = document.getElementById('item').value;
-        if (selectedValue !== "") {
-            const item = JSON.parse(selectedValue);
-            currentItem = item;
-            const finishGroup = document.getElementById('finish-group');
-            if (item.hasTricapa) {
-                finishGroup.classList.remove('hidden');
-            } else {
-                finishGroup.classList.add('hidden');
-            }
-        }
-    }
-
-    function addItem() {
-        if (!currentItem) {
-            alert("Primero selecciona una categoría y un servicio.");
-            return;
-        }
-
-        const category = document.getElementById('category').value;
-        const qtyInput = document.getElementById('quantity');
-        let qty = parseInt(qtyInput.value);
-        if (qty < 1) qty = 1;
-
-        if (category === 'latoneria') hasLatoneria = true;
-
-        let unitPrice = currentItem.base;
-        let finishName = "Estándar";
-
-        const finishSelect = document.getElementById('finish');
-        const finishGroup = document.getElementById('finish-group');
-        
-        if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
-            unitPrice = currentItem.tricapa;
-            finishName = "Tricapa";
-        } else if (!finishGroup.classList.contains('hidden')) {
-            finishName = "Bicapa";
-        }
-
-        let totalPrice = unitPrice * qty;
-
-        cart.push({
-            name: currentItem.name,
-            finish: finishName,
-            price: totalPrice,
-            unitPrice: unitPrice,
-            qty: qty,
-            category: category,
-            pv: currentItem.pv || 0
-        });
-
-        document.getElementById('search-input').value = '';
-        renderOptions(currentCategoryList);
-        document.getElementById('item').value = "";
-        currentItem = null;
-        document.getElementById('finish-group').classList.add('hidden');
-        qtyInput.value = 1; 
-
-        renderCart();
-    }
-
-    function remove(index) {
-        cart.splice(index, 1);
-        hasLatoneria = cart.some(item => item.category === 'latoneria');
-        renderCart();
-    }
-
-    function renderCart() {
-        const list = document.getElementById('cart-list');
-        const stickyFooter = document.getElementById('sticky-footer');
-        
-        const isLavado = document.getElementById('check-lavado').checked;
-        const isIVA = document.getElementById('check-iva').checked;
-        const isWompi = document.getElementById('check-wompi').checked;
-        const isComision = document.getElementById('check-comision').checked;
-        const discountRate = parseFloat(document.getElementById('discount-select').value);
-        
-        list.innerHTML = '';
-        let subtotalItems = 0;
-        let totalLatoneriaItemsPrice = 0; 
-        let costoPintorAcumulado = 0;
-        const TARIFA_BICAPA = 120000; 
-        const TARIFA_TRICAPA = 160000;
-
-        cart.forEach((item, index) => {
-            subtotalItems += item.price;
-            
-            // Rentabilidad
-            let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
-            costoPintorAcumulado += (item.pv * item.qty) * rate;
-
-            if (item.category === 'latoneria') {
-                totalLatoneriaItemsPrice += item.price;
-            }
-
-            const li = document.createElement('li');
-            li.className = 'cart-item';
-            li.innerHTML = `
-                <div class="item-left">
-                    <div class="qty-circle">${item.qty}</div>
-                    <div>
-                        <span class="item-name">${item.name}</span>
-                        <span class="item-meta">${item.finish}</span>
-                    </div>
-                </div>
-                <div style="display:flex; align-items:center;">
-                    <span class="item-price">${formatMoney(item.price)}</span>
-                    <button class="btn-delete" onclick="remove(${index})">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-            `;
-            list.appendChild(li);
-        });
-
-        // --- CALCULOS ---
-        let lavadoCostPrice = isLavado ? 10000 : 0;
-        let baseAmount = subtotalItems + lavadoCostPrice;
-
-        let discountAmount = baseAmount * discountRate;
-        let amountAfterDiscount = baseAmount - discountAmount;
-
-        let ivaCost = isIVA ? amountAfterDiscount * 0.19 : 0;
-        let amountAfterIVA = amountAfterDiscount + ivaCost;
-
-        let wompiCost = isWompi ? amountAfterIVA * 0.05 : 0;
-        let preTotal = amountAfterIVA + wompiCost;
-
-        let comisionCost = isComision ? preTotal * 0.02 : 0;
-        let totalFinal = preTotal + comisionCost;
-
-        // Visual
-        document.getElementById('display-total').innerText = formatMoney(totalFinal);
-        
-        let footerDetails = "";
-        if (isLavado) footerDetails += "• Lavado ";
-        if (isIVA) footerDetails += "• IVA ";
-        if (isWompi) footerDetails += "• Wompi ";
-        if (isComision) footerDetails += "• Comis. ";
-        document.getElementById('footer-extras-text').innerText = footerDetails || "Sin extras";
-        
-        if (discountRate > 0) {
-            document.getElementById('footer-discount-text').innerText = `-${discountRate*100}% Descuento`;
-        } else {
-            document.getElementById('footer-discount-text').innerText = '';
-        }
-
-        if (cart.length > 0 || isLavado) {
-            stickyFooter.classList.remove('hidden');
-        } else {
-            stickyFooter.classList.add('hidden');
-        }
-
-        // --- RENTABILIDAD INTERNA ---
-        document.getElementById('prof-ingreso').innerText = formatMoney(totalFinal);
-
-        let costLavador = isLavado ? 10000 : 0; 
-        let costLatonero = totalLatoneriaItemsPrice * 0.5; 
-        let costFees = wompiCost + comisionCost + ivaCost;
-
-        document.getElementById('prof-pintor').innerText = `- ${formatMoney(costoPintorAcumulado)}`;
-        document.getElementById('prof-latonero').innerText = `- ${formatMoney(costLatonero)}`;
-        document.getElementById('prof-lavador').innerText = `- ${formatMoney(costLavador)}`;
-        document.getElementById('prof-fees-iva').innerText = `- ${formatMoney(costFees)}`;
-
-        let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
-        let utilidadDelta = totalFinal - totalCostos;
-        let margenPorcentaje = (totalFinal > 0) ? (utilidadDelta / totalFinal) * 100 : 0;
-
-        document.getElementById('prof-utilidad').innerText = formatMoney(utilidadDelta);
-        const badge = document.getElementById('prof-badge');
-        badge.innerText = Math.round(margenPorcentaje) + '% Margen';
-
-        if(margenPorcentaje < 20) {
-            badge.style.background = '#ef4444'; 
-        } else if (margenPorcentaje < 40) {
-            badge.style.background = '#f59e0b';
-        } else {
-            badge.style.background = '#10b981';
-        }
-    }
-
+    
+    // --- FUNCIÓN COPIAR ARREGLADA ---
     function copyToClipboard() {
         if (cart.length === 0 && !document.getElementById('check-lavado').checked) {
             alert("Agrega al menos un servicio.");
             return;
         }
 
+        // BUG FIX: Declarar hasLatoneria correctamente
+        const hasLatoneria = cart.some(item => item.category === 'latoneria');
+
         const isIVA = document.getElementById('check-iva').checked;
         const discountRate = parseFloat(document.getElementById('discount-select').value);
         const days = document.getElementById('time-select').value;
         const totalFinalStr = document.getElementById('display-total').innerText;
-
-        let introText = "Gracias por enviarnos la foto.";
+        const clientName = document.getElementById('client-name').value.trim();
+        
+        let introText = `Hola${clientName ? ' ' + clientName : ''}, gracias por enviarnos la foto.`;
         if (hasLatoneria) {
             introText += " Analizando el daño, vemos que se requiere un trabajo técnico de latonería para recuperar la línea original y posteriormente pintura.";
         } 
         let message = `${introText}\n\n`;
-        
         message += `🔧 Diagnóstico técnico:\n\n`;
         cart.forEach(item => {
             let description = "";
@@ -700,11 +847,9 @@
             } else {
                  description = "requiere restauración/pintura";
             }
-            
             let qtyText = item.qty > 1 ? `${item.qty}x ` : "";
             message += `• ${qtyText}${item.name}: ${description}.\n`;
         });
-        
         if (document.getElementById('check-lavado').checked) {
              message += `• Servicio adicional: Lavado General.\n`;
         }
@@ -742,13 +887,37 @@
         message += `✨ Incluye:\n\n• Garantía de 6 meses\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
         message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
 
-        navigator.clipboard.writeText(message).then(function() {
-            var x = document.getElementById("toast");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-        }, function(err) {
-            alert('Error al copiar.');
-        });
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(message).then(function() {
+                showToast("📋 Copiado al portapapeles");
+            }).catch(function(err) {
+                fallbackCopyTextToClipboard(message);
+            });
+        } else {
+            fallbackCopyTextToClipboard(message);
+        }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) showToast("📋 Copiado al portapapeles");
+            else alert('No se pudo copiar el texto automáticamente.');
+        } catch (err) {
+            alert('No se pudo copiar el texto automáticamente.');
+        }
+
+        document.body.removeChild(textArea);
     }
 </script>
 
