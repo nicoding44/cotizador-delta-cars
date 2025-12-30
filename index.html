@@ -4,483 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#f8fafc">
-    <title>Cotizador Delta Cars</title>
+    <title>Cotizador Delta Cars S.A.S</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
-        :root {
-            --primary: #000000;
-            --accent: #2563eb;
-            --bg-page: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-radius: 20px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --danger: #ef4444;
-            --success: #10b981;
-            
-            /* Panel Interno */
-            --dark-bg: #0f172a;
-            --dark-surface: #1e293b;
-            --dark-text: #e2e8f0;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            margin: 0;
-            /* Padding calibrado: suficiente para que el footer no tape, pero no infinito */
-            padding: 20px 20px 220px 20px; 
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        /* HEADER */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding: 10px 5px;
-        }
-
-        .brand h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -0.5px;
-            background: linear-gradient(90deg, #000 0%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .brand span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-reset {
-            background: #fee2e2;
-            color: var(--danger);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        /* --- ESTILOS APP --- */
+        :root { --primary: #000000; --accent: #2563eb; --bg-page: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b; --border-radius: 20px; --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05); --danger: #ef4444; --success: #10b981; --dark-bg: #0f172a; --dark-surface: #1e293b; --dark-text: #e2e8f0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 20px 20px 350px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; box-sizing: border-box; position: relative; }
+        .container { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 10; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 10px 5px; }
+        .brand h1 { font-size: 1.4rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; background: linear-gradient(90deg, #000 0%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-reset { background: #fee2e2; color: var(--danger); border: none; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s; display: flex; align-items: center; gap: 6px; }
         .btn-reset:active { transform: scale(0.95); }
-
-        /* CARDS */
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #f1f5f9;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        /* CATEGORY CHIPS */
-        .category-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 5px 20px 15px 20px; 
-            margin: 0 -20px 10px -20px; 
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch; 
-        }
-        .category-scroll::-webkit-scrollbar { display: none; } 
-
-        .chip {
-            flex: 0 0 auto;
-            padding: 12px 20px;
-            background: #f1f5f9;
-            color: var(--text-muted);
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .chip.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transform: scale(1.02);
-        }
-
-        /* INPUTS */
-        select, input {
-            width: 100%;
-            padding: 16px;
-            background: #f8fafc;
-            border: 2px solid transparent;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-family: inherit;
-            color: var(--text-main);
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            appearance: none;
-        }
-        
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1.2em;
-        }
-
-        select:focus, input:focus {
-            background: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
-        }
-
-        /* ADD BUTTON */
-        .add-row {
-            display: flex;
-            gap: 12px;
-            align-items: stretch;
-            margin-top: 15px;
-        }
-
-        .btn-add {
-            flex: 1;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-add:active { transform: scale(0.97); }
-
-        /* CART LIST */
-        .cart-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .cart-item {
-            background: #fff;
-            border: 1px solid #f1f5f9;
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow-sm);
-            animation: slideIn 0.3s ease;
-        }
-
-        .item-left {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .qty-circle {
-            background: var(--bg-page);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--text-main);
-            border: 1px solid #e2e8f0;
-        }
-
-        .item-name {
-            font-weight: 700;
-            display: block;
-        }
-        
-        .item-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .item-price {
-            font-weight: 800;
-            font-size: 1rem;
-            margin-right: 10px;
-        }
-
-        .btn-delete {
-            background: #fee2e2;
-            color: var(--danger);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* TOGGLES */
+        .card { background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 5px 20px 15px 20px; margin: 0 -20px 10px -20px; scrollbar-width: none; }
+        .chip { flex: 0 0 auto; padding: 12px 20px; background: #f1f5f9; color: var(--text-muted); border-radius: 50px; font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s ease; }
+        .chip.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transform: scale(1.02); }
+        select, input { width: 100%; padding: 16px; background: #f8fafc; border: 2px solid transparent; border-radius: 16px; font-size: 1rem; font-family: inherit; color: var(--text-main); outline: none; transition: 0.3s; box-sizing: border-box; appearance: none; }
+        select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em; }
+        select:focus, input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,0,0,0.05); }
+        .add-row { display: flex; gap: 12px; align-items: stretch; margin-top: 15px; }
+        .btn-add { flex: 1; background: var(--primary); color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .cart-list { list-style: none; padding: 0; margin: 0; }
+        .cart-item { background: #fff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); animation: slideIn 0.3s ease; }
+        .item-left { display: flex; gap: 12px; align-items: center; }
+        .qty-circle { background: var(--bg-page); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; font-size: 0.8rem; color: var(--text-main); border: 1px solid #e2e8f0; }
+        .item-name { font-weight: 700; display: block; }
+        .item-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .item-price { font-weight: 800; font-size: 1rem; margin-right: 10px; }
+        .btn-delete { background: #fee2e2; color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .extras-container { margin-top: 30px; }
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px dashed #e2e8f0;
-        }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; }
         .setting-label { font-weight: 600; color: var(--text-main); }
-
-        /* SWITCH */
         .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e2e8f0; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e2e8f0; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
-
-        /* FOOTER */
-        .sticky-footer {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 20px);
-            max-width: 460px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 20px;
-            padding: 15px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            z-index: 100;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .sticky-footer.hidden {
-            transform: translate(-50%, 150%);
-            opacity: 0;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
-        }
-
-        .total-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .total-amount {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
-        }
-
-        .btn-whatsapp {
-            background: var(--primary);
-            color: white;
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-whatsapp:active { transform: scale(0.98); background: #333; }
-
-        /* PROFIT PANEL */
-        .profit-toggle {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .btn-lock {
-            background: #e2e8f0;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #64748b;
-            cursor: pointer;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-        .btn-lock:hover { background: #cbd5e1; transform: scale(1.05); }
-
-        .profit-dashboard {
-            background: var(--dark-bg);
-            border-radius: 24px;
-            padding: 25px;
-            color: var(--dark-text);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
-            margin-top: 20px;
-            margin-bottom: 20px; 
-            animation: expandPanel 0.4s ease;
-            overflow: hidden;
-            border: 1px solid #334155;
-        }
-
-        .dashboard-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            color: #94a3b8;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-        }
-        
+        .sticky-footer { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: calc(100% - 20px); max-width: 460px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 15px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 100; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .sticky-footer.hidden { transform: translate(-50%, 150%); opacity: 0; }
+        .total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+        .total-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+        .total-amount { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+        .footer-actions { display: flex; gap: 10px; }
+        .btn-action { flex: 1; padding: 16px; border: none; border-radius: 16px; font-size: 1rem; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
+        .btn-whatsapp { background: var(--primary); color: white; }
+        .btn-pdf { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; }
+        .profit-toggle { text-align: center; margin-top: 40px; margin-bottom: 20px; position: relative; z-index: 10; }
+        .btn-lock { background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; color: #64748b; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+        .profit-dashboard { background: var(--dark-bg); border-radius: 24px; padding: 25px; color: var(--dark-text); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3); margin-top: 20px; margin-bottom: 20px; animation: expandPanel 0.4s ease; overflow: hidden; border: 1px solid #334155; }
+        .dashboard-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; color: #94a3b8; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; }
         .stat-val { font-family: monospace; font-size: 1rem; }
         .stat-val.negative { color: #f87171; }
         .stat-val.neutral { color: #fbbf24; }
-
-        .profit-final {
-            background: var(--dark-surface);
-            padding: 20px;
-            border-radius: 16px;
-            margin-top: 15px;
-            text-align: center;
-        }
+        .profit-final { background: var(--dark-surface); padding: 20px; border-radius: 16px; margin-top: 15px; text-align: center; }
+        .profit-final h3 { margin: 0 0 5px 0; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; }
+        .profit-amount { font-size: 1.8rem; font-weight: 800; color: var(--success); }
+        .profit-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-top: 5px; }
         
-        .profit-final h3 {
-            margin: 0 0 5px 0;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-        }
-        
-        .profit-amount {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--success);
-        }
-
-        .profit-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        /* UTILS */
-        .hidden { display: none !important; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes expandPanel { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        
-        #toast {
-            visibility: hidden;
-            background: #333;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 50px;
-            position: fixed;
-            z-index: 2000;
-            left: 50%;
-            bottom: 120px;
-            transform: translateX(-50%);
-            font-weight: 600;
-            opacity: 0;
-            transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+        #toast { visibility: hidden; background: #333; color: #fff; padding: 12px 24px; border-radius: 50px; position: fixed; z-index: 2000; left: 50%; bottom: 120px; transform: translateX(-50%); font-weight: 600; opacity: 0; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; opacity: 1; bottom: 130px; }
+
+        /* --- PDF INVOICE ESTILOS --- */
+        #pdf-invoice-template { display: none; } /* Plantilla oculta */
+
+        /* Estilos que se inyectarán al PDF */
+        .pdf-wrapper { 
+            width: 750px; background: white; padding: 40px; 
+            font-family: Arial, Helvetica, sans-serif; color: #000; 
+            box-sizing: border-box; border: 1px solid #eee; 
+        }
+        .pdf-header-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border-bottom: 2px solid #000; }
+        .pdf-header-table td { vertical-align: top; padding-bottom: 20px; }
+        .pdf-logo h1 { margin: 0; font-size: 28px; text-transform: uppercase; color: #000; line-height: 1.2; }
+        .pdf-logo p { margin: 5px 0 0; color: #444; font-size: 14px; }
+        .time-box-table { border-collapse: collapse; background-color: #000000; color: #ffffff; border-radius: 8px; overflow: hidden; margin-left: auto; }
+        .time-box-cell { background-color: #000000 !important; color: #ffffff !important; padding: 10px 20px; text-align: center; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; color: #000; margin-top: 20px; }
+        .pdf-table th { text-align: left; padding: 10px; border-bottom: 1px solid #000; background: #f0f0f0; font-size: 14px; font-weight: bold; }
+        .pdf-table td { padding: 10px; border-bottom: 1px solid #ccc; font-size: 14px; }
+        .pdf-summary { width: 50%; margin-left: auto; color: #000; }
+        .pdf-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .pdf-total { font-size: 18px; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; }
+        .pdf-disclaimer { color: #d32f2f; font-weight: bold; font-size: 11px; text-align: right; margin-top: 8px; font-style: italic; }
+        .pdf-footer { margin-top: 50px; font-size: 12px; color: #444; text-align: center; border-top: 1px solid #ccc; padding-top: 20px; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
+<div id="pdf-invoice-template">
+    <div class="pdf-wrapper">
+        <table class="pdf-header-table">
+            <tr>
+                <td style="width: 60%;">
+                    <div class="pdf-logo">
+                        <h1>DELTA CARS S.A.S</h1>
+                        <p style="font-weight: bold; font-size: 14px; margin-top: 4px;">NIT: 901.940.664</p>
+                        <p style="margin-top: 4px;">Especialistas en Pintura y Latonería</p>
+                    </div>
+                </td>
+                <td style="width: 40%; text-align: right;">
+                    <table class="time-box-table" align="right">
+                        <tr>
+                            <td class="time-box-cell">
+                                <div style="font-size: 10px; text-transform: uppercase; opacity: 0.9; margin-bottom: 4px; color:#fff;">TIEMPO DE ENTREGA</div>
+                                <div id="pdf-days" style="font-size: 18px; font-weight: 800; line-height: 1; color:#fff;">--</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 25px; font-size: 12px; color: #333; clear: both;">
+                        <p style="margin: 2px 0;"><strong>Fecha:</strong> <span id="pdf-date">--</span></p>
+                        <p style="margin: 2px 0;"><strong>Validez:</strong> 5 días hábiles</p>
+                        <p style="margin: 2px 0;">Bogotá, Colombia</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Cant.</th>
+                    <th>Valor Unit.</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-items"></tbody>
+        </table>
+
+        <div class="pdf-summary">
+            <div class="pdf-row"><span>Subtotal:</span><span id="pdf-subtotal">$0</span></div>
+            <div class="pdf-row" id="pdf-row-discount" style="display:none; color: green;"><span>Descuento:</span><span id="pdf-discount">$0</span></div>
+            <div class="pdf-row" id="pdf-row-iva" style="display:none;"><span>IVA (19%):</span><span id="pdf-iva">$0</span></div>
+            <div class="pdf-row" id="pdf-row-others" style="display:none;">
+                <span style="flex: 1; margin-right: 10px;">Otros costos relacionados con el trabajo:</span>
+                <span id="pdf-others">$0</span>
+            </div>
+            <div class="pdf-row pdf-total"><span id="pdf-total-label">TOTAL:</span><span id="pdf-total">$0</span></div>
+            <div id="pdf-no-iva-msg" class="pdf-disclaimer" style="display: none;">* Los valores presentados NO incluyen IVA.</div>
+        </div>
+
+        <div class="pdf-footer">
+            <p>Gracias por confiar en Delta Cars S.A.S. Este documento es una cotización preliminar.</p>
+            <p>Garantía de 6 meses en pintura • Recogida y entrega en Bogotá</p>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="header">
-        <div class="brand">
-            <h1>DELTA CARS</h1>
-            <span>Cotizador Pro</span>
-        </div>
+        <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Cotizador Pro</span></div>
         <button class="btn-reset" onclick="resetQuote()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-            Reset
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Reset
         </button>
     </div>
 
@@ -510,13 +192,8 @@
         </div>
 
         <div class="add-row">
-            <div style="width: 80px;">
-                <input type="number" id="quantity" value="1" min="1" style="text-align: center;">
-            </div>
-            <button class="btn-add" onclick="addItem()">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-                Agregar
-            </button>
+            <div style="width: 80px;"><input type="number" id="quantity" value="1" min="1" style="text-align: center;"></div>
+            <button class="btn-add" onclick="addItem()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg> Agregar</button>
         </div>
     </div>
 
@@ -525,119 +202,46 @@
     <div class="card extras-container">
         <div class="setting-row">
             <span class="setting-label">Tiempo de Entrega</span>
-            <select id="time-select" style="width: 140px; padding: 10px;">
-            </select>
+            <select id="time-select" style="width: 140px; padding: 10px;"></select>
         </div>
-
         <div class="setting-row">
             <span class="setting-label">Descuento</span>
             <select id="discount-select" style="width: 140px; padding: 10px;" onchange="renderCart()">
-                <option value="0">0%</option>
-                <option value="0.05">5%</option>
-                <option value="0.10">10%</option>
-                <option value="0.20">20%</option>
+                <option value="0">0%</option><option value="0.05">5%</option><option value="0.10">10%</option><option value="0.20">20%</option>
             </select>
         </div>
-
-        <div class="setting-row">
-            <span class="setting-label">Lavado (+$10k)</span>
-            <label class="switch">
-                <input type="checkbox" id="check-lavado" onchange="renderCart()" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="setting-row">
-            <span class="setting-label">IVA (19%)</span>
-            <label class="switch">
-                <input type="checkbox" id="check-iva" onchange="renderCart()">
-                <span class="slider"></span>
-            </label>
-        </div>
-        
-        <div class="setting-row">
-            <span class="setting-label">Wompi (+5%)</span>
-            <label class="switch">
-                <input type="checkbox" id="check-wompi" onchange="renderCart()">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="setting-row">
-            <span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span>
-            <label class="switch">
-                <input type="checkbox" id="check-comision" onchange="renderCart()">
-                <span class="slider"></span>
-            </label>
-        </div>
+        <div class="setting-row"><span class="setting-label">Lavado (+$10k)</span><label class="switch"><input type="checkbox" id="check-lavado" onchange="renderCart()" checked><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">IVA (19%)</span><label class="switch"><input type="checkbox" id="check-iva" onchange="renderCart()"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label">Wompi (+5%)</span><label class="switch"><input type="checkbox" id="check-wompi" onchange="renderCart()"><span class="slider"></span></label></div>
+        <div class="setting-row"><span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span><label class="switch"><input type="checkbox" id="check-comision" onchange="renderCart()"><span class="slider"></span></label></div>
     </div>
 
-    <div class="profit-toggle">
-        <button class="btn-lock" onclick="toggleProfitPanel()">
-            🔒 <span>Panel Interno</span>
-        </button>
-    </div>
+    <div class="profit-toggle"><button class="btn-lock" onclick="toggleProfitPanel()">🔒 <span>Panel Interno</span></button></div>
 
     <div id="profit-panel" class="profit-dashboard hidden">
-        <div class="dashboard-header">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            Rentabilidad Interna
-        </div>
-        
-        <div class="stat-row">
-            <span>Ingreso Cliente</span>
-            <span class="stat-val" id="prof-ingreso" style="color:#fff;">$0</span>
-        </div>
-        
+        <div class="dashboard-header"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rentabilidad Interna</div>
+        <div class="stat-row"><span>Ingreso Cliente</span><span class="stat-val" id="prof-ingreso" style="color:#fff;">$0</span></div>
         <div style="border-top: 1px dashed #334155; margin: 10px 0;"></div>
-
-        <div class="stat-row">
-            <span>Pintor</span>
-            <span class="stat-val negative" id="prof-pintor">$0</span>
-        </div>
-        <div class="stat-row">
-            <span>Latonero (Est.)</span>
-            <span class="stat-val negative" id="prof-latonero">$0</span>
-        </div>
-        <div class="stat-row">
-            <span>Lavador</span>
-            <span class="stat-val negative" id="prof-lavador">$0</span>
-        </div>
-        <div class="stat-row">
-            <span>Impuestos/Fees</span>
-            <span class="stat-val neutral" id="prof-fees-iva">$0</span>
-        </div>
-
-        <div class="profit-final">
-            <h3>Utilidad Neta</h3>
-            <div class="profit-amount" id="prof-utilidad">$0</div>
-            <div class="profit-badge" id="prof-badge" style="background:#10b981; color:#fff;">0%</div>
-        </div>
+        <div class="stat-row"><span>Pintor</span><span class="stat-val negative" id="prof-pintor">$0</span></div>
+        <div class="stat-row"><span>Latonero (Est.)</span><span class="stat-val negative" id="prof-latonero">$0</span></div>
+        <div class="stat-row"><span>Lavador</span><span class="stat-val negative" id="prof-lavador">$0</span></div>
+        <div class="stat-row"><span>Impuestos/Fees</span><span class="stat-val neutral" id="prof-fees-iva">$0</span></div>
+        <div class="profit-final"><h3>Utilidad Neta</h3><div class="profit-amount" id="prof-utilidad">$0</div><div class="profit-badge" id="prof-badge" style="background:#10b981; color:#fff;">0%</div></div>
     </div>
-
 </div>
 
 <div class="sticky-footer hidden" id="sticky-footer">
-    <div class="total-row">
-        <span class="total-label">TOTAL ESTIMADO</span>
-        <span class="total-amount" id="display-total">$0</span>
+    <div class="total-row"><span class="total-label">TOTAL ESTIMADO</span><span class="total-amount" id="display-total">$0</span></div>
+    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; display: flex; justify-content: space-between;"><span id="footer-extras-text">Base</span><span id="footer-discount-text" style="color: #10b981; font-weight:700;"></span></div>
+    <div class="footer-actions">
+        <button id="btn-pdf-trigger" class="btn-action btn-pdf" onclick="generatePDF()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</button>
+        <button class="btn-action btn-whatsapp" onclick="copyToClipboard()"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.975.551 1.912.846 3.032.846 3.18 0 5.767-2.587 5.768-5.766.001-3.181-2.585-5.768-5.766-5.768zm7.156 12.012c-1.785 2.144-4.542 2.525-6.958 1.977l-4.502 1.18 1.192-4.385c-1.353-2.614-.803-6.041 1.543-8.156 2.373-2.14 6.276-2.029 8.525.433 2.155 2.357 1.956 6.756.2 8.951zm-1.896-1.902c-.354.177-2.094 1.025-2.417 1.143-.324.118-.56.177-.796.531-.235.353-.912 1.147-1.118 1.382-.206.236-.412.266-.766.089-2.074-1.045-3.328-2.615-3.692-3.262-.236-.412-.025-.635.152-.812.16-.16.354-.413.531-.619.176-.206.235-.354.353-.59.118-.235.059-.441-.03-.589-.088-.148-.795-1.917-1.089-2.624-.287-.69-.58-.596-.795-.607l-.678-.011c-.236 0-.618.088-.942.441-.324.354-1.237 1.209-1.237 2.948 0 1.74 1.267 3.421 1.443 3.656.177.236 2.493 3.804 6.039 5.336 2.408 1.04 2.895.833 3.425.784.53-.049 1.71-.698 1.947-1.373.235-.675.235-1.254.165-1.373-.071-.117-.266-.196-.62-.373z"/></path></svg> Copiar</button>
     </div>
-    
-    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px; display: flex; justify-content: space-between;">
-        <span id="footer-extras-text">Base</span>
-        <span id="footer-discount-text" style="color: #10b981; font-weight:700;"></span>
-    </div>
-
-    <button class="btn-whatsapp" onclick="copyToClipboard()">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.975.551 1.912.846 3.032.846 3.18 0 5.767-2.587 5.768-5.766.001-3.181-2.585-5.768-5.766-5.768zm7.156 12.012c-1.785 2.144-4.542 2.525-6.958 1.977l-4.502 1.18 1.192-4.385c-1.353-2.614-.803-6.041 1.543-8.156 2.373-2.14 6.276-2.029 8.525.433 2.155 2.357 1.956 6.756.2 8.951zm-1.896-1.902c-.354.177-2.094 1.025-2.417 1.143-.324.118-.56.177-.796.531-.235.353-.912 1.147-1.118 1.382-.206.236-.412.266-.766.089-2.074-1.045-3.328-2.615-3.692-3.262-.236-.412-.025-.635.152-.812.16-.16.354-.413.531-.619.176-.206.235-.354.353-.59.118-.235.059-.441-.03-.589-.088-.148-.795-1.917-1.089-2.624-.287-.69-.58-.596-.795-.607l-.678-.011c-.236 0-.618.088-.942.441-.324.354-1.237 1.209-1.237 2.948 0 1.74 1.267 3.421 1.443 3.656.177.236 2.493 3.804 6.039 5.336 2.408 1.04 2.895.833 3.425.784.53-.049 1.71-.698 1.947-1.373.235-.675.235-1.254.165-1.373-.071-.117-.266-.196-.62-.373z"/></path></svg>
-        Copiar Cotización
-    </button>
 </div>
 
 <div id="toast">¡Listo! Copiado al portapapeles</div>
 
 <script>
-    // --- INIT ---
     window.onload = function() {
         const timeSelect = document.getElementById('time-select');
         for (let i = 1; i <= 30; i++) {
@@ -647,6 +251,8 @@
             if (i === 3) option.selected = true; 
             timeSelect.add(option);
         }
+        const today = new Date().toLocaleDateString('es-CO');
+        document.getElementById('pdf-date').innerText = today;
         renderCart();
     };
 
@@ -654,22 +260,127 @@
         const panel = document.getElementById('profit-panel');
         panel.classList.toggle('hidden');
         if(!panel.classList.contains('hidden')){
-            setTimeout(() => {
-                panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+            setTimeout(() => { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
         }
     }
 
-    // --- LOGICA DE CHIPS ---
+    function generatePDF() {
+        if (cart.length === 0 && !document.getElementById('check-lavado').checked) {
+            alert("Agrega items para generar el PDF.");
+            return;
+        }
+
+        const btnPdf = document.getElementById('btn-pdf-trigger');
+        const originalText = btnPdf.innerHTML;
+        btnPdf.innerHTML = "Generando...";
+        btnPdf.disabled = true;
+
+        const pdfItems = document.getElementById('pdf-items');
+        pdfItems.innerHTML = '';
+        cart.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><strong>${item.name}</strong><br><span style="color:#666; font-size:12px;">${item.finish}</span></td><td>${item.qty}</td><td>${formatMoney(item.unitPrice)}</td><td>${formatMoney(item.price)}</td>`;
+            pdfItems.appendChild(tr);
+        });
+
+        if (document.getElementById('check-lavado').checked) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>Lavado General</td><td>1</td><td>$10.000</td><td>$10.000</td>`;
+            pdfItems.appendChild(tr);
+        }
+
+        let subtotal = cart.reduce((acc, item) => acc + item.price, 0) + (document.getElementById('check-lavado').checked ? 10000 : 0);
+        const discountRate = parseFloat(document.getElementById('discount-select').value);
+        let discountVal = subtotal * discountRate;
+        let afterDiscount = subtotal - discountVal;
+        const isIVA = document.getElementById('check-iva').checked;
+        let ivaVal = isIVA ? afterDiscount * 0.19 : 0;
+        const isWompi = document.getElementById('check-wompi').checked;
+        const isComision = document.getElementById('check-comision').checked;
+        
+        let baseForFees = afterDiscount + ivaVal;
+        let feesVal = 0;
+        if(isWompi) feesVal += baseForFees * 0.05;
+        if(isComision) feesVal += baseForFees * 0.02;
+        
+        // TOTAL INCLUYE EXTRAS
+        let total = baseForFees + feesVal;
+
+        document.getElementById('pdf-subtotal').innerText = formatMoney(subtotal);
+        
+        // TIEMPO DE ENTREGA
+        const days = document.getElementById('time-select').value;
+        const daysText = days + (days === '1' ? ' día hábil' : ' días hábiles');
+        document.getElementById('pdf-days').innerText = daysText;
+
+        const rowDiscount = document.getElementById('pdf-row-discount');
+        rowDiscount.style.display = discountVal > 0 ? 'flex' : 'none';
+        if(discountVal > 0) document.getElementById('pdf-discount').innerText = `-${formatMoney(discountVal)}`;
+
+        const rowIVA = document.getElementById('pdf-row-iva');
+        const pdfTotalLabel = document.getElementById('pdf-total-label');
+        const msgNoIva = document.getElementById('pdf-no-iva-msg');
+
+        if(isIVA) {
+            if(ivaVal > 0) {
+                rowIVA.style.display = 'flex';
+                document.getElementById('pdf-iva').innerText = formatMoney(ivaVal);
+            }
+            pdfTotalLabel.innerText = "TOTAL:";
+            msgNoIva.style.display = 'none';
+        } else {
+            rowIVA.style.display = 'none';
+            pdfTotalLabel.innerText = "TOTAL (Sin IVA):";
+            msgNoIva.style.display = 'block';
+        }
+
+        // Extras / Otros costos (RENOMBRADO Y VISIBLE SI APLICA)
+        const rowOthers = document.getElementById('pdf-row-others');
+        rowOthers.style.display = feesVal > 0 ? 'flex' : 'none';
+        if(feesVal > 0) document.getElementById('pdf-others').innerText = formatMoney(feesVal);
+
+        document.getElementById('pdf-total').innerText = formatMoney(total);
+
+        // CLONADO SEGURO
+        const template = document.getElementById('pdf-invoice-template');
+        const clone = template.cloneNode(true);
+        clone.id = "pdf-invoice-render";
+        clone.style.display = "block";
+        clone.style.position = "absolute";
+        clone.style.top = "0";
+        clone.style.left = "0";
+        clone.style.zIndex = "99999"; 
+        
+        document.body.appendChild(clone);
+
+        const opt = {
+            margin: 10,
+            filename: 'Cotizacion_DeltaCars.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(clone.querySelector('.pdf-wrapper')).save().then(() => {
+            document.body.removeChild(clone);
+            btnPdf.innerHTML = originalText;
+            btnPdf.disabled = false;
+        }).catch(err => {
+            alert("Error generando PDF. Intenta de nuevo.");
+            console.error(err);
+            if(document.body.contains(clone)) document.body.removeChild(clone);
+            btnPdf.innerHTML = originalText;
+            btnPdf.disabled = false;
+        });
+    }
+
     function selectCategory(catName, btnElement) {
         document.getElementById('category').value = catName;
-        const buttons = document.querySelectorAll('.chip');
-        buttons.forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.chip').forEach(btn => btn.classList.remove('active'));
         btnElement.classList.add('active');
         updateItems();
     }
 
-    // --- RESETEO ---
     function resetQuote() {
         if(confirm("¿Comenzar nueva cotización?")) {
             cart = [];
@@ -678,7 +389,6 @@
             document.getElementById('check-iva').checked = false;
             document.getElementById('check-wompi').checked = false;
             document.getElementById('check-comision').checked = false;
-            
             document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
             document.getElementById('category').value = "";
             document.getElementById('item').innerHTML = '<option value="">Selecciona categoría arriba 👆</option>';
@@ -687,37 +397,35 @@
             document.getElementById('search-input').value = "";
             document.getElementById('finish-group').classList.add('hidden');
             document.getElementById('profit-panel').classList.add('hidden'); 
-            
             renderCart();
         }
     }
 
-    // --- BASE DE DATOS ---
     const pricesDB = {
         pintura: [
-            { id: 'tapa_gasolina', name: 'Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
-            { id: 'plasticos', name: 'Plásticos', base: 200000, hasTricapa: false, pv: 0.5 },
-            { id: 'estribo', name: 'Estribo', base: 150000, tricapa: 175000, hasTricapa: true, pv: 0.5 },
-            { id: 'paral', name: 'Paral', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'batiente', name: 'Batiente', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'costado', name: 'Costado', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'guardafango', name: 'Guardafango', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'bumper', name: 'Bumper', base: 350000, tricapa: 450000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta', name: 'Puerta', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta_comp', name: 'Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'espejo', name: 'Espejo', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'manija', name: 'Manija', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'puntera', name: 'Puntera', base: 100000, tricapa: 120000, hasTricapa: true, pv: 0.5 },
-            { id: 'capo', name: 'Capó', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo', name: 'Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo_cam', name: 'Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true, pv: 2.0 },
-            { id: 'baul', name: 'Baúl', base: 250000, hasTricapa: false, pv: 1.0 }
+            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
+            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, hasTricapa: false, pv: 0.5 },
+            { id: 'estribo', name: 'Pintura Estribo', base: 150000, tricapa: 175000, hasTricapa: true, pv: 0.5 },
+            { id: 'paral', name: 'Pintura Paral', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'batiente', name: 'Pintura Batiente', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'costado', name: 'Pintura Costado', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'guardafango', name: 'Pintura Guardafango', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'bumper', name: 'Pintura Bumper', base: 350000, tricapa: 450000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta', name: 'Pintura Puerta', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'espejo', name: 'Pintura Espejo', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'manija', name: 'Pintura Manija', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
+            { id: 'puntera', name: 'Pintura Puntera', base: 100000, tricapa: 120000, hasTricapa: true, pv: 0.5 },
+            { id: 'capo', name: 'Pintura Capó', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo', name: 'Pintura Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true, pv: 2.0 },
+            { id: 'baul', name: 'Pintura Baúl', base: 250000, hasTricapa: false, pv: 1.0 }
         ],
         latoneria: [
-            { id: 'lat_media_pieza', name: 'Lat. Media Pieza', base: 390000, pv: 0 },
-            { id: 'lat_leve', name: 'Lat. Leve', base: 350000, pv: 0 },
-            { id: 'lat_media', name: 'Lat. Media', base: 700000, pv: 0 },
-            { id: 'lat_fuerte', name: 'Lat. Fuerte', base: 1000000, pv: 0 },
+            { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000, pv: 0 },
+            { id: 'lat_leve', name: 'Latonería Leve', base: 350000, pv: 0 },
+            { id: 'lat_media', name: 'Latonería Media', base: 700000, pv: 0 },
+            { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000, pv: 0 },
             { id: 'monte', name: 'Monte y Desmonte', base: 160000, pv: 0 },
             { id: 'pdr_pq', name: 'Sacabollos Pq', base: 150000, pv: 0 },
             { id: 'pdr_med', name: 'Sacabollos Med', base: 400000, pv: 0 }
