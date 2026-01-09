@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#f8fafc">
-    <title>Cotizador Delta Cars S.A.S</title>
+    <title>Cotizador Delta Cars - V2 Editable</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -30,8 +30,13 @@
         select, input { width: 100%; padding: 16px; background: #f8fafc; border: 2px solid transparent; border-radius: 16px; font-size: 1rem; font-family: inherit; color: var(--text-main); outline: none; transition: 0.3s; box-sizing: border-box; appearance: none; }
         select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em; }
         select:focus, input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,0,0,0.05); }
-        .add-row { display: flex; gap: 12px; align-items: stretch; margin-top: 15px; }
-        .btn-add { flex: 1; background: var(--primary); color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        /* NUEVO: Layout para precio y cantidad */
+        .add-row-inputs { display: flex; gap: 12px; align-items: flex-end; margin-top: 15px; }
+        
+        .btn-add { width: 100%; margin-top: 15px; background: var(--primary); color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; padding: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-add:active { transform: scale(0.98); }
+
         .cart-list { list-style: none; padding: 0; margin: 0; position: relative; z-index: 1; }
         .cart-item { background: #fff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); animation: slideIn 0.3s ease; }
         .item-left { display: flex; gap: 12px; align-items: center; }
@@ -40,6 +45,7 @@
         .item-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
         .item-price { font-weight: 800; font-size: 1rem; margin-right: 10px; }
         .btn-delete { background: #fee2e2; color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
         .extras-container { margin-top: 30px; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; }
         .setting-label { font-weight: 600; color: var(--text-main); }
@@ -49,6 +55,7 @@
         .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
+        
         .sticky-footer { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: calc(100% - 20px); max-width: 460px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 15px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 100; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .sticky-footer.hidden { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
         .total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
@@ -59,6 +66,7 @@
         .btn-whatsapp { background: var(--primary); color: white; }
         .btn-save { background: #e0f2fe; color: #0284c7; }
         .btn-pdf { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; }
+        
         .profit-toggle { text-align: center; margin-top: 40px; margin-bottom: 20px; position: relative; z-index: 10; }
         .btn-lock { background: #e2e8f0; border: none; padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; color: #64748b; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
         .profit-dashboard { background: var(--dark-bg); border-radius: 24px; padding: 25px; color: var(--dark-text); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3); margin-top: 20px; margin-bottom: 20px; animation: expandPanel 0.4s ease; overflow: hidden; border: 1px solid #334155; }
@@ -177,7 +185,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Cotizador Pro</span></div>
+        <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Cotizador Pro V2</span></div>
         <div class="header-actions">
             <button class="btn-mini" onclick="toggleHistory()">🕒 Historial</button>
             <button class="btn-reset" onclick="resetQuote()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
@@ -207,16 +215,24 @@
 
         <div class="hidden animate-in" id="finish-group" style="margin-top: 15px;">
             <label>3. Acabado</label>
-            <select id="finish">
+            <select id="finish" onchange="updateDisplayedPrice()">
                 <option value="bicapa">Bicapa (Estándar)</option>
                 <option value="tricapa">Tricapa (Perlado)</option>
             </select>
         </div>
 
-        <div class="add-row">
-            <div style="width: 80px;"><input type="number" id="quantity" value="1" min="1" style="text-align: center;"></div>
-            <button class="btn-add" onclick="addItem()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg> Agregar</button>
+        <div class="add-row-inputs">
+            <div style="flex: 1;">
+                <label style="margin-bottom: 5px; display:block;">Valor Unitario</label>
+                <input type="number" id="custom-price" style="font-weight: 800; color: var(--primary);" placeholder="$0">
+            </div>
+            <div style="width: 80px;">
+                <label style="margin-bottom: 5px; display:block; text-align:center;">Cant.</label>
+                <input type="number" id="quantity" value="1" min="1" style="text-align: center;">
+            </div>
         </div>
+
+        <button class="btn-add" onclick="addItem()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg> Agregar Item</button>
     </div>
 
     <ul class="cart-list" id="cart-list"></ul>
@@ -227,7 +243,7 @@
             <select id="time-select" style="width: 140px; padding: 10px;"></select>
         </div>
         <div class="setting-row">
-            <span class="setting-label">Descuento</span>
+            <span class="setting-label">Descuento Global</span>
             <select id="discount-select" style="width: 140px; padding: 10px;" onchange="renderCart()">
                 <option value="0">0%</option><option value="0.05">5%</option><option value="0.10">10%</option><option value="0.20">20%</option>
             </select>
@@ -279,12 +295,12 @@
 <script>
     // --- VARIABLES & INIT ---
     const STORAGE_KEY = 'delta_quotes_v1';
-    const PREF_KEY = 'delta_prefs_v1'; // Nueva key para preferencias
+    const PREF_KEY = 'delta_prefs_v1'; 
     let cart = [];
     let currentItem = null;
     let currentCategoryList = []; 
     
-    // Base de datos (Sin cambios)
+    // Base de datos
     const pricesDB = {
         pintura: [
             { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
@@ -334,7 +350,7 @@
         const today = new Date().toLocaleDateString('es-CO');
         document.getElementById('pdf-date').innerText = today;
         
-        loadPreferences(); // Cargar preferencias guardadas
+        loadPreferences(); 
         renderCart();
     };
 
@@ -342,7 +358,6 @@
         return '$' + Math.round(amount).toLocaleString('es-CO');
     }
 
-    // --- NUEVO: PREFERENCIAS ---
     function loadPreferences() {
         const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || "{}");
         if(prefs.iva !== undefined) document.getElementById('check-iva').checked = prefs.iva;
@@ -479,7 +494,7 @@
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    // --- LOGICA DE TIENDA (Core) ---
+    // --- LOGICA DE TIENDA MODIFICADA ---
     function updateItems() {
         const category = document.getElementById('category').value; 
         const itemSelect = document.getElementById('item');
@@ -487,6 +502,7 @@
         itemSelect.innerHTML = '<option value="">-- Selecciona --</option>';
         searchInput.value = ''; 
         document.getElementById('finish-group').classList.add('hidden');
+        document.getElementById('custom-price').value = ""; // Limpiar precio
         currentItem = null;
         if (category && pricesDB[category]) {
             currentCategoryList = pricesDB[category];
@@ -506,7 +522,7 @@
         list.forEach((item) => {
             const option = document.createElement('option');
             option.value = JSON.stringify(item); 
-            option.text = item.name + ` (Desde ${formatMoney(item.base)})`;
+            option.text = item.name + ` (Base: ${formatMoney(item.base)})`;
             itemSelect.add(option);
         });
     }
@@ -517,20 +533,43 @@
         renderOptions(filteredList);
     }
 
+    // --- NUEVA LÓGICA DE SELECCIÓN Y PRECIO ---
     function checkFinishOption() {
         const selectedValue = document.getElementById('item').value;
         if (selectedValue !== "") {
             const item = JSON.parse(selectedValue);
             currentItem = item;
             const finishGroup = document.getElementById('finish-group');
+            
+            // Mostrar u ocultar tricapa
             if (item.hasTricapa) {
                 finishGroup.classList.remove('hidden');
             } else {
                 finishGroup.classList.add('hidden');
+                document.getElementById('finish').value = 'bicapa'; 
             }
-            // UX: Enfocar cantidad
+            
+            // Auto-llenar precio sugerido
+            updateDisplayedPrice();
+            
+            // UX: Enfocar cantidad por defecto (o precio si prefiere)
             document.getElementById('quantity').focus();
         }
+    }
+
+    function updateDisplayedPrice() {
+        if (!currentItem) return;
+
+        const finishSelect = document.getElementById('finish');
+        const finishGroup = document.getElementById('finish-group');
+        
+        let calculatedPrice = currentItem.base;
+
+        if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
+            calculatedPrice = currentItem.tricapa;
+        }
+
+        document.getElementById('custom-price').value = calculatedPrice;
     }
 
     function addItem() {
@@ -538,36 +577,50 @@
             alert("Primero selecciona una categoría y un servicio.");
             return;
         }
+        
         const category = document.getElementById('category').value;
         const qtyInput = document.getElementById('quantity');
+        const priceInput = document.getElementById('custom-price');
+        
         let qty = parseInt(qtyInput.value);
-        if (qty < 1) qty = 1;
-        let unitPrice = currentItem.base;
+        if (qty < 1 || isNaN(qty)) qty = 1;
+
+        // LEER PRECIO MANUAL
+        let unitPrice = parseInt(priceInput.value);
+        if (isNaN(unitPrice) || unitPrice < 0) {
+            alert("Por favor ingresa un precio válido");
+            return;
+        }
+
         let finishName = "Estándar";
         const finishSelect = document.getElementById('finish');
         const finishGroup = document.getElementById('finish-group');
-        if (!finishGroup.classList.contains('hidden') && finishSelect.value === 'tricapa' && currentItem.hasTricapa) {
-            unitPrice = currentItem.tricapa;
-            finishName = "Tricapa";
-        } else if (!finishGroup.classList.contains('hidden')) {
-            finishName = "Bicapa";
+
+        if (!finishGroup.classList.contains('hidden')) {
+             finishName = finishSelect.value === 'tricapa' ? "Tricapa" : "Bicapa";
         }
+
         let totalPrice = unitPrice * qty;
+
         cart.push({
             name: currentItem.name,
             finish: finishName,
             price: totalPrice,
-            unitPrice: unitPrice,
+            unitPrice: unitPrice, // Precio guardado es el manual
             qty: qty,
             category: category,
-            pv: currentItem.pv || 0
+            pv: currentItem.pv || 0 // Puntos se mantienen originales de DB
         });
+
+        // Reset
         document.getElementById('search-input').value = '';
         renderOptions(currentCategoryList);
         document.getElementById('item').value = "";
         currentItem = null;
         document.getElementById('finish-group').classList.add('hidden');
+        document.getElementById('custom-price').value = "";
         qtyInput.value = 1; 
+        
         renderCart();
     }
 
@@ -799,7 +852,6 @@
             document.getElementById('client-name').value = ""; 
             document.getElementById('discount-select').value = "0";
             document.getElementById('check-lavado').checked = true;
-            // Se respetan preferencias guardadas en el reset
             loadPreferences();
             
             document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
@@ -809,19 +861,18 @@
             document.getElementById('search-input').disabled = true;
             document.getElementById('search-input').value = "";
             document.getElementById('finish-group').classList.add('hidden');
-            document.getElementById('profit-panel').classList.add('hidden'); 
+            document.getElementById('profit-panel').classList.add('hidden');
+            document.getElementById('custom-price').value = ""; 
             renderCart();
         }
     }
     
-    // --- FUNCIÓN COPIAR ARREGLADA ---
     function copyToClipboard() {
         if (cart.length === 0 && !document.getElementById('check-lavado').checked) {
             alert("Agrega al menos un servicio.");
             return;
         }
 
-        // BUG FIX: Declarar hasLatoneria correctamente
         const hasLatoneria = cart.some(item => item.category === 'latoneria');
 
         const isIVA = document.getElementById('check-iva').checked;
