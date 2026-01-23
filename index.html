@@ -387,26 +387,37 @@
     let currentItem = null;
     let currentCategoryList = []; 
     
-    // Base de datos
+    // --- NUEVA BASE DE DATOS DE PRECIOS (Actualizada) ---
     const pricesDB = {
         pintura: [
-            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 90000, hasTricapa: false, pv: 0.0 },
-            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, hasTricapa: false, pv: 0.5 },
-            { id: 'estribo', name: 'Pintura Estribo', base: 150000, tricapa: 175000, hasTricapa: true, pv: 0.5 },
-            { id: 'paral', name: 'Pintura Paral', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'batiente', name: 'Pintura Batiente', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'costado', name: 'Pintura Costado', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'guardafango', name: 'Pintura Guardafango', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'bumper', name: 'Pintura Bumper', base: 350000, tricapa: 450000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta', name: 'Pintura Puerta', base: 250000, tricapa: 350000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'espejo', name: 'Pintura Espejo', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'manija', name: 'Pintura Manija', base: 75000, tricapa: 87500, hasTricapa: true, pv: 0.25 },
-            { id: 'puntera', name: 'Pintura Puntera', base: 100000, tricapa: 120000, hasTricapa: true, pv: 0.5 },
-            { id: 'capo', name: 'Pintura Capó', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo', name: 'Pintura Techo (Auto)', base: 450000, tricapa: 525000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 600000, tricapa: 700000, hasTricapa: true, pv: 2.0 },
-            { id: 'baul', name: 'Pintura Baúl', base: 250000, hasTricapa: false, pv: 1.0 }
+            // PV 0.3125 (Aprox) -> Base: $100.000 | Tri: $131.250
+            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 100000, tricapa: 131250, hasTricapa: true, pv: 0.3125 }, 
+            
+            // PV 0.5 -> Base: $160.000 | Tri: $210.000
+            { id: 'plasticos', name: 'Pintura Plásticos', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
+            { id: 'estribo', name: 'Pintura Estribo', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
+            { id: 'puntera', name: 'Pintura Puntera', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
+
+            // PV 0.25 -> Base: $80.000 | Tri: $105.000
+            { id: 'paral', name: 'Pintura Paral', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
+            { id: 'batiente', name: 'Pintura Batiente', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
+            { id: 'espejo', name: 'Pintura Espejo', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
+            { id: 'manija', name: 'Pintura Manija', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
+
+            // PV 1.0 (ESTÁNDAR) -> Base: $320.000 | Tri: $420.000
+            { id: 'costado', name: 'Pintura Costado', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
+            { id: 'guardafango', name: 'Pintura Guardafango', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
+            { id: 'bumper', name: 'Pintura Bumper', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta', name: 'Pintura Puerta', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
+            { id: 'baul', name: 'Pintura Baúl', base: 320000, hasTricapa: false, pv: 1.0 },
+
+            // PV 1.5 -> Base: $480.000 | Tri: $630.000
+            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+            { id: 'capo', name: 'Pintura Capó', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo', name: 'Pintura Techo (Auto)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+
+            // PV 2.0 -> Base: $640.000 | Tri: $840.000
+            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 640000, tricapa: 840000, hasTricapa: true, pv: 2.0 }
         ],
         latoneria: [
             { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000, pv: 0 },
@@ -717,8 +728,8 @@
         let subtotalItems = 0;
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
-        const TARIFA_BICAPA = 120000; 
-        const TARIFA_TRICAPA = 160000;
+        const TARIFA_BICAPA = 150000; 
+        const TARIFA_TRICAPA = 200000;
 
         cart.forEach((item, index) => {
             subtotalItems += item.price;
@@ -817,8 +828,8 @@
         let subtotalItems = 0;
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
-        const TARIFA_BICAPA = 120000; 
-        const TARIFA_TRICAPA = 160000;
+        const TARIFA_BICAPA = 150000; 
+        const TARIFA_TRICAPA = 200000;
 
         // Limpiar tabla de items interna
         const detailTable = document.getElementById('int-items-detail');
