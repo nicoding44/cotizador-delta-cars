@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#f8fafc">
-    <title>Cotizador Delta Cars - Master Suite</title>
+    <title>Cotizador Delta Cars 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -198,7 +198,7 @@
 <div id="pdf-internal-template">
     <div class="pdf-wrapper">
         <div class="pdf-int-header">
-            <h1 class="pdf-int-title">HOJA DE LIQUIDACIÓN</h1>
+            <h1 class="pdf-int-title">HOJA DE LIQUIDACIÓN 2026</h1>
             <p class="pdf-int-subtitle">Uso exclusivo Delta Cars S.A.S</p>
             <div style="margin-top: 10px; font-size: 14px;">
                 <strong>Cliente:</strong> <span id="int-client">--</span><br>
@@ -269,7 +269,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Cotizador Pro V2</span></div>
+        <div class="brand"><h1>DELTA CARS S.A.S</h1><span>Precios 2026</span></div>
         <div class="header-actions">
             <button class="btn-mini" onclick="toggleHistory()">🕒 Historial</button>
             <button class="btn-reset" onclick="resetQuote()"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
@@ -387,52 +387,54 @@
     let currentItem = null;
     let currentCategoryList = []; 
     
-    // --- NUEVA BASE DE DATOS DE PRECIOS (Actualizada) ---
+    // --- BASE DE DATOS DE PRECIOS 2026 ---
+    // NOTA: 'pv' ajustado para que (pv * 150.000) de exactamente el costo de pintor del Excel.
+    // Para items especiales (Polichado, Brillada), se usa 'fixedCost'.
+    
     const pricesDB = {
         pintura: [
-            // PV 0.3125 (Aprox) -> Base: $100.000 | Tri: $131.250
-            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 100000, tricapa: 131250, hasTricapa: true, pv: 0.3125 }, 
-            
-            // PV 0.5 -> Base: $160.000 | Tri: $210.000
-            { id: 'plasticos', name: 'Pintura Plásticos', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
+            // Items Pequeños
+            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 96000, tricapa: 126000, hasTricapa: true, pv: 0.3 }, 
+            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, tricapa: 200000, hasTricapa: true, pv: 0.625 }, // Costo Pintor: $93.750
             { id: 'estribo', name: 'Pintura Estribo', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
             { id: 'puntera', name: 'Pintura Puntera', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
-
-            // PV 0.25 -> Base: $80.000 | Tri: $105.000
             { id: 'paral', name: 'Pintura Paral', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
             { id: 'batiente', name: 'Pintura Batiente', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
             { id: 'espejo', name: 'Pintura Espejo', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
             { id: 'manija', name: 'Pintura Manija', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
 
-            // PV 1.0 (ESTÁNDAR) -> Base: $320.000 | Tri: $420.000
+            // Items Estándar (PV 1.0)
             { id: 'costado', name: 'Pintura Costado', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
             { id: 'guardafango', name: 'Pintura Guardafango', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
-            { id: 'bumper', name: 'Pintura Bumper', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
-            { id: 'puerta', name: 'Pintura Puerta', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
-            { id: 'baul', name: 'Pintura Baúl', base: 320000, hasTricapa: false, pv: 1.0 },
+            { id: 'baul', name: 'Pintura Baúl', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
 
-            // PV 1.5 -> Base: $480.000 | Tri: $630.000
-            { id: 'puerta_comp', name: 'Pintura Puerta Completa', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+            // Items Grandes (PV 1.2 - 1.5)
+            { id: 'bumper', name: 'Pintura Bumper', base: 384000, tricapa: 504000, hasTricapa: true, pv: 1.2 },
+            { id: 'puerta', name: 'Pintura Puerta', base: 384000, tricapa: 504000, hasTricapa: true, pv: 1.2 },
+            { id: 'puerta_nueva', name: 'Pintura Puerta Nueva (Ambos lados)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
             { id: 'capo', name: 'Pintura Capó', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo', name: 'Pintura Techo (Auto)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo_auto', name: 'Pintura Techo (Automóvil)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
 
-            // PV 2.0 -> Base: $640.000 | Tri: $840.000
+            // Items Extra Grandes (PV 2.0)
             { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 640000, tricapa: 840000, hasTricapa: true, pv: 2.0 }
         ],
         latoneria: [
-            { id: 'lat_media_pieza', name: 'Latonería Media Pieza', base: 390000, pv: 0 },
             { id: 'lat_leve', name: 'Latonería Leve', base: 350000, pv: 0 },
             { id: 'lat_media', name: 'Latonería Media', base: 700000, pv: 0 },
             { id: 'lat_fuerte', name: 'Latonería Fuerte', base: 1000000, pv: 0 },
-            { id: 'monte', name: 'Monte y Desmonte', base: 160000, pv: 0 },
-            { id: 'pdr_pq', name: 'Sacabollos Pq', base: 150000, pv: 0 },
-            { id: 'pdr_med', name: 'Sacabollos Med', base: 400000, pv: 0 }
+            { id: 'monte', name: 'Monte y Desmonte', base: 180000, pv: 0 },
+            { id: 'pdr_pq', name: 'Sacabollos PDR (Peq)', base: 200000, pv: 0 },
+            { id: 'pdr_med', name: 'Sacabollos PDR (Med)', base: 400000, pv: 0 },
+            { id: 'pdr_gde', name: 'Sacabollos PDR (Gde)', base: 600000, pv: 0 }
         ],
         otros: [
-            { id: 'rin_bicapa', name: 'Rin (Bicapa)', base: 150000, pv: 0.5 },
-            { id: 'rin_diam', name: 'Rin (Diamantado)', base: 250000, pv: 0.5 },
-            { id: 'partes_negras', name: 'Partes Negras', base: 150000, pv: 0.5 },
-            { id: 'brillada', name: 'Brillada Pieza', base: 50000, pv: 0 }
+            { id: 'rin_bicapa', name: 'Pintura Rin (Bicapa)', base: 160000, pv: 0.5 },
+            { id: 'rin_diam', name: 'Pintura Rin (Diamantado)', base: 256000, pv: 0.8 },
+            { id: 'partes_negras', name: 'Restauración Partes Negras', base: 150000, pv: 0.5 },
+            { id: 'brillada', name: 'Brillada de Pieza', base: 50000, pv: 0, fixedCost: 25000 },
+            // NOTA: Polichados se pagan al Lavador (payTo: 'lavador')
+            { id: 'polichado_auto', name: 'Polichado Automóvil', base: 180000, pv: 0, fixedCost: 70000, payTo: 'lavador' },
+            { id: 'polichado_cam', name: 'Polichado Camioneta', base: 200000, pv: 0, fixedCost: 80000, payTo: 'lavador' }
         ]
     };
 
@@ -696,7 +698,9 @@
             unitPrice: unitPrice, 
             qty: qty,
             category: category,
-            pv: currentItem.pv || 0 
+            pv: currentItem.pv || 0,
+            fixedCost: currentItem.fixedCost || 0, 
+            payTo: currentItem.payTo || 'pintor' // Nuevo: identifica si se paga a lavador o pintor
         });
 
         document.getElementById('search-input').value = '';
@@ -728,13 +732,26 @@
         let subtotalItems = 0;
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
+        let costPolichadoAccumulated = 0; // Acumulador para pagos al lavador
         const TARIFA_BICAPA = 150000; 
         const TARIFA_TRICAPA = 200000;
 
         cart.forEach((item, index) => {
             subtotalItems += item.price;
-            let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
-            costoPintorAcumulado += (item.pv * item.qty) * rate;
+            
+            // Calculo Costos
+            if (item.fixedCost > 0) {
+                // Si es polichado (payTo: lavador), sumar a polichado, sino a pintor
+                if(item.payTo === 'lavador') {
+                    costPolichadoAccumulated += (item.fixedCost * item.qty);
+                } else {
+                    costoPintorAcumulado += (item.fixedCost * item.qty);
+                }
+            } else {
+                let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
+                costoPintorAcumulado += (item.pv * item.qty) * rate;
+            }
+
             if (item.category === 'latoneria') {
                 totalLatoneriaItemsPrice += item.price;
             }
@@ -790,13 +807,17 @@
 
         // PROFIT LOGIC
         document.getElementById('prof-ingreso').innerText = formatMoney(totalFinal);
-        let costLavador = isLavado ? 10000 : 0; 
+        
+        // El costo del lavador ahora incluye el lavado base (10k) + los polichados
+        let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
         let costLatonero = totalLatoneriaItemsPrice * 0.5; 
         let costFees = wompiCost + comisionCost + ivaCost;
+        
         document.getElementById('prof-pintor').innerText = `- ${formatMoney(costoPintorAcumulado)}`;
         document.getElementById('prof-latonero').innerText = `- ${formatMoney(costLatonero)}`;
         document.getElementById('prof-lavador').innerText = `- ${formatMoney(costLavador)}`;
         document.getElementById('prof-fees-iva').innerText = `- ${formatMoney(costFees)}`;
+        
         let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
         let utilidadDelta = totalFinal - totalCostos;
         let margenPorcentaje = (totalFinal > 0) ? (utilidadDelta / totalFinal) * 100 : 0;
@@ -812,7 +833,7 @@
         }
     }
 
-    // --- NUEVA FUNCIÓN: GENERAR PDF INTERNO ---
+    // --- GENERAR PDF INTERNO ---
     function generateInternalPDF() {
         if (cart.length === 0 && !document.getElementById('check-lavado').checked) {
             alert("No hay datos para generar el reporte.");
@@ -824,28 +845,37 @@
         btnPdf.innerHTML = "Generando...";
         btnPdf.disabled = true;
 
-        // 1. RECALCULAR DATOS (Para asegurar precisión al momento de generar el PDF)
+        // 1. RECALCULAR DATOS
         let subtotalItems = 0;
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
+        let costPolichadoAccumulated = 0;
         const TARIFA_BICAPA = 150000; 
         const TARIFA_TRICAPA = 200000;
 
-        // Limpiar tabla de items interna
         const detailTable = document.getElementById('int-items-detail');
         detailTable.innerHTML = '';
 
         cart.forEach(item => {
             subtotalItems += item.price;
-            let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
-            costoPintorAcumulado += (item.pv * item.qty) * rate;
+            if (item.fixedCost > 0) {
+                if(item.payTo === 'lavador') {
+                    costPolichadoAccumulated += (item.fixedCost * item.qty);
+                } else {
+                    costoPintorAcumulado += (item.fixedCost * item.qty);
+                }
+            } else {
+                let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
+                costoPintorAcumulado += (item.pv * item.qty) * rate;
+            }
+
             if (item.category === 'latoneria') {
                 totalLatoneriaItemsPrice += item.price;
             }
 
-            // Llenar tabla de detalles
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${item.name}</td><td>${item.finish}</td><td>${item.pv} pts</td>`;
+            let costDetail = item.fixedCost > 0 ? "Costo Fijo" : `${item.pv} pts`;
+            tr.innerHTML = `<td>${item.name}</td><td>${item.finish}</td><td>${costDetail}</td>`;
             detailTable.appendChild(tr);
         });
 
@@ -862,13 +892,13 @@
         let comisionCost = document.getElementById('check-comision').checked ? preTotal * 0.02 : 0;
         let totalFinal = preTotal + comisionCost;
 
-        let costLavador = isLavado ? 10000 : 0;
+        let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
         let costLatonero = totalLatoneriaItemsPrice * 0.5;
         let costFees = wompiCost + comisionCost + ivaCost;
         let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
         let utilidadDelta = totalFinal - totalCostos;
 
-        // 2. LLENAR DATOS EN EL TEMPLATE HTML
+        // 2. LLENAR DATOS
         document.getElementById('int-client').innerText = document.getElementById('client-name').value || "Sin Nombre";
         document.getElementById('int-date').innerText = new Date().toLocaleString('es-CO');
         
@@ -881,7 +911,7 @@
         document.getElementById('int-lavador').innerText = formatMoney(costLavador);
         document.getElementById('int-fees').innerText = formatMoney(costFees);
 
-        // 3. GENERAR PDF
+        // 3. GENERAR
         const template = document.getElementById('pdf-internal-template');
         const clone = template.cloneNode(true);
         clone.id = "pdf-int-render";
@@ -1123,7 +1153,7 @@
         }
 
         message += `\n⏱️ Tiempo estimado:\n${days} días hábiles\n\n`;
-        message += `✨ Incluye:\n\n• Garantía de 6 meses\n• Recogida y entrega sin costo dentro de Bogotá\n• Acabado profesional tipo concesionario\n\n`;
+        message += `✨ Incluye:\n\n• Garantía de 6 meses\n• Servicio de Recogida y Entrega (A convenir)\n• Acabado profesional tipo concesionario\n\n`;
         message += `¿Deseas que coordinemos la recogida del vehículo? 🙌`;
 
         if (navigator.clipboard && window.isSecureContext) {
