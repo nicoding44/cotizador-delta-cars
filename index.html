@@ -20,6 +20,10 @@
         .header-actions { display: flex; gap: 8px; }
         .btn-mini { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px; }
         .btn-mini:active { transform: scale(0.95); background: #e2e8f0; }
+        .view-tabs { display: flex; gap: 8px; margin: 0 0 20px 0; }
+        .tab-btn { flex: 1; background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; padding: 10px 12px; border-radius: 14px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .view.hidden { display: none !important; }
         
         .card { background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; margin-bottom: 20px; position: relative; z-index: 1; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
@@ -98,8 +102,35 @@
         .history-info span { font-size: 0.8rem; color: #666; }
         .history-actions { display: flex; gap: 10px; }
         .btn-load { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .btn-convert { background: #dcfce7; color: #166534; border: none; padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
         .btn-delete-hist { background: #fee2e2; color: var(--danger); border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
         .empty-history { text-align: center; color: #999; margin-top: 50px; font-style: italic; }
+
+        /* --- CLIENTES VIEW --- */
+        .clients-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .clients-title { font-size: 1.1rem; font-weight: 800; margin: 0; }
+        .btn-export { background: #e0f2fe; color: #0284c7; border: none; padding: 10px 14px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 16px; }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .stat-value { font-size: 1.2rem; font-weight: 800; margin-top: 6px; }
+        .progress-wrap { margin-top: 10px; }
+        .progress-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 6px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        .clients-list { list-style: none; padding: 0; margin: 0; }
+        .client-item { background: #fff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+        .client-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .client-name { font-weight: 800; }
+        .client-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+        .client-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .btn-client { background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .btn-client.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .btn-client.danger { background: #fee2e2; color: var(--danger); border-color: #fecaca; }
+        .clients-filters { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .clients-filters input, .clients-filters select { padding: 12px; border-radius: 12px; }
+        .goal-actions { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+        .kpi-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; }
 
         /* --- PDF INVOICE ESTILOS (Cliente) --- */
         #pdf-invoice-template, #pdf-internal-template { display: none; }
@@ -276,82 +307,155 @@
         </div>
     </div>
 
-    <div class="card" style="padding: 15px; margin-bottom: 10px; background: #fff;">
-        <input type="text" id="client-name" placeholder="🚘 Placa / Nombre Cliente" style="border: 2px solid #e2e8f0; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; box-sizing: border-box;">
+    <div class="view-tabs">
+        <button id="tab-quotes" class="tab-btn active" onclick="switchView('quotes')">Cotizador</button>
+        <button id="tab-clients" class="tab-btn" onclick="switchView('clients')">Clientes</button>
     </div>
 
-    <div class="card">
-        <label>1. Categoría</label>
-        <div class="category-scroll">
-            <button class="chip" onclick="selectCategory('pintura', this)">🎨 Pintura</button>
-            <button class="chip" onclick="selectCategory('latoneria', this)">🔨 Latonería</button>
-            <button class="chip" onclick="selectCategory('otros', this)">⚙️ Otros</button>
-        </div>
-        <input type="hidden" id="category" value="">
-
-        <div id="item-group">
-            <label>2. Servicio / Pieza</label>
-            <input type="text" id="search-input" placeholder="Buscar..." onkeyup="filterItems()" disabled style="margin-bottom:10px;">
-            <select id="item" disabled onchange="checkFinishOption()">
-                <option value="">Selecciona categoría arriba 👆</option>
-            </select>
-        </div>
-
-        <div class="hidden animate-in" id="finish-group" style="margin-top: 15px;">
-            <label>3. Acabado</label>
-            <select id="finish" onchange="updateDisplayedPrice()">
-                <option value="bicapa">Bicapa (Estándar)</option>
-                <option value="tricapa">Tricapa (Perlado)</option>
-            </select>
-        </div>
-
-        <div class="add-row-inputs">
-            <div style="flex: 1;">
-                <label style="margin-bottom: 5px; display:block;">Valor Unitario</label>
-                <input type="number" id="custom-price" style="font-weight: 800; color: var(--primary);" placeholder="$0">
-            </div>
-            <div style="width: 80px;">
-                <label style="margin-bottom: 5px; display:block; text-align:center;">Cant.</label>
-                <input type="number" id="quantity" value="1" min="1" style="text-align: center;">
+    <div id="view-quote" class="view">
+        <div class="card" style="padding: 15px; margin-bottom: 10px; background: #fff;">
+            <input type="text" id="client-name" placeholder="👤 Nombre Cliente" style="border: 2px solid #e2e8f0; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; box-sizing: border-box; margin-bottom: 10px;">
+            <div style="display:flex; gap: 10px;">
+                <input type="text" id="client-phone" placeholder="📞 Teléfono" style="border: 2px solid #e2e8f0; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; box-sizing: border-box;">
+                <input type="text" id="client-plate" placeholder="🚘 Placa" style="border: 2px solid #e2e8f0; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; box-sizing: border-box;">
             </div>
         </div>
 
-        <button class="btn-add" onclick="addItem()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg> Agregar Item</button>
+        <div class="card">
+            <label>1. Categoría</label>
+            <div class="category-scroll">
+                <button class="chip" onclick="selectCategory('pintura', this)">🎨 Pintura</button>
+                <button class="chip" onclick="selectCategory('latoneria', this)">🔨 Latonería</button>
+                <button class="chip" onclick="selectCategory('otros', this)">⚙️ Otros</button>
+            </div>
+            <input type="hidden" id="category" value="">
+
+            <div id="item-group">
+                <label>2. Servicio / Pieza</label>
+                <input type="text" id="search-input" placeholder="Buscar..." onkeyup="filterItems()" disabled style="margin-bottom:10px;">
+                <select id="item" disabled onchange="checkFinishOption()">
+                    <option value="">Selecciona categoría arriba 👆</option>
+                </select>
+            </div>
+
+            <div class="hidden animate-in" id="finish-group" style="margin-top: 15px;">
+                <label>3. Acabado</label>
+                <select id="finish" onchange="updateDisplayedPrice()">
+                    <option value="bicapa">Bicapa (Estándar)</option>
+                    <option value="tricapa">Tricapa (Perlado)</option>
+                </select>
+            </div>
+
+            <div class="add-row-inputs">
+                <div style="flex: 1;">
+                    <label style="margin-bottom: 5px; display:block;">Valor Unitario</label>
+                    <input type="number" id="custom-price" style="font-weight: 800; color: var(--primary);" placeholder="$0">
+                </div>
+                <div style="width: 80px;">
+                    <label style="margin-bottom: 5px; display:block; text-align:center;">Cant.</label>
+                    <input type="number" id="quantity" value="1" min="1" style="text-align: center;">
+                </div>
+            </div>
+
+            <button class="btn-add" onclick="addItem()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg> Agregar Item</button>
+        </div>
+
+        <ul class="cart-list" id="cart-list"></ul>
+
+        <div class="card extras-container">
+            <div class="setting-row">
+                <span class="setting-label">Tiempo de Entrega</span>
+                <select id="time-select" style="width: 140px; padding: 10px;"></select>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Descuento Global</span>
+                <select id="discount-select" style="width: 140px; padding: 10px;" onchange="renderCart()">
+                    <option value="0">0%</option><option value="0.05">5%</option><option value="0.10">10%</option><option value="0.20">20%</option>
+                </select>
+            </div>
+            <div class="setting-row"><span class="setting-label">Lavado (+$10k)</span><label class="switch"><input type="checkbox" id="check-lavado" onchange="renderCart()" checked><span class="slider"></span></label></div>
+            <div class="setting-row"><span class="setting-label">IVA (19%)</span><label class="switch"><input type="checkbox" id="check-iva" onchange="togglePreference('iva')"><span class="slider"></span></label></div>
+            <div class="setting-row"><span class="setting-label">Wompi (+5%)</span><label class="switch"><input type="checkbox" id="check-wompi" onchange="togglePreference('wompi')"><span class="slider"></span></label></div>
+            <div class="setting-row"><span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span><label class="switch"><input type="checkbox" id="check-comision" onchange="togglePreference('comision')"><span class="slider"></span></label></div>
+        </div>
+
+        <div class="profit-toggle"><button class="btn-lock" onclick="toggleProfitPanel()">🔒 <span>Panel Interno</span></button></div>
+
+        <div id="profit-panel" class="profit-dashboard hidden">
+            <div class="dashboard-header">
+                <div class="dashboard-title"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rentabilidad Interna</div>
+                <button id="btn-int-pdf" class="btn-internal-pdf" onclick="generateInternalPDF()">📄 PDF Costos</button>
+            </div>
+            <div class="stat-row"><span>Ingreso Cliente</span><span class="stat-val" id="prof-ingreso" style="color:#fff;">$0</span></div>
+            <div style="border-top: 1px dashed #334155; margin: 10px 0;"></div>
+            <div class="stat-row"><span>Pintor</span><span class="stat-val negative" id="prof-pintor">$0</span></div>
+            <div class="stat-row"><span>Latonero (Est.)</span><span class="stat-val negative" id="prof-latonero">$0</span></div>
+            <div class="stat-row"><span>Lavador</span><span class="stat-val negative" id="prof-lavador">$0</span></div>
+            <div class="stat-row"><span>Impuestos/Fees</span><span class="stat-val neutral" id="prof-fees-iva">$0</span></div>
+            <div class="profit-final"><h3>Utilidad Neta</h3><div class="profit-amount" id="prof-utilidad">$0</div><div class="profit-badge" id="prof-badge" style="background:#10b981; color:#fff;">0%</div></div>
+        </div>
     </div>
 
-    <ul class="cart-list" id="cart-list"></ul>
-
-    <div class="card extras-container">
-        <div class="setting-row">
-            <span class="setting-label">Tiempo de Entrega</span>
-            <select id="time-select" style="width: 140px; padding: 10px;"></select>
+    <div id="view-clients" class="view hidden">
+        <div class="card">
+            <div class="clients-header">
+                <h3 class="clients-title">Panel de Clientes</h3>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-export" onclick="exportMonthlyReport()">📊 Reporte Mensual</button>
+                    <button class="btn-export" onclick="exportClientsCSV()">⬇️ Exportar CSV</button>
+                </div>
+            </div>
+            <div class="clients-filters">
+                <input type="text" id="clients-search" placeholder="Buscar por nombre o placa..." oninput="renderClients()">
+                <select id="clients-month" onchange="renderClients()"></select>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Clientes del Mes</div>
+                    <div class="stat-value" id="stat-month-clients">0</div>
+                    <div class="progress-wrap">
+                        <div class="progress-label">Meta: <span id="goal-clients-label">12</span> clientes</div>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-clients"></div></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ticket Medio Mes</div>
+                    <div class="stat-value" id="stat-avg-ticket">$0</div>
+                    <div class="progress-wrap">
+                        <div class="progress-label">Meta: <span id="goal-ticket-label">$1.400.000</span></div>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-ticket"></div></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ventas del Mes</div>
+                    <div class="stat-value" id="stat-month-sales">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Costos del Mes</div>
+                    <div class="stat-value" id="stat-month-costs">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Utilidad del Mes</div>
+                    <div class="stat-value" id="stat-month-profit">$0</div>
+                </div>
+            </div>
+            <div class="goal-actions">
+                <input type="number" id="goal-clients-input" placeholder="Meta clientes" min="0">
+                <input type="number" id="goal-ticket-input" placeholder="Meta ticket" min="0">
+                <button class="btn-client primary" onclick="updateGoals()">Guardar Metas</button>
+            </div>
+            <div class="kpi-note" id="kpi-month-label">KPIs calculados para el mes seleccionado.</div>
         </div>
-        <div class="setting-row">
-            <span class="setting-label">Descuento Global</span>
-            <select id="discount-select" style="width: 140px; padding: 10px;" onchange="renderCart()">
-                <option value="0">0%</option><option value="0.05">5%</option><option value="0.10">10%</option><option value="0.20">20%</option>
-            </select>
-        </div>
-        <div class="setting-row"><span class="setting-label">Lavado (+$10k)</span><label class="switch"><input type="checkbox" id="check-lavado" onchange="renderCart()" checked><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label">IVA (19%)</span><label class="switch"><input type="checkbox" id="check-iva" onchange="togglePreference('iva')"><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label">Wompi (+5%)</span><label class="switch"><input type="checkbox" id="check-wompi" onchange="togglePreference('wompi')"><span class="slider"></span></label></div>
-        <div class="setting-row"><span class="setting-label" style="color: var(--accent);">Comisión (+2%)</span><label class="switch"><input type="checkbox" id="check-comision" onchange="togglePreference('comision')"><span class="slider"></span></label></div>
-    </div>
 
-    <div class="profit-toggle"><button class="btn-lock" onclick="toggleProfitPanel()">🔒 <span>Panel Interno</span></button></div>
-
-    <div id="profit-panel" class="profit-dashboard hidden">
-        <div class="dashboard-header">
-            <div class="dashboard-title"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rentabilidad Interna</div>
-            <button id="btn-int-pdf" class="btn-internal-pdf" onclick="generateInternalPDF()">📄 PDF Costos</button>
+        <div class="card">
+            <div class="clients-header">
+                <h3 class="clients-title">Clientes Convertidos</h3>
+                <span style="font-size:0.8rem; color: var(--text-muted);">Total: <strong id="stat-total-clients">0</strong></span>
+            </div>
+            <ul class="clients-list" id="clients-list">
+                <li class="empty-history">No hay clientes aún</li>
+            </ul>
         </div>
-        <div class="stat-row"><span>Ingreso Cliente</span><span class="stat-val" id="prof-ingreso" style="color:#fff;">$0</span></div>
-        <div style="border-top: 1px dashed #334155; margin: 10px 0;"></div>
-        <div class="stat-row"><span>Pintor</span><span class="stat-val negative" id="prof-pintor">$0</span></div>
-        <div class="stat-row"><span>Latonero (Est.)</span><span class="stat-val negative" id="prof-latonero">$0</span></div>
-        <div class="stat-row"><span>Lavador</span><span class="stat-val negative" id="prof-lavador">$0</span></div>
-        <div class="stat-row"><span>Impuestos/Fees</span><span class="stat-val neutral" id="prof-fees-iva">$0</span></div>
-        <div class="profit-final"><h3>Utilidad Neta</h3><div class="profit-amount" id="prof-utilidad">$0</div><div class="profit-badge" id="prof-badge" style="background:#10b981; color:#fff;">0%</div></div>
     </div>
 </div>
 
@@ -383,6 +487,10 @@
     // --- VARIABLES & INIT ---
     const STORAGE_KEY = 'delta_quotes_v1';
     const PREF_KEY = 'delta_prefs_v1'; 
+    const CLIENTS_KEY = 'delta_clients_v1';
+    const GOALS_KEY = 'delta_goals_v1';
+    let goalTicket = 1400000;
+    let goalClients = 12;
     let cart = [];
     let currentItem = null;
     let currentCategoryList = []; 
@@ -451,7 +559,10 @@
         document.getElementById('pdf-date').innerText = today;
         
         loadPreferences(); 
+        loadGoals();
+        initClientsMonthFilter();
         renderCart();
+        renderClients();
     };
 
     function formatMoney(amount) {
@@ -463,6 +574,28 @@
         if(prefs.iva !== undefined) document.getElementById('check-iva').checked = prefs.iva;
         if(prefs.wompi !== undefined) document.getElementById('check-wompi').checked = prefs.wompi;
         if(prefs.comision !== undefined) document.getElementById('check-comision').checked = prefs.comision;
+    }
+
+    function loadGoals() {
+        const goals = JSON.parse(localStorage.getItem(GOALS_KEY) || "{}");
+        if (typeof goals.goalTicket === 'number' && goals.goalTicket > 0) goalTicket = goals.goalTicket;
+        if (typeof goals.goalClients === 'number' && goals.goalClients > 0) goalClients = goals.goalClients;
+        document.getElementById('goal-clients-label').innerText = goalClients;
+        document.getElementById('goal-ticket-label').innerText = formatMoney(goalTicket);
+        document.getElementById('goal-clients-input').value = goalClients;
+        document.getElementById('goal-ticket-input').value = goalTicket;
+    }
+
+    function updateGoals() {
+        const clientsVal = parseInt(document.getElementById('goal-clients-input').value);
+        const ticketVal = parseInt(document.getElementById('goal-ticket-input').value);
+        if (!isNaN(clientsVal) && clientsVal >= 0) goalClients = clientsVal;
+        if (!isNaN(ticketVal) && ticketVal >= 0) goalTicket = ticketVal;
+        localStorage.setItem(GOALS_KEY, JSON.stringify({ goalClients, goalTicket }));
+        document.getElementById('goal-clients-label').innerText = goalClients;
+        document.getElementById('goal-ticket-label').innerText = formatMoney(goalTicket);
+        renderClients();
+        showToast("🎯 Metas actualizadas");
     }
 
     function togglePreference(key) {
@@ -495,6 +628,27 @@
         }
     }
 
+    function switchView(view) {
+        const viewQuote = document.getElementById('view-quote');
+        const viewClients = document.getElementById('view-clients');
+        const tabQuotes = document.getElementById('tab-quotes');
+        const tabClients = document.getElementById('tab-clients');
+        if (view === 'clients') {
+            viewQuote.classList.add('hidden');
+            viewClients.classList.remove('hidden');
+            tabQuotes.classList.remove('active');
+            tabClients.classList.add('active');
+            document.getElementById('sticky-footer').classList.add('hidden');
+            renderClients();
+        } else {
+            viewClients.classList.add('hidden');
+            viewQuote.classList.remove('hidden');
+            tabClients.classList.remove('active');
+            tabQuotes.classList.add('active');
+            renderCart();
+        }
+    }
+
     function saveQuote() {
         if (cart.length === 0) {
             showToast("⚠️ Agrega items primero");
@@ -502,13 +656,19 @@
         }
         
         const clientName = document.getElementById('client-name').value.trim() || "Cliente Sin Nombre";
+        const clientPhone = document.getElementById('client-phone').value.trim() || "";
+        const clientPlate = document.getElementById('client-plate').value.trim() || "";
         const total = document.getElementById('display-total').innerText;
-        const date = new Date().toLocaleString('es-CO');
+        const now = new Date();
+        const date = now.toLocaleString('es-CO');
 
         const quoteData = {
             id: Date.now(),
             date: date,
+            dateISO: now.toISOString(),
             clientName: clientName,
+            clientPhone: clientPhone,
+            clientPlate: clientPlate,
             totalDisplay: total,
             cart: cart,
             settings: {
@@ -545,10 +705,11 @@
             li.innerHTML = `
                 <div class="history-info">
                     <strong>${quote.clientName}</strong>
-                    <span>${quote.date} • ${quote.totalDisplay}</span>
+                    <span>${quote.date} • ${quote.totalDisplay}${quote.clientPlate ? ' • ' + quote.clientPlate : ''}</span>
                 </div>
                 <div class="history-actions">
                     <button class="btn-load" onclick="restoreQuote(${quote.id})">Cargar</button>
+                    <button class="btn-convert" onclick="convertQuoteToClient(${quote.id})">Convertir</button>
                     <button class="btn-delete-hist" onclick="deleteQuote(${quote.id})">🗑️</button>
                 </div>
             `;
@@ -556,26 +717,33 @@
         });
     }
 
+    function applyQuoteData(quote, opts) {
+        const options = opts || {};
+        if (!quote) return;
+        const confirmLoad = options.confirmLoad !== false;
+        if (confirmLoad) {
+            if(!confirm(`¿Cargar cotización de ${quote.clientName}?`)) return;
+        }
+        cart = quote.cart;
+        document.getElementById('client-name').value = quote.clientName;
+        document.getElementById('client-phone').value = quote.clientPhone || "";
+        document.getElementById('client-plate').value = quote.clientPlate || "";
+        document.getElementById('discount-select').value = quote.settings.discount;
+        document.getElementById('time-select').value = quote.settings.days;
+        document.getElementById('check-lavado').checked = quote.settings.lavado;
+        document.getElementById('check-iva').checked = quote.settings.iva;
+        document.getElementById('check-wompi').checked = quote.settings.wompi;
+        document.getElementById('check-comision').checked = quote.settings.comision;
+        renderCart();
+        if (options.closeHistory) toggleHistory();
+        showToast("✅ Cotización cargada");
+    }
+
     function restoreQuote(id) {
         const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         const quote = history.find(q => q.id === id);
         
-        if (quote) {
-            if(confirm(`¿Cargar cotización de ${quote.clientName}?`)){
-                cart = quote.cart;
-                document.getElementById('client-name').value = quote.clientName;
-                document.getElementById('discount-select').value = quote.settings.discount;
-                document.getElementById('time-select').value = quote.settings.days;
-                document.getElementById('check-lavado').checked = quote.settings.lavado;
-                document.getElementById('check-iva').checked = quote.settings.iva;
-                document.getElementById('check-wompi').checked = quote.settings.wompi;
-                document.getElementById('check-comision').checked = quote.settings.comision;
-                
-                renderCart();
-                toggleHistory(); 
-                showToast("✅ Cotización cargada");
-            }
-        }
+        if (quote) applyQuoteData(quote, { confirmLoad: true, closeHistory: true });
     }
 
     function deleteQuote(id) {
@@ -585,6 +753,346 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
             loadHistory(); 
         }
+    }
+
+    function calculateQuoteSummary(quote) {
+        let subtotalItems = 0;
+        let totalLatoneriaItemsPrice = 0; 
+        let costoPintorAcumulado = 0;
+        let costPolichadoAccumulated = 0;
+        const TARIFA_BICAPA = 150000; 
+        const TARIFA_TRICAPA = 200000;
+
+        quote.cart.forEach(item => {
+            subtotalItems += item.price;
+            if (item.fixedCost > 0) {
+                if(item.payTo === 'lavador') {
+                    costPolichadoAccumulated += (item.fixedCost * item.qty);
+                } else {
+                    costoPintorAcumulado += (item.fixedCost * item.qty);
+                }
+            } else {
+                let rate = (item.finish === 'Tricapa') ? TARIFA_TRICAPA : TARIFA_BICAPA;
+                costoPintorAcumulado += (item.pv * item.qty) * rate;
+            }
+
+            if (item.category === 'latoneria') {
+                totalLatoneriaItemsPrice += item.price;
+            }
+        });
+
+        const isLavado = quote.settings.lavado;
+        const discountRate = parseFloat(quote.settings.discount);
+        let lavadoCostPrice = isLavado ? 10000 : 0;
+        let baseAmount = subtotalItems + lavadoCostPrice;
+        let discountAmount = baseAmount * discountRate;
+        let amountAfterDiscount = baseAmount - discountAmount;
+        let ivaCost = quote.settings.iva ? amountAfterDiscount * 0.19 : 0;
+        let amountAfterIVA = amountAfterDiscount + ivaCost;
+        let wompiCost = quote.settings.wompi ? amountAfterIVA * 0.05 : 0;
+        let preTotal = amountAfterIVA + wompiCost;
+        let comisionCost = quote.settings.comision ? preTotal * 0.02 : 0;
+        let totalFinal = preTotal + comisionCost;
+
+        let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
+        let costLatonero = totalLatoneriaItemsPrice * 0.5; 
+        let costFees = wompiCost + comisionCost + ivaCost;
+        let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
+        let utilidadDelta = totalFinal - totalCostos;
+        let margenPorcentaje = (totalFinal > 0) ? (utilidadDelta / totalFinal) * 100 : 0;
+
+        return {
+            totalFinal,
+            totalCostos,
+            utilidadDelta,
+            margenPorcentaje,
+            totalItems: quote.cart.length
+        };
+    }
+
+    function getClients() {
+        return JSON.parse(localStorage.getItem(CLIENTS_KEY) || "[]");
+    }
+
+    function saveClients(list) {
+        localStorage.setItem(CLIENTS_KEY, JSON.stringify(list));
+    }
+
+    function convertQuoteToClient(id) {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        const quote = history.find(q => q.id === id);
+        if (!quote) return;
+
+        let clients = getClients();
+        const exists = clients.some(c => c.quoteId === id);
+        if (exists) {
+            showToast("⚠️ Esta cotización ya es cliente");
+            switchView('clients');
+            return;
+        }
+
+        const summary = calculateQuoteSummary(quote);
+        const displayDate = quote.date || new Date(quote.dateISO || Date.now()).toLocaleString('es-CO');
+        const itemsText = quote.cart.map(item => `${item.name} x${item.qty}`).join(' | ');
+        const clientRecord = {
+            id: Date.now(),
+            quoteId: id,
+            clientName: quote.clientName,
+            clientPhone: quote.clientPhone || "",
+            clientPlate: quote.clientPlate || "",
+            date: displayDate,
+            dateISO: quote.dateISO || new Date().toISOString(),
+            totalFinal: summary.totalFinal,
+            totalCostos: summary.totalCostos,
+            utilidadDelta: summary.utilidadDelta,
+            margenPorcentaje: summary.margenPorcentaje,
+            itemsText: itemsText,
+            settings: quote.settings
+        };
+
+        clients.unshift(clientRecord);
+        saveClients(clients);
+        showToast("✅ Convertido a cliente");
+        switchView('clients');
+    }
+
+    function deleteClient(id) {
+        if(!confirm("¿Eliminar cliente?")) return;
+        let clients = getClients();
+        clients = clients.filter(c => c.id !== id);
+        saveClients(clients);
+        renderClients();
+    }
+
+    function loadClientQuote(clientId) {
+        const clients = getClients();
+        const client = clients.find(c => c.id === clientId);
+        if (!client) return;
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        const quote = history.find(q => q.id === client.quoteId);
+        if (!quote) {
+            alert("No se encontró la cotización original.");
+            return;
+        }
+        applyQuoteData(quote, { confirmLoad: false, closeHistory: false });
+        switchView('quotes');
+    }
+
+    function renderClients() {
+        const list = document.getElementById('clients-list');
+        const clients = getClients();
+        const searchValue = (document.getElementById('clients-search').value || "").toLowerCase();
+        const monthValue = document.getElementById('clients-month').value;
+        list.innerHTML = '';
+
+        const selectedMonthLabel = document.getElementById('clients-month').selectedOptions[0]?.text || "Todos los meses";
+        document.getElementById('kpi-month-label').innerText = `KPIs calculados para: ${selectedMonthLabel}`;
+
+        const filtered = clients.filter(c => {
+            const matchSearch = !searchValue || (c.clientName || "").toLowerCase().includes(searchValue) || (c.clientPlate || "").toLowerCase().includes(searchValue);
+            if (!matchSearch) return false;
+            if (!monthValue || monthValue === "all") return true;
+            const d = new Date(c.dateISO || c.date);
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            return key === monthValue;
+        });
+
+        if (filtered.length === 0) {
+            list.innerHTML = '<li class="empty-history">No hay clientes aún</li>';
+        } else {
+            filtered.forEach(client => {
+                const li = document.createElement('li');
+                li.className = 'client-item';
+                li.innerHTML = `
+                    <div class="client-row">
+                        <div>
+                            <div class="client-name">${client.clientName}</div>
+                            <div class="client-meta">${client.date}${client.clientPlate ? ' • ' + client.clientPlate : ''}</div>
+                            <div class="client-meta">${client.clientPhone ? '📞 ' + client.clientPhone : ''}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="client-name">${formatMoney(client.totalFinal)}</div>
+                            <div class="client-meta">Utilidad: ${formatMoney(client.utilidadDelta)}</div>
+                        </div>
+                    </div>
+                    <div class="client-meta" style="margin-top:8px;">${client.itemsText}</div>
+                    <div class="client-actions">
+                        <button class="btn-client primary" onclick="loadClientQuote(${client.id})">Abrir Cotización</button>
+                        <button class="btn-client" onclick="editClient(${client.id})">Editar</button>
+                        <button class="btn-client danger" onclick="deleteClient(${client.id})">Eliminar</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        const monthClients = monthValue && monthValue !== "all" ? filtered : clients;
+        const monthCount = monthClients.length;
+        const monthSales = monthClients.reduce((acc, c) => acc + c.totalFinal, 0);
+        const monthCosts = monthClients.reduce((acc, c) => acc + c.totalCostos, 0);
+        const monthProfit = monthClients.reduce((acc, c) => acc + c.utilidadDelta, 0);
+        const avgTicket = monthCount > 0 ? monthSales / monthCount : 0;
+
+        document.getElementById('stat-month-clients').innerText = monthCount;
+        document.getElementById('stat-avg-ticket').innerText = formatMoney(avgTicket);
+        document.getElementById('stat-month-sales').innerText = formatMoney(monthSales);
+        document.getElementById('stat-month-costs').innerText = formatMoney(monthCosts);
+        document.getElementById('stat-month-profit').innerText = formatMoney(monthProfit);
+        document.getElementById('stat-total-clients').innerText = clients.length;
+
+        const pctClients = goalClients > 0 ? Math.min(100, Math.round((monthCount / goalClients) * 100)) : 0;
+        const pctTicket = goalTicket > 0 ? Math.min(100, Math.round((avgTicket / goalTicket) * 100)) : 0;
+        document.getElementById('progress-clients').style.width = pctClients + '%';
+        document.getElementById('progress-ticket').style.width = pctTicket + '%';
+    }
+
+    function initClientsMonthFilter() {
+        const select = document.getElementById('clients-month');
+        if (!select) return;
+        select.innerHTML = '';
+        const optionAll = document.createElement('option');
+        optionAll.value = "all";
+        optionAll.text = "Todos los meses";
+        select.add(optionAll);
+
+        const now = new Date();
+        for (let i = 0; i < 12; i++) {
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            const label = d.toLocaleDateString('es-CO', { year: 'numeric', month: 'long' });
+            const opt = document.createElement('option');
+            opt.value = value;
+            opt.text = label.charAt(0).toUpperCase() + label.slice(1);
+            if (i === 0) opt.selected = true;
+            select.add(opt);
+        }
+    }
+
+    function editClient(id) {
+        let clients = getClients();
+        const idx = clients.findIndex(c => c.id === id);
+        if (idx === -1) return;
+        const current = clients[idx];
+        const newName = prompt("Nombre del cliente:", current.clientName || "");
+        if (newName === null) return;
+        const newPhone = prompt("Teléfono:", current.clientPhone || "");
+        if (newPhone === null) return;
+        const newPlate = prompt("Placa:", current.clientPlate || "");
+        if (newPlate === null) return;
+        clients[idx] = {
+            ...current,
+            clientName: newName.trim() || current.clientName,
+            clientPhone: newPhone.trim(),
+            clientPlate: newPlate.trim()
+        };
+        saveClients(clients);
+        renderClients();
+        showToast("✏️ Cliente actualizado");
+    }
+
+    function exportMonthlyReport() {
+        const clients = getClients();
+        if (clients.length === 0) {
+            alert("No hay clientes para reportar.");
+            return;
+        }
+        const monthValue = document.getElementById('clients-month').value;
+        const selectedLabel = document.getElementById('clients-month').selectedOptions[0]?.text || "Todos";
+        const filtered = clients.filter(c => {
+            if (!monthValue || monthValue === "all") return true;
+            const d = new Date(c.dateISO || c.date);
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            return key === monthValue;
+        });
+        if (filtered.length === 0) {
+            alert("No hay clientes en el mes seleccionado.");
+            return;
+        }
+        const totalSales = filtered.reduce((acc, c) => acc + c.totalFinal, 0);
+        const totalCosts = filtered.reduce((acc, c) => acc + c.totalCostos, 0);
+        const totalProfit = filtered.reduce((acc, c) => acc + c.utilidadDelta, 0);
+        const avgTicket = filtered.length > 0 ? totalSales / filtered.length : 0;
+
+        const headers = [
+            "Mes",
+            "Clientes",
+            "Ventas",
+            "Costos",
+            "Utilidad",
+            "TicketPromedio"
+        ];
+        const row = [
+            selectedLabel,
+            filtered.length,
+            Math.round(totalSales),
+            Math.round(totalCosts),
+            Math.round(totalProfit),
+            Math.round(avgTicket)
+        ];
+        const escapeCSV = (value) => {
+            const str = String(value).replace(/"/g, '""');
+            return `"${str}"`;
+        };
+        const csvContent = [headers, row].map(r => r.map(escapeCSV).join(",")).join("\n");
+        const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `reporte_mensual_${monthValue || 'todos'}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function exportClientsCSV() {
+        const clients = getClients();
+        if (clients.length === 0) {
+            alert("No hay clientes para exportar.");
+            return;
+        }
+
+        const headers = [
+            "Fecha",
+            "Cliente",
+            "Telefono",
+            "Placa",
+            "Total",
+            "Costos",
+            "Utilidad",
+            "Margen%",
+            "Items",
+            "QuoteId"
+        ];
+
+        const rows = clients.map(c => [
+            c.date,
+            c.clientName,
+            c.clientPhone || "",
+            c.clientPlate || "",
+            Math.round(c.totalFinal),
+            Math.round(c.totalCostos),
+            Math.round(c.utilidadDelta),
+            Math.round(c.margenPorcentaje),
+            c.itemsText,
+            c.quoteId
+        ]);
+
+        const escapeCSV = (value) => {
+            const str = String(value).replace(/"/g, '""');
+            return `"${str}"`;
+        };
+
+        const csvContent = [headers, ...rows].map(row => row.map(escapeCSV).join(",")).join("\n");
+        const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "clientes_delta_cars.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     }
 
     function showToast(msg) {
@@ -1068,6 +1576,8 @@
         if(confirm("¿Comenzar nueva cotización?")) {
             cart = [];
             document.getElementById('client-name').value = ""; 
+            document.getElementById('client-phone').value = ""; 
+            document.getElementById('client-plate').value = ""; 
             document.getElementById('discount-select').value = "0";
             document.getElementById('check-lavado').checked = true;
             loadPreferences();
