@@ -266,7 +266,7 @@
                     <td id="int-pintor">$0</td>
                 </tr>
                 <tr>
-                    <td>Pago Latonero (Estimado 50%)</td>
+                    <td>Pago Latonero (Estimado 40%)</td>
                     <td id="int-latonero">$0</td>
                 </tr>
                 <tr>
@@ -496,35 +496,34 @@
     let currentCategoryList = []; 
     
     // --- BASE DE DATOS DE PRECIOS 2026 ---
-    // NOTA: 'pv' ajustado para que (pv * 150.000) de exactamente el costo de pintor del Excel.
-    // Para items especiales (Polichado, Brillada), se usa 'fixedCost'.
-    
     const pricesDB = {
         pintura: [
             // Items Pequeños
-            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 96000, tricapa: 126000, hasTricapa: true, pv: 0.3 }, 
-            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, tricapa: 200000, hasTricapa: true, pv: 0.625 }, // Costo Pintor: $93.750
-            { id: 'estribo', name: 'Pintura Estribo', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
-            { id: 'puntera', name: 'Pintura Puntera', base: 160000, tricapa: 210000, hasTricapa: true, pv: 0.5 },
-            { id: 'paral', name: 'Pintura Paral', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
-            { id: 'batiente', name: 'Pintura Batiente', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
-            { id: 'espejo', name: 'Pintura Espejo', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
-            { id: 'manija', name: 'Pintura Manija', base: 80000, tricapa: 105000, hasTricapa: true, pv: 0.25 },
+            { id: 'tapa_gasolina', name: 'Pintura Tapa Gasolina', base: 75000, tricapa: 100000, hasTricapa: true, pv: 0.25 },
+            { id: 'espejo', name: 'Pintura Espejo', base: 75000, tricapa: 100000, hasTricapa: true, pv: 0.25 },
+            { id: 'manija', name: 'Pintura Manija', base: 75000, tricapa: 100000, hasTricapa: true, pv: 0.25 },
+            { id: 'paral', name: 'Pintura Paral', base: 150000, tricapa: 200000, hasTricapa: true, pv: 0.50 },
+            { id: 'batiente', name: 'Pintura Batiente', base: 150000, tricapa: 200000, hasTricapa: true, pv: 0.50 },
+            { id: 'estribo', name: 'Pintura Estribo', base: 150000, tricapa: 200000, hasTricapa: true, pv: 0.50 },
+            { id: 'puntera', name: 'Pintura Puntera', base: 150000, tricapa: 200000, hasTricapa: true, pv: 0.50 },
+            
+            // Excepción Plásticos
+            { id: 'plasticos', name: 'Pintura Plásticos', base: 200000, tricapa: 200000, hasTricapa: true, pv: 0.666667 },
 
             // Items Estándar (PV 1.0)
-            { id: 'costado', name: 'Pintura Costado', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
-            { id: 'guardafango', name: 'Pintura Guardafango', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
-            { id: 'baul', name: 'Pintura Baúl', base: 320000, tricapa: 420000, hasTricapa: true, pv: 1.0 },
+            { id: 'costado', name: 'Pintura Costado', base: 300000, tricapa: 400000, hasTricapa: true, pv: 1.0 },
+            { id: 'guardafango', name: 'Pintura Guardafango', base: 300000, tricapa: 400000, hasTricapa: true, pv: 1.0 },
+            { id: 'bumper', name: 'Pintura Bumper', base: 300000, tricapa: 400000, hasTricapa: true, pv: 1.0 },
+            { id: 'puerta', name: 'Pintura Puerta', base: 300000, tricapa: 400000, hasTricapa: true, pv: 1.0 },
+            { id: 'baul', name: 'Pintura Baúl', base: 300000, tricapa: 400000, hasTricapa: true, pv: 1.0 },
 
-            // Items Grandes (PV 1.2 - 1.5)
-            { id: 'bumper', name: 'Pintura Bumper', base: 384000, tricapa: 504000, hasTricapa: true, pv: 1.2 },
-            { id: 'puerta', name: 'Pintura Puerta', base: 384000, tricapa: 504000, hasTricapa: true, pv: 1.2 },
-            { id: 'puerta_nueva', name: 'Pintura Puerta Nueva (Ambos lados)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
-            { id: 'capo', name: 'Pintura Capó', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
-            { id: 'techo_auto', name: 'Pintura Techo (Automóvil)', base: 480000, tricapa: 630000, hasTricapa: true, pv: 1.5 },
+            // Items Grandes (PV 1.5)
+            { id: 'puerta_nueva', name: 'Pintura Puerta Nueva (Ambos lados)', base: 450000, tricapa: 600000, hasTricapa: true, pv: 1.5 },
+            { id: 'capo', name: 'Pintura Capó', base: 450000, tricapa: 600000, hasTricapa: true, pv: 1.5 },
+            { id: 'techo_auto', name: 'Pintura Techo (Automóvil)', base: 450000, tricapa: 600000, hasTricapa: true, pv: 1.5 },
 
             // Items Extra Grandes (PV 2.0)
-            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 640000, tricapa: 840000, hasTricapa: true, pv: 2.0 }
+            { id: 'techo_cam', name: 'Pintura Techo (Camioneta)', base: 600000, tricapa: 800000, hasTricapa: true, pv: 2.0 }
         ],
         latoneria: [
             { id: 'lat_leve', name: 'Latonería Leve', base: 350000, pv: 0 },
@@ -536,11 +535,9 @@
             { id: 'pdr_gde', name: 'Sacabollos PDR (Gde)', base: 600000, pv: 0 }
         ],
         otros: [
-            { id: 'rin_bicapa', name: 'Pintura Rin (Bicapa)', base: 160000, pv: 0.5 },
-            { id: 'rin_diam', name: 'Pintura Rin (Diamantado)', base: 256000, pv: 0.8 },
-            { id: 'partes_negras', name: 'Restauración Partes Negras', base: 150000, pv: 0.5 },
+            { id: 'rin_bicapa', name: 'Pintura Rin (Bicapa)', base: 150000, pv: 0.5 },
+            { id: 'rin_diam', name: 'Pintura Rin (Diamantado)', base: 240000, pv: 0.8 },
             { id: 'brillada', name: 'Brillada de Pieza', base: 50000, pv: 0, fixedCost: 25000 },
-            // NOTA: Polichados se pagan al Lavador (payTo: 'lavador')
             { id: 'polichado_auto', name: 'Polichado Automóvil', base: 180000, pv: 0, fixedCost: 70000, payTo: 'lavador' },
             { id: 'polichado_cam', name: 'Polichado Camioneta', base: 200000, pv: 0, fixedCost: 80000, payTo: 'lavador' }
         ]
@@ -760,8 +757,8 @@
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
         let costPolichadoAccumulated = 0;
-        const TARIFA_BICAPA = 150000; 
-        const TARIFA_TRICAPA = 200000;
+        const TARIFA_BICAPA = 130000; 
+        const TARIFA_TRICAPA = 150000;
 
         quote.cart.forEach(item => {
             subtotalItems += item.price;
@@ -795,7 +792,7 @@
         let totalFinal = preTotal + comisionCost;
 
         let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
-        let costLatonero = totalLatoneriaItemsPrice * 0.5; 
+        let costLatonero = totalLatoneriaItemsPrice * 0.4; 
         let costFees = wompiCost + comisionCost + ivaCost;
         let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
         let utilidadDelta = totalFinal - totalCostos;
@@ -1208,7 +1205,7 @@
             category: category,
             pv: currentItem.pv || 0,
             fixedCost: currentItem.fixedCost || 0, 
-            payTo: currentItem.payTo || 'pintor' // Nuevo: identifica si se paga a lavador o pintor
+            payTo: currentItem.payTo || 'pintor' 
         });
 
         document.getElementById('search-input').value = '';
@@ -1240,16 +1237,15 @@
         let subtotalItems = 0;
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
-        let costPolichadoAccumulated = 0; // Acumulador para pagos al lavador
-        const TARIFA_BICAPA = 150000; 
-        const TARIFA_TRICAPA = 200000;
+        let costPolichadoAccumulated = 0; 
+        const TARIFA_BICAPA = 130000; 
+        const TARIFA_TRICAPA = 150000;
 
         cart.forEach((item, index) => {
             subtotalItems += item.price;
             
             // Calculo Costos
             if (item.fixedCost > 0) {
-                // Si es polichado (payTo: lavador), sumar a polichado, sino a pintor
                 if(item.payTo === 'lavador') {
                     costPolichadoAccumulated += (item.fixedCost * item.qty);
                 } else {
@@ -1316,9 +1312,8 @@
         // PROFIT LOGIC
         document.getElementById('prof-ingreso').innerText = formatMoney(totalFinal);
         
-        // El costo del lavador ahora incluye el lavado base (10k) + los polichados
         let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
-        let costLatonero = totalLatoneriaItemsPrice * 0.5; 
+        let costLatonero = totalLatoneriaItemsPrice * 0.4; 
         let costFees = wompiCost + comisionCost + ivaCost;
         
         document.getElementById('prof-pintor').innerText = `- ${formatMoney(costoPintorAcumulado)}`;
@@ -1358,8 +1353,8 @@
         let totalLatoneriaItemsPrice = 0; 
         let costoPintorAcumulado = 0;
         let costPolichadoAccumulated = 0;
-        const TARIFA_BICAPA = 150000; 
-        const TARIFA_TRICAPA = 200000;
+        const TARIFA_BICAPA = 130000; 
+        const TARIFA_TRICAPA = 150000;
 
         const detailTable = document.getElementById('int-items-detail');
         detailTable.innerHTML = '';
@@ -1401,7 +1396,7 @@
         let totalFinal = preTotal + comisionCost;
 
         let costLavador = (isLavado ? 10000 : 0) + costPolichadoAccumulated;
-        let costLatonero = totalLatoneriaItemsPrice * 0.5;
+        let costLatonero = totalLatoneriaItemsPrice * 0.4;
         let costFees = wompiCost + comisionCost + ivaCost;
         let totalCostos = costoPintorAcumulado + costLatonero + costLavador + costFees;
         let utilidadDelta = totalFinal - totalCostos;
